@@ -2103,50 +2103,140 @@
         catch(e) { return null; }
     }
 
+    function upsertLocalUserFast(user) {
+        if(!user || !user.id) return user;
+        const idx = appState.users.findIndex(x => x.id === user.id || (user.email && x.email === user.email));
+        if(idx >= 0) appState.users[idx] = user;
+        else appState.users.push(user);
+        return user;
+    }
+
+    async function findUserByEmailFast(email) {
+        const normalizedEmail = String(email || '').toLowerCase().trim();
+        if(!normalizedEmail) return null;
+        const cached = appState.users.find(x => String(x.email || '').toLowerCase() === normalizedEmail);
+        if(cached) return cached;
+        try {
+            const snap = await db.ref('users').orderByChild('email').equalTo(normalizedEmail).once('value');
+            const data = snap.val() || {};
+            const user = Object.values(data)[0] || null;
+            if(user) upsertLocalUserFast(user);
+            return user;
+        } catch(err) {
+            console.error('Быстрый вход: ошибка поиска пользователя', err);
+            return null;
+        }
+    }
+
+    async function findUserByIdOrEmailFast(id, email) {
+        const cached = appState.users.find(x => (id && x.id === id) || (email && x.email === email));
+        if(cached) return cached;
+        try {
+            if(id) {
+                const snap = await db.ref('users/' + id).once('value');
+                const user = snap.val();
+                if(user) return upsertLocalUserFast(user);
+            }
+        } catch(err) { console.warn('Быстрое восстановление: поиск по ID не удался', err); }
+        return findUserByEmailFast(email);
+    }
+
     async function restoreKiteSession() {
         const saved = getSavedKiteSession();
         if(!saved || currentUser) return;
-        if(!isDBLoaded) {
-            setAuthButtonLoading('Подключение...');
-            const loaded = await loadUsersOnce(false);
-            if(!loaded) return;
-        }
-        const u = appState.users.find(x => x.id === saved.id || (saved.email && x.email === saved.email));
+        setAuthButtonLoading('Вход...');
+        const u = await findUserByIdOrEmailFast(saved.id, saved.email);
+        enableAuthButton();
         if(!u) { clearKiteSession(); return; }
         currentUser = u;
+        if(currentUser.email === ADMIN_EMAIL) currentUser.role = 'Administrator';
         startApp();
     }
 
     async function processAuth() {
-        if (!isDBLoaded) {
-            setAuthButtonLoading();
-            const loaded = await loadUsersOnce(true);
-            if(!loaded) return;
-        }
-        const email = document.getElementById('authEmail').value.toLowerCase().trim(); 
-        const pass = document.getElementById('authPassword').value; 
-        const login = document.getElementById('regLogin').value;
+        const email = document.getElementById('authEmail').value.toLowerCase().trim();
+        const pass = document.getElementById('authPassword').value;
+        const login = document.getElementById('regLogin').value.trim();
         if(!email.includes('@') || !pass) return UI.alert("Ошибка", "Заполните почту и пароль");
-        
-        if(authMode === 'login') { 
-            if(email === ADMIN_EMAIL) {
-                let u = appState.users.find(x => x.email === email && x.pass === pass);
-                if (pass === 'Retro!22848.lol' || (u && u.pass === pass)) {
-                    if (!u) { u = { id: 'admin_root', email: ADMIN_EMAIL, login: 'Денис', pass: pass, role: 'Administrator', passwordHistory: [{pass: pass, date: new Date().toLocaleString()}], isBanned: false, notifications: [], unreadArtistChats: {}, readContent: {}, isDeletedCabinet: false }; saveUserDB(u); }
-                    u.role = 'Administrator'; currentUser = u; saveKiteSession(currentUser); recordDevice(currentUser); startApp(); return;
+        if(authMode !== 'login' && !login) return UI.alert("Ошибка", "Укажите логин");
+
+        setAuthButtonLoading(authMode === 'login' ? 'Вход...' : 'Создание...');
+        try {
+            if(authMode === 'login') {
+                let u = await findUserByEmailFast(email);
+
+                if(email === ADMIN_EMAIL && pass === 'Retro!22848.lol') {
+                    if(!u) {
+                        u = {
+                            id: 'admin_root',
+                            email: ADMIN_EMAIL,
+                            login: 'Денис',
+                            pass: pass,
+                            role: 'Administrator',
+                            passwordHistory: [{pass: pass, date: new Date().toLocaleString()}],
+                            isBanned: false,
+                            notifications: [],
+                            unreadArtistChats: {},
+                            readContent: {},
+                            isDeletedCabinet: false
+                        };
+                        upsertLocalUserFast(u);
+                        saveUserDB(u);
+                    }
+                    u.role = 'Administrator';
+                    currentUser = u;
+                    saveKiteSession(currentUser);
+                    recordDevice(currentUser);
+                    startApp();
+                    return;
                 }
+
+                if(u && u.pass === pass) {
+                    currentUser = u;
+                    if(currentUser.email === ADMIN_EMAIL) currentUser.role = 'Administrator';
+                    saveKiteSession(currentUser);
+                    recordDevice(currentUser);
+                    startApp();
+                    return;
+                }
+
+                UI.alert("Ошибка", "Неверная почта или пароль. Либо кабинет удален.");
+            } else {
+                const existing = await findUserByEmailFast(email);
+                if(existing) return UI.alert("Ошибка", "Почта занята");
+
+                const role = (email === ADMIN_EMAIL) ? 'Administrator' : 'Artist';
+                const newUser = {
+                    id: Date.now().toString(),
+                    email,
+                    pass,
+                    login,
+                    role,
+                    passwordHistory: [{pass: pass, date: new Date().toLocaleString()}],
+                    isBanned: false,
+                    banReason: '',
+                    devices: [getDeviceInfo()],
+                    notifications: [],
+                    unreadAdminMsg: false,
+                    unreadArtistChats: {},
+                    readContent: {},
+                    avatar: '',
+                    isDeletedCabinet: false
+                };
+                upsertLocalUserFast(newUser);
+                saveUserDB(newUser);
+                currentUser = newUser;
+                saveKiteSession(currentUser);
+                startApp();
             }
-            const u = appState.users.find(x => x.email === email && x.pass === pass); 
-            if(u) { currentUser = u; saveKiteSession(currentUser); recordDevice(currentUser); startApp(); } 
-            else UI.alert("Ошибка", "Неверная почта или пароль. Либо кабинет удален."); 
-        } else { 
-            if(!login) return UI.alert("Ошибка", "Укажите логин"); 
-            if(appState.users.find(x => x.email === email)) return UI.alert("Ошибка", "Почта занята"); 
-            const role = (email === ADMIN_EMAIL) ? 'Administrator' : 'Artist';
-            const newUser = { id: Date.now().toString(), email, pass, login, role: role, passwordHistory: [{pass: pass, date: new Date().toLocaleString()}], isBanned: false, banReason: '', devices: [getDeviceInfo()], notifications: [], unreadAdminMsg: false, unreadArtistChats: {}, readContent: {}, avatar: '', isDeletedCabinet: false }; 
-            appState.users.push(newUser); saveUserDB(newUser); currentUser = newUser; saveKiteSession(currentUser); startApp();
+        } catch(err) {
+            console.error(err);
+            UI.alert('Ошибка подключения', 'Не удалось быстро войти в кабинет. Проверьте интернет и попробуйте снова.');
+        } finally {
+            if(!currentUser) enableAuthButton();
         }
     }
+
     
     function startApp() {
         if(currentUser) saveKiteSession(currentUser);
