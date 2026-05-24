@@ -1,0 +1,3003 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kite</title>
+    
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <meta name="description" content="Kite Label — личный кабинет для артистов, загрузки релизов, модерации музыки, новостей и инструкций.">
+<meta name="keywords" content="Kite, Kite Label, kite label, кайт, Кайт, кайт лейбл, Кайт лейбл, музыкальный лейбл, дистрибуция музыки, кабинет артиста">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://kitelabel.ru/">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        :root { 
+            --bg-body: #0A0A0A; 
+            --bg-panel: #111111; 
+            --bg-glass: rgba(255, 255, 255, 0.03); 
+            --border: #222222; 
+            --text-main: #FFFFFF; 
+            --text-muted: #888888; 
+            --accent: #FFFFFF; 
+            --accent-bg: #E5E5E5; 
+            --danger: #FF3B30; 
+            --success: #34C759; 
+            --warning: #FF9500; 
+            --radius: 12px; 
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); overflow: hidden; font-size: 14px; }
+        .hidden { display: none !important; }
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        * { scrollbar-width: thin; scrollbar-color: #333 transparent; }
+
+        h1 { font-size: 28px; font-weight: 600; margin-bottom: 24px; letter-spacing: -0.5px; }
+        h2 { font-size: 20px; font-weight: 500; margin-bottom: 16px; }
+        .text-sm { font-size: 13px; color: var(--text-muted); }
+        .req-star { color: var(--danger); margin-left: 4px; font-weight: bold; }
+
+        .app { display: flex; height: 100vh; }
+        .sidebar { width: 250px; background-color: var(--bg-panel); border-right: 1px solid var(--border); padding: 32px 24px; display: flex; flex-direction: column; transition: 0.3s; z-index: 1000; overflow-y: auto; }
+        .content { flex: 1; padding: 40px; overflow-y: auto; background: var(--bg-body); position: relative; }
+
+        .fade-in { animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @keyframes shake { 0%, 100% {transform: rotate(0deg);} 25% {transform: rotate(15deg);} 75% {transform: rotate(-15deg);} }
+        .shake { animation: shake 0.5s ease-in-out infinite; }
+
+        .form-group { margin-bottom: 16px; width: 100%; }
+        .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+        input, select, textarea { width: 100%; padding: 14px 16px; background: #000; border: 1px solid var(--border); color: #fff; border-radius: 8px; font-size: 14px; transition: 0.2s; }
+        input[type="date"] { color-scheme: dark; }
+        input:focus, select:focus, textarea:focus { border-color: #555; outline: none; }
+        .error-field { border-color: var(--danger) !important; box-shadow: 0 0 0 1px var(--danger); }
+
+        .btn-add-plus { background: var(--warning); color: #fff; border: none; width: 48px; border-radius: 8px; font-size: 20px; font-weight:bold; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: 8px; transition: 0.2s; flex-shrink: 0;}
+        .btn-add-minus { background: var(--danger); color: #fff; border: none; width: 48px; border-radius: 8px; font-size: 20px; font-weight:bold; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: 8px; transition: 0.2s; flex-shrink: 0;}
+
+        button { padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); font-size: 14px; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        button:active:not(:disabled) { transform: scale(0.96); } 
+        
+        .btn-primary { background: var(--accent); color: #000; }
+        .btn-primary:hover:not(:disabled) { background: var(--accent-bg); box-shadow: 0 4px 12px rgba(255,255,255,0.1); }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-outline:hover:not(:disabled) { background: var(--bg-glass); border-color: var(--text-muted); }
+        .btn-danger { background: rgba(255, 59, 48, 0.1); color: var(--danger); border: 1px solid rgba(255, 59, 48, 0.2); }
+        .btn-success { background: rgba(52, 199, 89, 0.1); color: var(--success); border: 1px solid rgba(52, 199, 89, 0.2); }
+        
+        .menu-btn { display: flex; justify-content: space-between; align-items: center; width: 100%; text-align: left; background: transparent; border: none; padding: 12px 16px; color: var(--text-muted); border-radius: 8px; margin-bottom: 4px; transition: 0.2s; font-weight: 500; }
+        .menu-btn:hover, .menu-btn.active { background: var(--bg-glass); color: var(--text-main); }
+        .menu-btn.active { border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; }
+        
+        .nav-group-title { cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 11px; margin-top: 16px; margin-bottom: 8px; transition: 0.2s; user-select: none; }
+        .nav-group-title:hover { color: #fff; }
+        .nav-group-title span { font-size: 10px; transition: transform 0.2s; }
+        .nav-group-title.open span { transform: rotate(180deg); }
+        .nav-group-items { display: flex; flex-direction: column; padding-left: 8px; transition: 0.3s; }
+        .nav-group-items.hidden { display: none; }
+
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 24px; }
+        .stat-card { background: var(--bg-panel); border: 1px solid var(--border); padding: 32px 24px; border-radius: var(--radius); text-align: center; }
+        .stat-num { font-size: 40px; font-weight: 700; margin-bottom: 8px; }
+        .stat-label { font-size: 13px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+
+        .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; transition: 0.2s; }
+        .card:hover { border-color: #333; background: #141414; }
+        .card-cover { width: 84px; height: 84px; border-radius: 8px; object-fit: cover; background: #222; margin-right: 20px; border: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .card-title { font-weight: 700; font-size: 18px; margin-bottom: 6px; }
+        .card-artist { font-size: 14px; color: var(--text-muted); margin-bottom: 4px; }
+        
+        .badge { padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; }
+        .badge-mod { background: rgba(255, 149, 0, 0.15); color: var(--warning); }
+        .badge-ok { background: rgba(52, 199, 89, 0.15); color: var(--success); }
+        .badge-err { background: rgba(255, 59, 48, 0.15); color: var(--danger); }
+        .badge-draft { background: var(--bg-glass); color: var(--text-muted); border: 1px solid var(--border); }
+
+        .role-glow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 0 8px var(--success); color: var(--success); margin-top: 2px; display: block; }
+        .pass-current { color: var(--success); text-shadow: 0 0 5px var(--success); font-weight: bold; }
+        .pass-old { color: var(--danger); text-shadow: 0 0 5px var(--danger); font-weight: bold; }
+
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 9999; animation: fadeIn 0.2s ease-out; }
+        .dialog { background: var(--bg-panel); border: 1px solid var(--border); padding: 32px; border-radius: var(--radius); width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; }
+        .dialog-actions { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+        
+        .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 60vh; text-align: center; }
+        .upload-box { width: 100%; max-width: 300px; aspect-ratio: 1; border: 1px dashed var(--border); border-radius: var(--radius); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; text-align: center; padding: 20px; background: var(--bg-glass); position: relative; overflow: hidden; transition: 0.2s; }
+        .upload-box:hover { background: rgba(255,255,255,0.05); }
+        .upload-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .track-list-item { background: #000; border: 1px solid var(--border); padding: 16px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; transition: 0.2s; }
+        
+        .chat-wrap { display: flex; flex-direction: column; height: calc(100vh - 160px); max-width: 800px; background: #000; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; position: relative; }
+        .chat-msgs { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth; position: relative;}
+        .chat-input-area { display: flex; padding: 16px; border-top: 1px solid var(--border); background: var(--bg-panel); gap: 12px; align-items: center; position: relative; z-index: 2; }
+        .chat-input-area input { margin-bottom: 0; flex: 1; }
+        .msg { max-width: 75%; padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5; word-wrap: break-word; animation: fadeIn 0.2s ease-out; }
+        .msg-me { background: var(--accent); color: #000; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .msg-them { background: var(--bg-glass); color: #fff; align-self: flex-start; border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+        .msg-time { font-size: 10px; opacity: 0.5; margin-top: 6px; text-align: right; }
+        
+        .admin-chat-layout { display: flex; height: calc(100vh - 160px); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; position: relative;}
+        .admin-chat-users { width: 300px; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; z-index: 2;}
+        .admin-chat-user { padding: 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.2s; }
+        .admin-chat-user:hover, .admin-chat-user.active { background: var(--bg-glass); }
+        .admin-chat-user.active { border-left: 3px solid var(--accent); }
+        
+        .typing-indicator { position: absolute; bottom: 75px; left: 24px; font-size: 12px; color: var(--text-muted); font-style: italic; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 10;}
+        .typing-indicator.show { opacity: 1; }
+        .bell-wrap { position: relative; cursor: pointer; display: flex; align-items: center; color: var(--text-main); }
+        .unread-dot { position: absolute; top: -2px; right: -2px; width: 10px; height: 10px; background: var(--warning); border-radius: 50%; border: 2px solid var(--bg-panel); }
+        .avatar-wrap { position: relative; width: 34px; height: 34px; border-radius: 50%; background: #222; border: 1px solid var(--border); cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        .chat-unread-indicator { width: 8px; height: 8px; background: var(--warning); border-radius: 50%; display: inline-block; }
+        .mobile-header { display: none; background: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 16px 20px; justify-content: space-between; align-items: center; }
+        .hamburger { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+        @media (max-width: 768px) {
+            .app { flex-direction: column; }
+            .mobile-header { display: flex; }
+            .sidebar { position: fixed; top: 0; left: 0; bottom: 0; transform: translateX(-100%); width: 280px; box-shadow: 4px 0 15px rgba(0,0,0,0.5); }
+            .sidebar.open { transform: translateX(0); }
+            .content { padding: 20px; }
+            .stat-grid { grid-template-columns: 1fr; }
+            .card { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .card > div:first-child { flex-direction: column; align-items: flex-start; }
+            .card-cover { margin-bottom: 12px; margin-right: 0; width: 100%; height: auto; aspect-ratio: 1; }
+            .card > div:last-child { margin-left: 0; border-left: none; padding-left: 0; width: 100%; flex-direction: column; align-items: stretch; gap: 12px; }
+            .card > div:last-child > div { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+            .card > div:last-child > div > button { width: 100%; margin: 0 !important; }
+            .dialog { width: 95%; padding: 20px; }
+            .admin-chat-layout { flex-direction: column; height: calc(100vh - 200px); }
+            .admin-chat-users { width: 100%; height: 200px; border-right: none; border-bottom: 1px solid var(--border); }
+            .chat-wrap { height: calc(100vh - 200px); }
+            .typing-indicator { bottom: 85px; }
+            #sec-newRelease > div { flex-direction: column; gap: 20px; }
+            #sec-newRelease > div > div { width: 100% !important; }
+            .track-list-item { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .track-list-item > div:last-child { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+            .track-list-item button { width: 100%; }
+            .app { height: 100dvh; }
+            .sidebar { height: 100dvh; }
+            .msg { max-width: 90%; }
+            .card > div:last-child > div { margin-left: 0 !important; padding-left: 0 !important; border-left: none !important; }
+            button, input, select, textarea { touch-action: manipulation; }
+        }
+
+
+        /* ===== New visual skin from the attached design, engine unchanged ===== */
+        :root{
+            --bg-body:#0b0d12;
+            --bg-panel:#171c27;
+            --bg-glass:rgba(255,255,255,.05);
+            --border:rgba(255,255,255,.08);
+            --text-main:#f5f7fb;
+            --text-muted:#aab0c0;
+            --accent:#7b61ff;
+            --accent-bg:#9f76ff;
+            --danger:#ef4444;
+            --success:#22c55e;
+            --warning:#f59e0b;
+            --radius:22px;
+            --shadow:0 22px 50px rgba(0,0,0,.4);
+            --side:270px;
+        }
+        html, body { height: 100%; }
+        body{
+            background:linear-gradient(180deg,#090b10,#0f131b);
+            color:var(--text-main);
+            font-family:Inter,system-ui,sans-serif;
+        }
+        .app{height:100dvh;background:linear-gradient(180deg,#090b10,#0f131b);}
+        .sidebar{
+            width:var(--side);
+            background:linear-gradient(180deg,#12161e,#0f131a);
+            border-right:1px solid var(--border);
+            padding:18px 14px;
+            box-shadow:none;
+        }
+        .content{
+            padding:24px;
+            background:linear-gradient(180deg,#090b10,#0f131b);
+        }
+        .portal-brand{
+            display:flex;align-items:center;gap:12px;
+            padding:8px 8px 18px;
+            border-bottom:1px solid var(--border);
+            margin-bottom:10px;
+        }
+        .portal-brand-title{font-weight:800;letter-spacing:.02em;}
+        .portal-brand small{display:block;color:var(--text-muted);font-size:12px;margin-top:2px;}
+        .logo-mark{
+            width:42px;height:42px;border-radius:14px;
+            display:grid;place-items:center;
+            background:linear-gradient(135deg,var(--accent),#b07cff);
+            box-shadow:0 10px 24px rgba(123,97,255,.3);
+            color:#fff;font-weight:800;
+            flex:0 0 auto;
+        }
+        #pageTitle{
+            font-size:34px;
+            line-height:1.1;
+            font-weight:800;
+            letter-spacing:-.03em;
+            margin:0 0 18px;
+        }
+        .section-kicker{
+            display:inline-flex;align-items:center;gap:8px;
+            padding:8px 14px;border-radius:999px;
+            background:rgba(255,255,255,.05);
+            border:1px solid var(--border);
+            color:var(--text-muted);
+            font-size:13px;
+            margin-bottom:8px;
+        }
+        input,select,textarea{
+            background:rgba(255,255,255,.05);
+            border:1px solid rgba(255,255,255,.12);
+            border-radius:16px;
+            color:#fff;
+        }
+        input:focus,select:focus,textarea:focus{border-color:rgba(123,97,255,.65);box-shadow:0 0 0 3px rgba(123,97,255,.14);}
+        button{border-radius:999px;}
+        .btn-primary{
+            background:linear-gradient(135deg,var(--accent),#9f76ff);
+            color:#fff;
+            box-shadow:0 12px 28px rgba(123,97,255,.18);
+        }
+        .btn-primary:hover:not(:disabled){background:linear-gradient(135deg,#8b74ff,#b08cff);box-shadow:0 16px 34px rgba(123,97,255,.28);}
+        .btn-outline{
+            background:rgba(255,255,255,.05);
+            border:1px solid rgba(255,255,255,.12);
+            color:#fff;
+        }
+        .btn-outline:hover:not(:disabled){background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);}
+        .btn-danger{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.22);color:#ffb1b1;}
+        .btn-success{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.22);color:#92f4b3;}
+        .btn-add-plus{background:linear-gradient(135deg,var(--accent),#9f76ff);border-radius:16px;}
+        .btn-add-minus{background:linear-gradient(135deg,#ef4444,#dc2626);border-radius:16px;}
+        .menu-btn{
+            width:100%;border:0;background:transparent;color:#eef2fb;
+            text-align:left;border-radius:14px;padding:12px;
+            cursor:pointer;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;
+        }
+        .menu-btn:hover,.menu-btn.active{background:rgba(255,255,255,.08);color:#fff;}
+        .menu-btn.active{border-left:0;border-radius:14px;}
+        .menu-btn.primary-nav{background:linear-gradient(135deg,var(--accent),#9f76ff);color:#fff;margin:10px 0 8px;box-shadow:0 12px 26px rgba(123,97,255,.22);}
+        .mil{display:flex;align-items:center;gap:12px;}
+        .ico{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.04);color:var(--text-muted);font-size:12px;flex:0 0 auto;}
+        .ico svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+        .menu-btn:hover .ico,.menu-btn.active .ico,.primary-nav .ico{color:#fff;background:rgba(255,255,255,.1);}
+        .menu-badge{min-width:24px;height:24px;padding:0 7px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.1);font-size:12px;color:#fff;}
+        .nav-group-title{
+            color:#7d8598;font-size:11px;text-transform:uppercase;letter-spacing:.12em;
+            padding:10px 12px 6px;margin:10px 0 0;font-weight:700;
+        }
+        .nav-group-items{padding-left:16px;}
+        .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:18px;}
+        .stat-card,.card,.dialog,.panel-like,.content-card{
+            background:rgba(255,255,255,.04);
+            border:1px solid var(--border);
+            border-radius:var(--radius);
+            box-shadow:var(--shadow);
+        }
+        .stat-card{padding:18px;text-align:left;}
+        .stat-num{font-size:31px;font-weight:800;margin:8px 0 6px;}
+        .stat-label{font-size:12px;color:var(--text-muted);text-transform:none;letter-spacing:0;font-weight:500;}
+        .card{padding:18px;cursor:default;transition:.18s;background:rgba(255,255,255,.04);}
+        .card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.055);}
+        .card-cover{width:58px;height:58px;border-radius:16px;border:0;background:linear-gradient(135deg,rgba(123,97,255,.7),rgba(54,194,255,.52));box-shadow:none;}
+        .card-title{font-size:18px;font-weight:700;}
+        .card-artist{color:var(--text-muted);line-height:1.5;}
+        .badge{border-radius:999px;padding:8px 12px;font-size:12px;border:1px solid transparent;}
+        .badge-mod,.badge-draft{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.24);color:#ffd493;}
+        .badge-ok{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.22);color:#92f4b3;}
+        .badge-err{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.22);color:#ffb1b1;}
+        .upload-box{border:1px dashed rgba(255,255,255,.18);border-radius:22px;background:rgba(255,255,255,.05);}
+        .track-list-item,.chat-wrap,.admin-chat-layout,.admin-chat-users{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:18px;}
+        .track-list-item:hover{border-color:rgba(255,255,255,.16);}
+        .chat-input-area{background:rgba(23,28,39,.94);border-top:1px solid var(--border);}
+        .msg-me{background:linear-gradient(135deg,var(--accent),#9f76ff);color:#fff;}
+        .msg-them{background:rgba(255,255,255,.05);border:1px solid var(--border);}
+        .mobile-header{background:rgba(10,12,18,.72);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+        .avatar-wrap{border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--border);}
+        .profile-card{padding:12px;margin-bottom:12px;background:rgba(255,255,255,.04);border-radius:18px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;}
+        .role-glow{color:#92f4b3;text-shadow:0 0 12px rgba(34,197,94,.28);}
+        .content-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+        .content-item{padding:18px;margin-bottom:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow);}
+        .content-item h3{margin:0 0 8px;font-size:18px;}
+        .content-item .date{font-size:12px;color:var(--text-muted);margin-bottom:10px;}
+        .content-item p{color:#d7deee;line-height:1.7;white-space:pre-wrap;margin:0;}
+        .admin-content-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+        .empty-panel{padding:26px;border-radius:22px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text-muted);}
+        #authView .dialog{background:rgba(18,23,34,.96)!important;border:1px solid var(--border)!important;border-radius:28px!important;box-shadow:var(--shadow);}
+        #authView h2{font-size:30px!important;font-weight:800;letter-spacing:-.02em!important;text-transform:none!important;}
+        .overlay{background:rgba(0,0,0,.72);backdrop-filter:blur(12px);}
+        @media(max-width:768px){
+            body{overflow:hidden;}
+            .app{height:calc(100dvh - 65px);}
+            .sidebar{position:fixed;top:0;left:0;bottom:0;width:280px;transform:translateX(-100%);box-shadow:24px 0 50px rgba(0,0,0,.55);}
+            .sidebar.open{transform:translateX(0);}
+            .content{padding:20px;}
+            #pageTitle{font-size:30px;}
+            .card,.card>div:first-child{gap:14px;}
+            .card-cover{width:100%;height:auto;aspect-ratio:1;border-radius:22px;}
+            .content-grid{grid-template-columns:1fr;}
+        }
+
+        /* ===== Unread dots, chat wallpaper, avatar cropper ===== */
+        .nav-unread-dot{
+            width:10px;height:10px;border-radius:50%;display:inline-block;
+            background:var(--accent);
+            box-shadow:0 0 0 3px rgba(123,97,255,.16),0 0 18px rgba(123,97,255,.9);
+            flex:0 0 auto;
+        }
+        .chat-unread-indicator{
+            background:var(--accent)!important;
+            box-shadow:0 0 0 3px rgba(123,97,255,.16),0 0 18px rgba(123,97,255,.9);
+        }
+        .chat-wrap,.admin-chat-layout{background:rgba(18,23,34,.88)!important;}
+        .chat-msgs{
+            background-color:rgba(16,20,30,.94);
+            background-image:
+                radial-gradient(circle at 18px 18px, rgba(123,97,255,.12) 0 2px, transparent 2.5px),
+                radial-gradient(circle at 70px 58px, rgba(54,194,255,.08) 0 1.8px, transparent 2.4px),
+                linear-gradient(135deg, rgba(255,255,255,.025) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.025) 50%, rgba(255,255,255,.025) 75%, transparent 75%, transparent);
+            background-size:92px 92px,112px 112px,38px 38px;
+        }
+        #sec-adminChats .admin-chat-layout > div[style*="background: #000"]{background:rgba(18,23,34,.88)!important;}
+        .avatar-wrap{cursor:default!important;}
+        .avatar-crop-area{
+            position:relative;width:min(360px,80vw);height:min(360px,80vw);
+            margin:16px auto;border-radius:22px;overflow:hidden;
+            background:rgba(255,255,255,.04);border:1px solid var(--border);
+            user-select:none;touch-action:none;
+        }
+        .avatar-crop-area img{position:absolute;max-width:100%;max-height:100%;left:50%;top:50%;transform:translate(-50%,-50%);}
+        .avatar-crop-square{
+            position:absolute;width:190px;height:190px;left:85px;top:85px;border:2px solid #fff;border-radius:18px;
+            box-shadow:0 0 0 999px rgba(0,0,0,.52),0 0 20px rgba(123,97,255,.7);
+            cursor:move;touch-action:none;
+        }
+        .avatar-crop-resize{
+            position:absolute;right:-11px;bottom:-11px;width:24px;height:24px;border-radius:50%;
+            background:linear-gradient(135deg,var(--accent),#9f76ff);
+            border:2px solid #fff;box-shadow:0 8px 22px rgba(123,97,255,.45);
+            cursor:nwse-resize;touch-action:none;
+        }
+        .avatar-crop-resize::before{
+            content:"";position:absolute;inset:6px;border-right:2px solid rgba(255,255,255,.9);border-bottom:2px solid rgba(255,255,255,.9);
+        }
+        .avatar-crop-actions{display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px;}
+        .avatar-upload-row{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--border);margin-bottom:16px;}
+
+        .support-unavailable{
+            min-height:calc(100vh - 140px);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            padding:32px;
+            border:1px solid var(--border);
+            border-radius:var(--radius);
+            background:rgba(255,255,255,.04);
+            box-shadow:var(--shadow);
+        }
+        .support-unavailable h2{
+            font-size:clamp(28px,4vw,46px);
+            line-height:1.1;
+            margin:0 0 18px;
+            font-weight:800;
+            letter-spacing:-.03em;
+        }
+        .support-unavailable p{
+            color:var(--text-muted);
+            font-size:16px;
+            margin:0 0 24px;
+        }
+        .support-unavailable .telegram-btn{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            padding:14px 24px;
+            border-radius:999px;
+            background:linear-gradient(135deg,var(--accent),#9f76ff);
+            color:#fff;
+            font-weight:700;
+            box-shadow:0 14px 32px rgba(123,97,255,.28);
+            text-decoration:none;
+        }
+        .support-unavailable .telegram-btn:hover{transform:translateY(-1px);}
+
+
+        /* ===== Select dropdown design fix + content media blocks ===== */
+        select option{
+            background:#171c27!important;
+            color:#f5f7fb!important;
+        }
+        select option:checked{
+            background:#7b61ff!important;
+            color:#fff!important;
+        }
+        .custom-select-source{
+            position:absolute!important;
+            opacity:0!important;
+            pointer-events:none!important;
+            width:1px!important;
+            height:1px!important;
+        }
+        .custom-select{
+            position:relative;
+            width:100%;
+        }
+        .custom-select-btn{
+            width:100%;
+            min-height:58px;
+            padding:14px 44px 14px 16px;
+            border-radius:22px;
+            border:1px solid rgba(123,97,255,.65);
+            background:rgba(255,255,255,.05);
+            color:#fff;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            text-align:left;
+            box-shadow:0 0 0 3px rgba(123,97,255,.12);
+            cursor:pointer;
+            font-weight:600;
+        }
+        .custom-select-btn::after{
+            content:"⌄";
+            position:absolute;
+            right:18px;
+            top:50%;
+            transform:translateY(-50%);
+            color:#fff;
+            font-size:20px;
+            line-height:1;
+            opacity:.9;
+        }
+        .custom-select.open .custom-select-btn{
+            border-color:rgba(159,118,255,.95);
+            box-shadow:0 0 0 4px rgba(123,97,255,.18);
+        }
+        .custom-select-list{
+            position:absolute;
+            left:0;
+            right:0;
+            top:calc(100% + 8px);
+            z-index:99999;
+            max-height:260px;
+            overflow:auto;
+            padding:8px;
+            border-radius:22px;
+            background:#171c27;
+            border:1px solid rgba(255,255,255,.12);
+            box-shadow:0 22px 50px rgba(0,0,0,.55);
+            display:none;
+        }
+        .custom-select.open .custom-select-list{display:block;}
+        .custom-select-option{
+            padding:13px 14px;
+            border-radius:16px;
+            color:#eef2fb;
+            cursor:pointer;
+            font-weight:600;
+            line-height:1.2;
+        }
+        .custom-select-option:hover,
+        .custom-select-option.active{
+            background:linear-gradient(135deg,var(--accent),#9f76ff);
+            color:#fff;
+        }
+        .custom-select-option.disabled{
+            color:#7d8598;
+            cursor:default;
+            background:transparent!important;
+        }
+        .portal-brand small{display:none!important;}
+        .content-media-block{
+            width:fit-content;
+            max-width:100%;
+            margin:14px 0;
+            border:1px solid var(--border);
+            border-radius:20px;
+            overflow:hidden;
+            background:rgba(255,255,255,.04);
+            box-shadow:0 14px 34px rgba(0,0,0,.22);
+        }
+        .content-media-block img,
+        .content-media-block video{
+            width:auto;
+            max-width:min(100%,420px);
+            height:auto;
+            max-height:320px;
+            display:block;
+            object-fit:contain;
+            background:#0f131b;
+        }
+        .content-media-block img{cursor:zoom-in;}
+        .content-media-caption{
+            padding:12px 14px;
+            color:#d7deee;
+            font-size:13px;
+            line-height:1.5;
+            border-top:1px solid var(--border);
+            white-space:pre-wrap;
+            max-width:420px;
+        }
+        .content-media-open{
+            width:100%;
+            border-radius:0;
+            padding:10px 14px;
+            background:rgba(255,255,255,.05);
+            color:#fff;
+            border-top:1px solid var(--border);
+            text-align:left;
+            box-shadow:none;
+        }
+        .media-admin-tools{
+            display:flex;
+            gap:8px;
+            flex-wrap:wrap;
+            padding:12px;
+            border-top:1px solid var(--border);
+        }
+        .media-viewer-dialog{
+            width:min(96vw,1100px);
+            max-height:92vh;
+            display:flex;
+            flex-direction:column;
+            gap:14px;
+            align-items:center;
+            justify-content:center;
+            padding:18px;
+            border-radius:24px;
+            background:rgba(18,23,34,.96);
+            border:1px solid var(--border);
+            box-shadow:var(--shadow);
+        }
+        #mediaViewerBox img,
+        #mediaViewerBox video{
+            max-width:92vw;
+            max-height:78vh;
+            object-fit:contain;
+            border-radius:18px;
+            background:#000;
+        }
+        .content-text-line{white-space:pre-wrap;}
+
+        .custom-file-wrap{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            flex-wrap:wrap;
+            padding:10px;
+            border-radius:18px;
+            background:rgba(255,255,255,.04);
+            border:1px solid var(--border);
+        }
+        .custom-file-input{
+            position:absolute!important;
+            opacity:0!important;
+            width:1px!important;
+            height:1px!important;
+            pointer-events:none!important;
+        }
+        .custom-file-btn{
+            border-radius:999px;
+            padding:12px 18px;
+            background:linear-gradient(135deg,var(--accent),#9f76ff);
+            color:#fff;
+            font-weight:700;
+            box-shadow:0 12px 26px rgba(123,97,255,.22);
+        }
+        .custom-file-name{
+            color:var(--text-muted);
+            font-size:13px;
+            min-width:0;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space:nowrap;
+            max-width:240px;
+        }
+        .content-media-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(140px,max-content));
+            gap:10px;
+            padding:10px;
+            align-items:start;
+        }
+        .content-media-tile{
+            position:relative;
+            width:fit-content;
+            max-width:100%;
+            border-radius:16px;
+            overflow:hidden;
+            background:#0f131b;
+            border:1px solid rgba(255,255,255,.08);
+        }
+        .content-media-tile img,
+        .content-media-tile video{
+            width:auto!important;
+            max-width:min(100%,220px)!important;
+            height:auto!important;
+            max-height:180px!important;
+            display:block;
+            object-fit:contain!important;
+            background:#0f131b;
+        }
+        .content-media-full-btn{
+            position:absolute;
+            right:8px;
+            bottom:8px;
+            padding:7px 10px;
+            border-radius:999px;
+            background:rgba(15,19,27,.82);
+            border:1px solid rgba(255,255,255,.18);
+            color:#fff;
+            font-size:12px;
+            box-shadow:none;
+            backdrop-filter:blur(8px);
+        }
+        .content-media-count{
+            padding:10px 14px 0;
+            color:var(--text-muted);
+            font-size:12px;
+        }
+
+    
+
+        /* ===== Inline media carousel spacing ===== */
+        .content-body{
+            color:#d7deee;
+            line-height:1.7;
+            white-space:normal;
+            margin:0;
+        }
+        .content-line{
+            display:block;
+            white-space:pre-wrap;
+            margin:0;
+        }
+        .content-media-block.inline-media{
+            margin:4px 0 22px;
+        }
+        .content-media-block.before-text{
+            margin:0 0 18px;
+        }
+        .content-media-block.after-text{
+            margin:14px 0 0;
+        }
+        .content-media-carousel{
+            position:relative;
+            overflow:hidden;
+            background:#0f131b;
+        }
+        .content-media-slide{
+            display:none;
+            align-items:center;
+            justify-content:center;
+            background:#0f131b;
+        }
+        .content-media-slide.active{display:flex;}
+        .content-media-slide img,
+        .content-media-slide video{
+            width:auto!important;
+            max-width:min(100%,420px)!important;
+            height:auto!important;
+            max-height:320px!important;
+            display:block;
+            object-fit:contain!important;
+            background:#0f131b;
+        }
+        .content-media-slide img{cursor:zoom-in;}
+        .content-carousel-btn{
+            position:absolute;
+            top:50%;
+            transform:translateY(-50%);
+            width:36px;
+            height:36px;
+            padding:0;
+            border-radius:50%;
+            background:rgba(15,19,27,.78);
+            border:1px solid rgba(255,255,255,.18);
+            color:#fff;
+            box-shadow:0 10px 22px rgba(0,0,0,.24);
+            backdrop-filter:blur(8px);
+            z-index:2;
+        }
+        .content-carousel-btn.prev{left:10px;}
+        .content-carousel-btn.next{right:10px;}
+        .content-carousel-meta{
+            position:absolute;
+            left:50%;
+            bottom:10px;
+            transform:translateX(-50%);
+            padding:6px 10px;
+            border-radius:999px;
+            background:rgba(15,19,27,.78);
+            border:1px solid rgba(255,255,255,.16);
+            color:#fff;
+            font-size:12px;
+            backdrop-filter:blur(8px);
+            z-index:2;
+        }
+
+        /* ===== AetherLab custom date picker ===== */
+        .aether-native-date-hidden{
+            position:absolute!important;
+            opacity:0!important;
+            pointer-events:none!important;
+            width:0!important;
+            height:0!important;
+            padding:0!important;
+            margin:0!important;
+            border:0!important;
+        }
+        .aether-date-display{
+            width:100%;
+            padding:14px 48px 14px 16px;
+            background:rgba(255,255,255,.05);
+            border:1px solid rgba(255,255,255,.12);
+            color:#fff;
+            border-radius:22px;
+            font-size:14px;
+            outline:none;
+            box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
+            transition:.18s;
+            cursor:pointer;
+        }
+        .aether-date-display:focus{
+            border-color:rgba(123,97,255,.75);
+            box-shadow:0 0 0 4px rgba(123,97,255,.16), inset 0 0 0 1px rgba(255,255,255,.04);
+        }
+        .aether-date-field{position:relative;width:100%;}
+        .aether-date-field::after{
+            content:"";
+            position:absolute;
+            right:16px;
+            top:50%;
+            width:18px;
+            height:18px;
+            transform:translateY(-50%);
+            pointer-events:none;
+            opacity:.85;
+            background:
+                linear-gradient(currentColor,currentColor) 4px 6px/10px 1.8px no-repeat,
+                linear-gradient(currentColor,currentColor) 4px 11px/10px 1.8px no-repeat,
+                linear-gradient(currentColor,currentColor) 5px 1px/1.8px 4px no-repeat,
+                linear-gradient(currentColor,currentColor) 11px 1px/1.8px 4px no-repeat;
+            border:1.8px solid currentColor;
+            border-radius:5px;
+            color:#d7deee;
+        }
+        .aether-date-popover{
+            position:fixed;
+            z-index:20000;
+            width:min(340px,calc(100vw - 28px));
+            padding:16px;
+            border-radius:26px;
+            background:linear-gradient(180deg,rgba(23,28,39,.98),rgba(15,19,26,.98));
+            border:1px solid rgba(255,255,255,.12);
+            box-shadow:0 24px 70px rgba(0,0,0,.58),0 0 0 1px rgba(123,97,255,.08),0 0 34px rgba(123,97,255,.16);
+            backdrop-filter:blur(18px);
+            color:#f5f7fb;
+        }
+        .aether-date-head{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+            margin-bottom:12px;
+        }
+        .aether-date-title{
+            font-weight:800;
+            letter-spacing:-.02em;
+            font-size:16px;
+            padding:8px 10px;
+            border-radius:14px;
+            background:rgba(255,255,255,.04);
+            border:1px solid rgba(255,255,255,.08);
+        }
+        .aether-date-nav{display:flex;gap:8px;}
+        .aether-date-nav button,
+        .aether-date-actions button{
+            border:1px solid rgba(255,255,255,.12);
+            background:rgba(255,255,255,.055);
+            color:#fff;
+            border-radius:14px;
+            padding:9px 12px;
+            box-shadow:none;
+        }
+        .aether-date-nav button:hover,
+        .aether-date-actions button:hover{background:rgba(123,97,255,.18);border-color:rgba(123,97,255,.36);}
+        .aether-date-week,
+        .aether-date-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+        .aether-date-week span{
+            text-align:center;
+            color:#aab0c0;
+            font-size:12px;
+            font-weight:700;
+            padding:8px 0;
+        }
+        .aether-date-day{
+            height:38px;
+            display:grid;
+            place-items:center;
+            border-radius:14px;
+            border:1px solid transparent;
+            background:transparent;
+            color:#eef2fb;
+            cursor:pointer;
+            font-weight:600;
+            transition:.16s;
+        }
+        .aether-date-day:hover{
+            background:rgba(123,97,255,.18);
+            border-color:rgba(123,97,255,.34);
+            transform:translateY(-1px);
+        }
+        .aether-date-day.other{color:rgba(170,176,192,.42);}
+        .aether-date-day.today{border-color:rgba(54,194,255,.42);box-shadow:inset 0 0 0 1px rgba(54,194,255,.12);}
+        .aether-date-day.selected{
+            background:linear-gradient(135deg,var(--accent),#9f76ff);
+            color:#fff;
+            border-color:rgba(255,255,255,.22);
+            box-shadow:0 10px 26px rgba(123,97,255,.34);
+        }
+        .aether-date-actions{
+            display:flex;
+            justify-content:space-between;
+            gap:10px;
+            margin-top:14px;
+            padding-top:12px;
+            border-top:1px solid rgba(255,255,255,.08);
+        }
+        .aether-date-actions .danger-lite{color:#ffb1b1;background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.18);}
+        @media(max-width:768px){
+            .aether-date-popover{left:14px!important;right:14px!important;top:auto!important;bottom:14px!important;width:auto;}
+            .aether-date-day{height:42px;}
+        }
+
+        /* ===== Calendar alignment fix ===== */
+        .aether-date-week,
+        .aether-date-grid{
+            grid-template-columns:repeat(7,minmax(0,1fr))!important;
+            align-items:center;
+        }
+        .aether-date-week span{
+            display:flex!important;
+            align-items:center;
+            justify-content:center;
+            min-width:0;
+            line-height:1;
+        }
+        .aether-date-day{
+            width:100%!important;
+            min-width:0!important;
+            padding:0!important;
+            margin:0!important;
+            display:flex!important;
+            align-items:center!important;
+            justify-content:center!important;
+            line-height:1!important;
+            text-align:center!important;
+        }
+        .aether-date-popover button.aether-date-day{
+            box-sizing:border-box!important;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="mobile-header hidden" id="mobHeader">
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <button class="hamburger" onclick="document.querySelector('.sidebar').classList.add('open')">☰</button>
+            <h2 style="margin: 0; font-size: 18px; font-weight: 600;">AetherLab</h2>
+        </div>
+        <div class="bell-wrap" onclick="showNotifications()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bell-icon"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <div class="unread-dot hidden" id="bellDotMob"></div>
+        </div>
+    </div>
+    <div id="mediaViewer" class="overlay hidden" style="z-index:10003;" onclick="if(event.target.id==='mediaViewer') closeContentMediaFullscreen()">
+        <div class="media-viewer-dialog">
+            <div id="mediaViewerBox"></div>
+            <button class="btn-outline" onclick="closeContentMediaFullscreen()">Закрыть</button>
+        </div>
+    </div>
+    <div id="uiAlert" class="overlay hidden" style="z-index: 10001;"><div class="dialog"><h3 id="uiAlertTitle">Сообщение</h3><div id="uiAlertText" class="text-sm" style="color: #ccc; margin-bottom: 24px; line-height: 1.5; max-height: 50vh; overflow-y: auto;"></div><button class="btn-primary" style="width: 100%;" onclick="document.getElementById('uiAlert').classList.add('hidden')">Понятно</button></div></div>
+    <div id="uiPrompt" class="overlay hidden" style="z-index: 10001;"><div class="dialog"><h3 id="uiPromptTitle">Ввод данных</h3><div id="uiPromptInputs" style="max-height: 60vh; overflow-y:auto; padding-right:10px;"></div><div class="dialog-actions"><button class="btn-outline" onclick="UI.closePrompt()">Отмена</button><button class="btn-primary" id="uiPromptConfirm">Подтвердить</button></div></div></div>
+    <div id="uiConfirm" class="overlay hidden" style="z-index: 10001;"><div class="dialog"><h3 id="uiConfirmTitle">Подтверждение</h3><div class="dialog-actions"><button class="btn-outline" onclick="UI.closeConfirm()">Отмена</button><button class="btn-danger" id="uiConfirmBtn">Продолжить</button></div></div></div>
+    <div id="avatarCropper" class="overlay hidden" style="z-index:10002;">
+        <div class="dialog" style="max-width:460px;">
+            <h3>Редактирование аватарки</h3>
+            <p class="text-sm" style="margin-top:6px;">Передвиньте квадрат 1:1 на нужную часть изображения. Потяните уголок, чтобы увеличить или уменьшить область аватарки.</p>
+            <div class="avatar-crop-area" id="avatarCropArea">
+                <img id="avatarCropImage" alt="Аватарка">
+                <div class="avatar-crop-square" id="avatarCropSquare"><div class="avatar-crop-resize" id="avatarCropResize"></div></div>
+            </div>
+            <div class="avatar-crop-actions">
+                <button class="btn-outline" onclick="closeAvatarCropper()">Отмена</button>
+                <button class="btn-primary" onclick="saveCroppedAvatar()">Сохранить аватарку</button>
+            </div>
+        </div>
+    </div>
+    <div id="uiDraftConfirm" class="overlay hidden" style="z-index: 10001;">
+        <div class="dialog" style="max-width: 450px;">
+            <h3>У вас есть несохраненные изменения</h3><p class="text-sm" style="color: #ccc; margin-bottom: 24px;">Вы хотите сохранить этот релиз как черновик, чтобы продолжить позже, или удалить его?</p>
+            <div style="display: flex; gap: 12px; flex-direction: column;"><button class="btn-primary" id="draftSaveBtn">Сохранить черновик</button><button class="btn-danger" id="draftDeleteBtn">Удалить черновик</button><button class="btn-outline" onclick="document.getElementById('uiDraftConfirm').classList.add('hidden')">Отмена (Остаться здесь)</button></div>
+        </div>
+    </div>
+    <div id="adminReleaseModal" class="overlay hidden" style="align-items: flex-start; padding: 40px; overflow-y: auto; z-index: 10000;">
+        <div class="dialog" style="max-width: 750px; width: 100%; margin: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;"><h2>Детали релиза</h2><button class="btn-outline" style="padding: 6px 12px;" onclick="document.getElementById('adminReleaseModal').classList.add('hidden')">Закрыть</button></div>
+            <div style="display: flex; gap: 24px; margin-bottom: 32px; flex-wrap: wrap;"><div style="width: 250px; max-width: 100%;"><img id="admRelCover" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);"><button class="btn-outline" style="width: 100%; font-size: 12px;" id="admCoverDl">Скачать обложку</button></div><div style="flex: 1; min-width: 250px;" id="admRelInfo"></div></div>
+            <h3 style="font-size: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px;">Медиафайлы и информация</h3><div id="admRelTracks" style="display: flex; flex-direction: column; gap: 12px;"></div>
+        </div>
+    </div>
+    <div id="banView" class="overlay hidden" style="background: var(--bg-body); z-index: 9999;"><div style="text-align: center;"><h1 id="banTitleText" style="font-size: 32px; color: var(--danger);">Ваш кабинет был закрыт</h1><button class="btn-outline" onclick="UI.alert('Причина блокировки', currentUser.banReason)" style="margin: 20px 10px;">Узнать причину</button><button class="btn-primary" onclick="logout()" style="margin: 20px 10px;">Выйти</button></div></div>
+    <div id="authView" class="overlay" style="background: var(--bg-body); z-index: 9999;">
+        <div class="dialog" style="border: none; background: transparent; max-width: 360px;">
+            <div style="text-align:center;margin-bottom:40px;"><h2 style="font-size:32px;letter-spacing:0;font-weight:800;margin:0 auto;">AetherLab</h2></div>
+            <div id="regFields" class="hidden"><div class="form-group"><input type="text" id="regLogin" placeholder="Логин"></div></div>
+            <div class="form-group"><input type="email" id="authEmail" placeholder="Почта" onkeypress="if(event.key === 'Enter') processAuth()"></div>
+            <div class="form-group"><input type="password" id="authPassword" placeholder="Пароль" onkeypress="if(event.key === 'Enter') processAuth()"></div>
+            
+            <button class="btn-primary" id="mainAuthBtn" style="width: 100%; margin-top: 8px;" onclick="processAuth()">Войти в кабинет</button>
+            <button class="btn-outline" style="width: 100%; margin-top: 12px; border: none;" onclick="toggleAuthMode()" id="switchAuthBtn">Создать кабинет</button>
+        </div>
+    </div>
+    <div id="appView" class="app hidden">
+        <div class="sidebar">
+            <div class="portal-brand">
+                <div class="logo-mark">AL</div>
+                <div style="min-width:0; flex:1;">
+                    <div class="portal-brand-title">AetherLab</div>
+                    
+                </div>
+                <div class="bell-wrap hidden" id="bellWrapDesktop" onclick="showNotifications()" title="Уведомления">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bell-icon"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    <div class="unread-dot hidden" id="bellDotDesktop"></div>
+                </div>
+            </div>
+            
+            <button class="menu-btn primary-nav" data-section="newRelease" onclick="startNewRelease()"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><span>Новый релиз</span></span></button>
+            <button class="menu-btn active" id="btn-overview" data-section="overview" onclick="nav('overview')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M9.5 20v-6h5v6"/></svg></span><span>Обзор</span></span></button>
+            
+            <div class="nav-group-title" onclick="toggleNavMenu('catalog', event)">Ваша музыка <span>▼</span></div>
+            <div class="nav-group-items" id="nav-menu-catalog">
+                <button class="menu-btn" id="btn-cat-all" data-section="catalog" onclick="navCatalog('all')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="7" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span><span>Все релизы</span></span><span class="menu-badge" id="badge-cat-all">0</span></button>
+                <button class="menu-btn" id="btn-cat-drafts" data-section="catalog" onclick="navCatalog('drafts')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 20h4l11-11a2.8 2.8 0 0 0-4-4L4 16v4Z"/><path d="M13.5 6.5l4 4"/></svg></span><span>Черновики</span></span><span class="menu-badge" id="badge-cat-drafts">0</span></button>
+                <button class="menu-btn" id="btn-cat-mod" data-section="catalog" onclick="navCatalog('mod')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12"/><path d="M8 3c0 5 8 5 8 9s-8 4-8 9"/><path d="M16 3c0 5-8 5-8 9s8 4 8 9"/></svg></span><span>Модерация</span></span><span class="menu-badge" id="badge-cat-mod">0</span></button>
+                <button class="menu-btn" id="btn-cat-fix" data-section="catalog" onclick="navCatalog('fix')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 8v5"/><path d="M12 17h.01"/><path d="M10.3 4.5h3.4L21 18.5 19.3 21H4.7L3 18.5l7.3-14Z"/></svg></span><span>Требуется исправление</span></span><span class="menu-badge" id="badge-cat-fix">0</span></button>
+            </div>
+
+            <div class="nav-group-title">Информация</div>
+            <button class="menu-btn" id="btn-news" data-section="news" onclick="nav('news')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h10"/></svg></span><span>Новости</span></span><span class="nav-unread-dot hidden" id="newsUnreadDot"></span></button>
+            <button class="menu-btn" id="btn-guide" data-section="guide" onclick="nav('guide')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9.5 9a2.7 2.7 0 1 1 4.7 1.8c-1.3 1.1-2.2 1.6-2.2 3.2"/><path d="M12 18h.01"/><circle cx="12" cy="12" r="9"/></svg></span><span>Инструкция</span></span><span class="nav-unread-dot hidden" id="guideUnreadDot"></span></button>
+
+            <div id="adminPanel" class="hidden">
+                <div class="nav-group-title" onclick="toggleNavMenu('admin', event)">Управление <span>▼</span></div>
+                <div class="nav-group-items" id="nav-menu-admin">
+                    <button class="menu-btn" id="btn-adminChats" data-section="adminChats" onclick="nav('adminChats')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M7 7h10a4 4 0 0 1 0 8h-2"/><path d="M7 7l3-3M7 7l3 3"/><path d="M17 17H7a4 4 0 0 1 0-8h2"/><path d="M17 17l-3-3M17 17l-3 3"/></svg></span><span>Связь с артистами</span></span><span class="nav-unread-dot hidden" id="adminChatsUnreadDot"></span></button>
+                    <button class="menu-btn" id="btn-adminUsers" data-section="adminUsers" onclick="nav('adminUsers')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.6-4 4.4-6 8-6s6.4 2 8 6"/></svg></span><span>Кабинеты</span></span></button>
+                    <button class="menu-btn" id="btn-adminReleases" data-section="adminReleases" onclick="nav('adminReleases')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6l8-3Z"/><path d="m9 12 2 2 4-4"/></svg></span><span>Все релизы</span></span></button>
+                    <button class="menu-btn" id="btn-adminDeleted" data-section="adminDeleted" onclick="nav('adminDeleted')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 6h11v12H9l-5-6 5-6Z"/><path d="m12 9 5 6M17 9l-5 6"/></svg></span><span>Удалённые</span></span></button>
+                    <button class="menu-btn" id="btn-adminContent" data-section="adminContent" onclick="nav('adminContent')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l2.2 6.2L20 12l-5.8 2.8L12 21l-2.2-6.2L4 12l5.8-2.8L12 3Z"/></svg></span><span>Новости и инструкция</span></span></button>
+                </div>
+            </div>
+            <div id="userSupportBtn" class="hidden">
+                <div class="nav-group-title" onclick="toggleNavMenu('support', event)">Поддержка <span>▼</span></div>
+                <div class="nav-group-items" id="nav-menu-support">
+                    <button class="menu-btn" id="btn-userChat" data-section="userChat" onclick="nav('userChat')">
+                        <span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M7 7h10a4 4 0 0 1 0 8h-2"/><path d="M7 7l3-3M7 7l3 3"/><path d="M17 17H7a4 4 0 0 1 0-8h2"/><path d="M17 17l-3-3M17 17l-3 3"/></svg></span><span>Связь с администрацией</span></span>
+                        <div id="chatUnreadDot" class="chat-unread-indicator hidden"></div>
+                    </button>
+                </div>
+            </div>
+            <div style="margin-top:auto;padding-top:24px;">
+                <div class="profile-card">
+                    <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                        <div class="avatar-wrap"><img src="" id="userAvatar"></div>
+                        <div style="min-width:0;">
+                            <span id="userNameDisplay" style="font-weight:700;font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;">Профиль</span>
+                            <span id="userRoleDisplay" class="role-glow" style="font-size:9px;">Артист</span>
+                        </div>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;opacity:.7;transition:.2s;min-width:16px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.7'" onclick="openSettings()"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                </div>
+                <button class="menu-btn" style="color:var(--danger);justify-content:flex-start;" onclick="logout()"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M10 6 4 12l6 6"/><path d="M4 12h14"/><path d="M14 5h5v14h-5"/></svg></span><span>Выйти</span></span></button>
+            </div>
+        </div>
+        <div class="content" onclick="document.querySelector('.sidebar').classList.remove('open')">
+            <h1 id="pageTitle">Обзор</h1>
+            <div id="sec-overview" class="view-section">
+                <p class="text-sm" id="overviewDesc">Статистика по вашим релизам</p>
+                <div class="stat-grid" id="dashboardStats"></div>
+            </div>
+            <div id="sec-catalog" class="view-section hidden">
+                <div class="form-group" style="max-width: 500px; margin-bottom: 24px;">
+                    <input type="text" id="searchReleases" placeholder="Поиск по названию, UPC, артисту..." oninput="renderCatalog()" style="border-radius: 30px; padding-left: 20px;">
+                </div>
+                <div id="userReleasesList"></div>
+            </div>
+            <div id="sec-userChat" class="view-section hidden">
+                <div class="support-unavailable">
+                    <div>
+                        <h2>Временно недоступно</h2>
+                        <p>Пишите в Telegram.</p>
+                        <a class="telegram-btn" href="https://t.me/AetherLab_Online" target="_blank" rel="noopener noreferrer">Telegram</a>
+                    </div>
+                </div>
+                <div class="hidden" aria-hidden="true">
+                    <div id="userChatBox"></div>
+                    <div id="userTypingInd"></div>
+                    <input type="text" id="userChatInput">
+                </div>
+            </div>
+
+            <div id="sec-news" class="view-section hidden">
+                <div class="section-kicker">AetherLab • Updates</div>
+                <p class="text-sm" style="margin-bottom:16px;">Новости от администрации отображаются здесь для всех кабинетов.</p>
+                <div id="newsList"></div>
+            </div>
+            <div id="sec-guide" class="view-section hidden">
+                <div class="section-kicker">AetherLab • Help Center</div>
+                <p class="text-sm" style="margin-bottom:16px;">Инструкции по работе с релизами, черновиками и модерацией.</p>
+                <div id="guideList"></div>
+            </div>
+            <div id="sec-adminChats" class="view-section hidden">
+                <div class="support-unavailable">
+                    <div>
+                        <h2>Временно недоступно</h2>
+                        <p>Пишите в Telegram.</p>
+                        <a class="telegram-btn" href="https://t.me/AetherLab_Online" target="_blank" rel="noopener noreferrer">Telegram</a>
+                    </div>
+                </div>
+                <div class="hidden" aria-hidden="true">
+                    <input type="text" id="adminChatSearch">
+                    <div id="adminChatUserList"></div>
+                    <div id="adminChatBox"></div>
+                    <div id="adminTypingInd"></div>
+                    <div id="adminChatInputArea"></div>
+                    <input type="text" id="adminChatInput">
+                </div>
+            </div>
+            <div id="sec-newRelease" class="view-section hidden">
+                <div id="editRejectReasonBox" class="hidden" style="max-width:900px;margin-bottom:18px;padding:16px 18px;border-radius:22px;border:1px solid rgba(239,68,68,.28);background:rgba(239,68,68,.10);color:#ffb1b1;line-height:1.6;"></div>
+                <div style="display: flex; gap: 40px; max-width: 900px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <h3>Основная информация</h3><p class="text-sm" style="margin-bottom: 20px;">Поля со звездочкой (<span class="req-star">*</span>) обязательны к заполнению.</p>
+                        <div class="form-group"><label>Формат релиза <span class="req-star">*</span></label><select id="r_type" onchange="toggleReleaseType(); isDraftDirty=true;"><option value="">Выберите формат</option><option value="Сингл">Сингл (1 трек)</option><option value="Альбом/EP">Альбом/EP (от 2 треков)</option></select></div>
+                        <div class="form-group"><label>Название релиза <span class="req-star">*</span></label><input type="text" id="r_title" placeholder="Название" oninput="isDraftDirty=true;"></div>
+                        
+                        <div class="form-group"><label>Артисты <span class="req-star">*</span></label><div id="r_artist_container"></div></div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;"><div class="form-group"><label>Жанр <span class="req-star">*</span></label><select id="r_genre" onchange="isDraftDirty=true;"><option value="">Выберите жанр</option><option value="Hip Hop/Rap">Hip Hop/Rap</option><option value="Pop">Pop</option><option value="Electronic">Electronic</option><option value="R&B">R&B</option><option value="Rock">Rock</option><option value="Alternative">Alternative</option><option value="Dance">Dance</option><option value="House">House</option><option value="Techno">Techno</option><option value="Trap">Trap</option><option value="Drill">Drill</option><option value="Phonk">Phonk</option><option value="Afrobeats">Afrobeats</option><option value="Reggaeton">Reggaeton</option><option value="Latin">Latin</option><option value="Pop Rock">Pop Rock</option><option value="Indie Pop">Indie Pop</option><option value="Indie Rock">Indie Rock</option><option value="Metal">Metal</option><option value="Punk">Punk</option><option value="Jazz">Jazz</option><option value="Blues">Blues</option><option value="Soul">Soul</option><option value="Funk">Funk</option><option value="Country">Country</option><option value="Folk">Folk</option><option value="Classical">Classical</option><option value="Soundtrack">Soundtrack</option><option value="Ambient">Ambient</option><option value="Lo-Fi">Lo-Fi</option><option value="Children Music">Children Music</option><option value="Spoken Word">Spoken Word</option></select></div><div class="form-group"><label>Год <span class="req-star">*</span></label><select id="r_year" onchange="isDraftDirty=true;"></select></div></div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;"><div class="form-group"><label>Дата релиза <span class="req-star">*</span></label><input type="date" id="r_releaseDate" onchange="isDraftDirty=true;"></div><div class="form-group"><label>UPC</label><input type="text" id="r_upc" placeholder="UPC (если есть)" oninput="isDraftDirty=true;"></div></div>
+                        <div class="form-group"><label>Комментарий модератору</label><textarea id="r_comment" placeholder="Ваши пожелания или комментарии..." rows="2" oninput="isDraftDirty=true;"></textarea></div>
+                    </div>
+                    <div style="width: 300px;">
+                        <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">Обложка <span class="req-star">*</span></label>
+                        <div class="upload-box" id="r_cover_box" onclick="document.getElementById('r_cover').click()"><span id="coverHint" class="text-sm">Нажмите для загрузки<br>1400x1400 / 3000x3000</span><img id="coverPreview" class="upload-img hidden"><input type="file" id="r_cover" accept="image/*" class="hidden" onchange="handleCoverUpload(this)"></div>
+                    </div>
+                </div>
+                <div id="tracklistArea" class="hidden" style="margin-top: 40px; max-width: 900px; border-top: 1px solid var(--border); padding-top: 32px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;"><div><h3>Треклист <span class="req-star">*</span></h3><p class="text-sm">Поддерживаемые форматы: MP3, WAV (до 50МБ)</p></div><button class="btn-outline" style="font-size: 12px; padding: 6px 12px;" onclick="document.getElementById('addAudioFile').click()">+ Добавить аудиофайл</button><input type="file" id="addAudioFile" accept=".mp3,.wav" class="hidden" multiple onchange="addTracks(this)"></div>
+                    <div id="draftTracksList"></div>
+                    <div style="display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap;">
+                        <button class="btn-outline hidden" id="saveDraftChangesBtn" style="flex: 1; min-width: 200px; padding: 16px; font-size: 15px;" onclick="saveDraftAsIs(true)">Сохранить как черновик</button>
+                        <button class="btn-primary" id="submitReleaseBtn" style="flex: 2; min-width: 250px; padding: 16px; font-size: 15px;" onclick="submitFinalRelease()">Отправить релиз на модерацию</button>
+                    </div>
+                </div>
+            </div>
+            <div id="sec-trackEdit" class="view-section hidden" style="max-width: 600px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 8px;"><h2>Информация о треке</h2><span id="te_filename" class="text-sm" style="color: var(--accent); word-break: break-all;"></span></div>
+                <div class="form-group"><label>Название трека <span class="req-star">*</span></label><input type="text" id="t_title" placeholder="Название трека"></div>
+                
+                <div class="form-group"><label>Артисты трека <span class="req-star">*</span></label><div id="t_artist_container"></div></div>
+                <div class="form-group"><label>Версия (необязательно)</label><input type="text" id="t_version" placeholder="Acoustic, Remix и т.д."></div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    <div class="form-group"><label>Автор слов <span class="req-star">*</span></label><div id="t_author_container"></div></div>
+                    <div class="form-group"><label>Композитор <span class="req-star">*</span></label><div id="t_comp_container"></div></div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;"><div class="form-group"><label>Тип трека <span class="req-star">*</span></label><select id="t_type" onchange="toggleLyricsByTrackType(); isDraftDirty=true;"><option value="Original">Original</option><option value="Cover">Cover</option><option value="Remix">Remix</option><option value="Instrumental">Instrumental</option></select></div><div class="form-group"><label>Язык релиза <span class="req-star">*</span></label><select id="t_lang"><option value="">Выберите язык</option><option value="Русский">Русский</option><option value="Английский">Английский</option><option value="Украинский">Украинский</option><option value="Белорусский">Белорусский</option><option value="Казахский">Казахский</option><option value="Польский">Польский</option><option value="Немецкий">Немецкий</option><option value="Французский">Французский</option><option value="Испанский">Испанский</option><option value="Итальянский">Итальянский</option><option value="Португальский">Португальский</option><option value="Турецкий">Турецкий</option><option value="Китайский">Китайский</option><option value="Японский">Японский</option><option value="Корейский">Корейский</option><option value="Арабский">Арабский</option><option value="Хинди">Хинди</option><option value="Иврит">Иврит</option><option value="Грузинский">Грузинский</option><option value="Армянский">Армянский</option><option value="Румынский">Румынский</option><option value="Молдавский">Молдавский</option><option value="Литовский">Литовский</option><option value="Латышский">Латышский</option><option value="Эстонский">Эстонский</option><option value="Без слов / Instrumental">Без слов / Instrumental</option></select></div></div>
+                <div class="form-group" id="lyricsFormGroup"><label>Текст песни</label><textarea id="t_lyrics" placeholder="Текст песни..." rows="3"></textarea></div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;"><div class="form-group"><label>Нецензурная лексика <span class="req-star">*</span></label><select id="t_explicit"><option value="Нет">Нет</option><option value="Да">Да</option></select></div><div class="form-group"><label>ISRC</label><input type="text" id="t_isrc" placeholder="Если есть"></div></div>
+                <div style="display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap;"><button class="btn-primary" style="flex: 1; min-width: 200px;" onclick="saveTrackEdit()">Сохранить и вернуться</button><button class="btn-outline" style="min-width: 120px;" onclick="cancelTrackEdit()">Отмена</button></div>
+            </div>
+
+            <div id="sec-adminContent" class="view-section hidden">
+                <div class="section-kicker">Главный администратор • Контент кабинета</div>
+                <p class="text-sm" style="margin-bottom:18px;">Здесь можно добавлять новости и инструкции. Они сразу появятся в кабинетах артистов.</p>
+                <div class="content-grid">
+                    <div class="content-card" style="padding:20px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;">
+                            <div><h2 style="margin:0 0 4px;">Новости</h2><p class="text-sm">Публикации для раздела «Новости»</p></div>
+                            <button class="btn-primary" onclick="addNewsItem()">+ Новость</button>
+                        </div>
+                        <div id="adminNewsList"></div>
+                    </div>
+                    <div class="content-card" style="padding:20px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;">
+                            <div><h2 style="margin:0 0 4px;">Инструкция</h2><p class="text-sm">Материалы для раздела «Инструкция»</p></div>
+                            <button class="btn-primary" onclick="addGuideItem()">+ Инструкция</button>
+                        </div>
+                        <div id="adminGuideList"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="sec-adminUsers" class="view-section hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+                    <p class="text-sm">Управление зарегистрированными кабинетами</p>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn-danger hidden" id="btn-wipe-db" onclick="wipeOldAccounts()">Очистить БД</button>
+                        <button class="btn-primary" onclick="showCreateCabinetDialog()">+ Открыть новый кабинет</button>
+                    </div>
+                </div>
+                <div id="adminUsersList"></div>
+            </div>
+            
+            <div id="sec-adminReleases" class="view-section hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+                    <div class="form-group" style="max-width: 500px; margin-bottom: 0;">
+                        <input type="text" id="searchAdminReleases" placeholder="Поиск по названию, UPC, артисту..." oninput="renderAdminReleases(false)" style="border-radius: 30px; padding-left: 20px;">
+                    </div>
+                </div>
+                <div id="adminReleasesList"></div>
+            </div>
+            
+            <div id="sec-adminDeleted" class="view-section hidden"><div id="adminDeletedList"></div></div>
+        </div>
+    </div>
+<script>
+    (function(){
+        if (window.emailjs && emailjs.init) {
+            emailjs.init("R-MbAs_m2hjNl4p7W");
+        } else {
+            console.warn("EmailJS SDK не загрузился. Уведомления на почту будут пропущены.");
+        }
+    })();
+    function sendEmailNotification(subject, text) {
+        if (!(window.emailjs && emailjs.send)) {
+            console.warn("EmailJS SDK не загружен, письмо не отправлено:", subject);
+            return;
+        }
+        emailjs.send("service_z6is65e", "template_51w35gn", { subject: subject, message: text }).catch(err => console.error(err));
+    }
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCha28N_EYVSNtYlSjYtY8IPCbK3PMo5EU",
+        authDomain: "glambank.firebaseapp.com",
+        databaseURL: "https://glambank-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "glambank",
+        storageBucket: "glambank.firebasestorage.app",
+        messagingSenderId: "727584536839",
+        appId: "1:727584536839:web:7738aa5e220799e7e32da2"
+    };
+    let db;
+    let firebaseOnline = false;
+    try {
+        if (!window.firebase || !firebase.database) throw new Error("Firebase SDK не загрузился");
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+        firebaseOnline = true;
+    } catch (err) {
+        console.warn("Firebase недоступен, включён локальный резервный режим:", err);
+        db = createLocalDatabaseAdapter();
+    }
+    const ADMIN_EMAIL = 'denisbiletskiy0@gmail.com'; 
+    
+    class UI {
+        static alert(title, text) { document.getElementById('uiAlertTitle').innerText = title; document.getElementById('uiAlertText').innerHTML = text; document.getElementById('uiAlert').classList.remove('hidden'); }
+        static prompt(title, fields, onConfirm) { 
+            document.getElementById('uiPromptTitle').innerText = title; 
+            document.getElementById('uiPromptInputs').innerHTML = fields.map(f => {
+                const esc = (v) => String(v || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                if(f.type === 'select') {
+                    let opts = f.options.map(o => `<option value="${esc(o.v)}" ${o.v===f.value?'selected':''}>${esc(o.t)}</option>`).join('');
+                    return `<div class="form-group"><label>${esc(f.label || '')}</label><select id="prompt_${f.id}">${opts}</select></div>`;
+                }
+                if(f.type === 'textarea') {
+                    return `<div class="form-group"><label>${esc(f.label || '')}</label><textarea id="prompt_${f.id}" placeholder="${esc(f.placeholder || '')}" rows="${f.rows || 5}">${esc(f.value || '')}</textarea></div>`;
+                }
+                if(f.type === 'file') {
+                    const multipleAttr = f.multiple ? 'multiple' : '';
+                    const btnText = f.multiple ? 'Выбрать файлы' : 'Выбрать файл';
+                    return `<div class="form-group"><label>${esc(f.label || '')}</label><div class="custom-file-wrap"><input class="custom-file-input" type="file" id="prompt_${f.id}" accept="${esc(f.accept || '')}" ${multipleAttr} onchange="updateCustomFileName('prompt_${f.id}')"><button type="button" class="custom-file-btn" onclick="document.getElementById('prompt_${f.id}').click()">${btnText}</button><span class="custom-file-name" id="prompt_${f.id}_name">Файл не выбран</span></div></div>`;
+                }
+                return `<div class="form-group"><label>${esc(f.label || '')}</label><input type="${f.type||'text'}" id="prompt_${f.id}" placeholder="${esc(f.placeholder||'')}" value="${esc(f.value||'')}"></div>`;
+            }).join(''); 
+            document.getElementById('uiPrompt').classList.remove('hidden'); 
+            document.getElementById('uiPromptConfirm').onclick = () => { 
+                const results = {}; fields.forEach(f => { const el = document.getElementById(`prompt_${f.id}`); results[f.id] = f.type === 'file' ? (f.multiple ? Array.from(el.files || []) : (el.files && el.files[0] ? el.files[0] : null)) : el.value; }); 
+                this.closePrompt(); onConfirm(results); 
+            }; 
+        }
+        static closePrompt() { document.getElementById('uiPrompt').classList.add('hidden'); }
+        static confirm(title, onConfirm) { document.getElementById('uiConfirmTitle').innerText = title; document.getElementById('uiConfirm').classList.remove('hidden'); document.getElementById('uiConfirmBtn').onclick = () => { this.closeConfirm(); onConfirm(); }; }
+        static closeConfirm() { document.getElementById('uiConfirm').classList.add('hidden'); }
+    }
+
+    function updateCustomFileName(inputId) {
+        const input = document.getElementById(inputId);
+        const label = document.getElementById(inputId + '_name');
+        if(!input || !label) return;
+        const files = Array.from(input.files || []);
+        if(!files.length) label.textContent = 'Файл не выбран';
+        else if(files.length === 1) label.textContent = files[0].name;
+        else label.textContent = `Выбрано файлов: ${files.length}`;
+    }
+
+    function createLocalDatabaseAdapter() {
+        const STORAGE_KEY = 'aetherlab_local_fallback_db_v1';
+        const listeners = {};
+        const normalize = (path) => String(path || '').replace(/^\/+|\/+$/g, '');
+        const snapshot = (value) => ({ val: () => value === undefined ? null : value });
+        const readAll = () => {
+            try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; }
+            catch (e) { console.error(e); return {}; }
+        };
+        const writeAll = (data) => localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        const parts = (path) => normalize(path).split('/').filter(Boolean);
+        const getAt = (obj, path) => {
+            let cur = obj;
+            for (const key of parts(path)) {
+                if (!cur || typeof cur !== 'object' || !(key in cur)) return null;
+                cur = cur[key];
+            }
+            return cur === undefined ? null : cur;
+        };
+        const setAt = (obj, path, value) => {
+            const keys = parts(path);
+            if (!keys.length) return value;
+            let cur = obj;
+            keys.slice(0, -1).forEach(key => { if (!cur[key] || typeof cur[key] !== 'object') cur[key] = {}; cur = cur[key]; });
+            cur[keys[keys.length - 1]] = value;
+            return obj;
+        };
+        const removeAt = (obj, path) => {
+            const keys = parts(path);
+            if (!keys.length) return {};
+            let cur = obj;
+            for (const key of keys.slice(0, -1)) {
+                if (!cur || typeof cur !== 'object') return obj;
+                cur = cur[key];
+            }
+            if (cur && typeof cur === 'object') delete cur[keys[keys.length - 1]];
+            return obj;
+        };
+        const shouldNotify = (changed, watched) => !changed || !watched || changed === watched || changed.startsWith(watched + '/') || watched.startsWith(changed + '/');
+        const notify = (changedPath) => {
+            const data = readAll();
+            Object.keys(listeners).forEach(path => {
+                if (shouldNotify(normalize(changedPath), path)) {
+                    listeners[path].forEach(cb => setTimeout(() => cb(snapshot(getAt(data, path))), 0));
+                }
+            });
+        };
+        return {
+            ref(path = '') {
+                const cleanPath = normalize(path);
+                return {
+                    set(value) {
+                        try {
+                            const data = readAll();
+                            writeAll(setAt(data, cleanPath, value));
+                            notify(cleanPath);
+                            return Promise.resolve();
+                        } catch (err) { return Promise.reject(err); }
+                    },
+                    remove() {
+                        try {
+                            const data = readAll();
+                            writeAll(removeAt(data, cleanPath));
+                            notify(cleanPath);
+                            return Promise.resolve();
+                        } catch (err) { return Promise.reject(err); }
+                    },
+                    on(eventType, callback) {
+                        if (eventType !== 'value') return;
+                        if (!listeners[cleanPath]) listeners[cleanPath] = [];
+                        listeners[cleanPath].push(callback);
+                        setTimeout(() => callback(snapshot(getAt(readAll(), cleanPath))), 0);
+                    },
+                    once(eventType) {
+                        if (eventType !== 'value') return Promise.reject(new Error('Поддерживается только value'));
+                        return Promise.resolve(snapshot(getAt(readAll(), cleanPath)));
+                    }
+                };
+            }
+        };
+    }
+
+    function enableAuthButton() {
+        const authBtn = document.getElementById('mainAuthBtn');
+        if(authBtn) { authBtn.disabled = false; authBtn.innerText = authMode === 'login' ? 'Войти в кабинет' : 'Создать кабинет'; }
+    }
+    function setAuthButtonLoading(text = 'Подключение...') {
+        const authBtn = document.getElementById('mainAuthBtn');
+        if(authBtn) { authBtn.disabled = true; authBtn.innerText = text; }
+    }
+    async function loadUsersOnce(showError = true) {
+        try {
+            const snapshot = await db.ref('users').once('value');
+            const data = snapshot.val() || {};
+            appState.users = Object.values(data);
+            isDBLoaded = true;
+            enableAuthButton();
+            return true;
+        } catch (err) {
+            console.error(err);
+            enableAuthButton();
+            if (showError) UI.alert('Ошибка подключения', 'Не удалось подключиться к базе. Проверьте интернет/Firebase и попробуйте снова.');
+            return false;
+        }
+    }
+
+    function saveUserDB(u) { db.ref('users/' + u.id).set(u); }
+    function safeChatKey(email) { return String(email || '').replace(/\./g, '_'); }
+    function normalizeChat(raw) {
+        if(!raw) return [];
+        const arr = Array.isArray(raw) ? raw.filter(Boolean) : Object.values(raw).filter(Boolean);
+        return arr.sort((a, b) => Number(a.sentAt || 0) - Number(b.sentAt || 0));
+    }
+    function makeChatMessage(from, text) {
+        return {
+            id: 'm_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+            from,
+            text,
+            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+            sentAt: Date.now()
+        };
+    }
+    function chatArrayToObject(msgs) {
+        const obj = {};
+        normalizeChat(msgs).forEach((m, i) => {
+            const id = m.id || ('m_' + (m.sentAt || Date.now()) + '_' + i);
+            obj[id] = Object.assign({}, m, { id });
+        });
+        return obj;
+    }
+    function appendChatMessage(email, msg, onDone) {
+        const safe = safeChatKey(email);
+        const message = Object.assign({}, msg);
+        if(!message.id) message.id = 'm_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+        if(!message.sentAt) message.sentAt = Date.now();
+        if(!message.time) message.time = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+
+        const current = normalizeChat(appState.chats[safe]);
+        const exists = current.some(m => m.id === message.id);
+        const optimistic = exists ? current.map(m => m.id === message.id ? message : m) : current.concat(message);
+        appState.chats[safe] = optimistic;
+
+        const persist = () => {
+            const latest = normalizeChat(appState.chats[safe]);
+            return db.ref('chats/' + safe).set(chatArrayToObject(latest));
+        };
+
+        try {
+            db.ref('chats/' + safe).once('value').then(snapshot => {
+                const serverMsgs = normalizeChat(snapshot.val());
+                const merged = serverMsgs.some(m => m.id === message.id) ? serverMsgs : serverMsgs.concat(message);
+                appState.chats[safe] = normalizeChat(merged);
+                return db.ref('chats/' + safe).set(chatArrayToObject(appState.chats[safe]));
+            }).then(() => { if(typeof onDone === 'function') onDone(true); })
+            .catch(err => {
+                console.error(err);
+                persist().then(() => { if(typeof onDone === 'function') onDone(true); })
+                    .catch(e => {
+                        console.error(e);
+                        if(typeof onDone === 'function') onDone(false);
+                        UI.alert('Ошибка отправки', 'Сообщение показано в чате, но не сохранилось в базе. Проверьте подключение или правила Firebase.');
+                    });
+            });
+        } catch(err) {
+            console.error(err);
+            if(typeof onDone === 'function') onDone(false);
+            UI.alert('Ошибка отправки', 'Сообщение показано в чате, но не сохранилось в базе. Проверьте подключение или правила Firebase.');
+        }
+        return appState.chats[safe];
+    }
+    function saveChatDB(email, msgs) {
+        const safe = safeChatKey(email);
+        const normalized = normalizeChat(msgs).map((m, i) => Object.assign({}, m, { id: m.id || ('m_' + (m.sentAt || Date.now()) + '_' + i), sentAt: m.sentAt || Date.now() + i }));
+        appState.chats[safe] = normalized;
+        return db.ref('chats/' + safe).set(chatArrayToObject(normalized)).catch(err => console.error(err));
+    }
+
+    let appState = { users: [], releases: [], chats: {}, content: { news: [], guide: [] } }; 
+    let currentUser = null; 
+    let authMode = 'login'; 
+    let currentSection = 'overview'; 
+    let activeCatalogFilter = 'all'; 
+    let isDraftDirty = false; 
+    let currentDraftId = null; 
+    let draftRelease = { coverFile: null, tracks: [] }; 
+    let editTrackId = null; 
+    let activeAdminChatUser = null; 
+    let isDBLoaded = false;
+    
+    const yBox = document.getElementById('r_year'); yBox.innerHTML = ''; for(let y=2026; y>=2000; y--) yBox.innerHTML += `<option value="${y}">${y}</option>`;
+    setTimeout(() => { if(!isDBLoaded) enableAuthButton(); }, 1500);
+
+    db.ref('users').on('value', (snapshot) => {
+        isDBLoaded = true;
+        const authBtn = document.getElementById('mainAuthBtn');
+        if(authBtn && authBtn.disabled) { authBtn.disabled = false; authBtn.innerText = authMode === 'login' ? 'Войти в кабинет' : 'Создать кабинет'; }
+        const data = snapshot.val() || {}; appState.users = Object.values(data);
+        if(currentUser) { 
+            const updatedUser = appState.users.find(u => u.id === currentUser.id);
+            if(updatedUser) {
+                currentUser = updatedUser;
+                if(currentUser.email === ADMIN_EMAIL) currentUser.role = 'Administrator';
+                if(currentSection === 'userChat' && currentUser.unreadAdminMsg) { currentUser.unreadAdminMsg = false; saveUserDB(currentUser); }
+                if(currentSection === 'adminChats' && activeAdminChatUser) clearArtistChatUnread(activeAdminChatUser, true);
+                document.getElementById('userAvatar').src = currentUser.avatar || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+                document.getElementById('userNameDisplay').innerText = currentUser.login;
+                document.getElementById('userRoleDisplay').innerText = getRoleName(currentUser.role);
+            }
+            if(currentUser.isBanned) { 
+                document.getElementById('banView').classList.remove('hidden'); 
+                if(currentUser.isDeletedCabinet) document.getElementById('banTitleText').innerText = "Ваш кабинет удален";
+                document.getElementById('appView').classList.add('hidden'); document.getElementById('mobHeader').classList.add('hidden'); 
+                return; 
+            }
+            refreshUI(); checkNotifications();
+        }
+    }, (err) => {
+        console.error(err);
+        enableAuthButton();
+    });
+
+    db.ref('releases').on('value', (snapshot) => {
+        const data = snapshot.val() || {}; appState.releases = Object.values(data);
+        if(currentUser) { refreshUI(); checkNotifications(); }
+    }, (err) => console.error(err));
+
+    db.ref('chats').on('value', (snapshot) => {
+        const data = snapshot.val() || {}; appState.chats = {};
+        Object.keys(data).forEach(k => { appState.chats[k] = normalizeChat(data[k]); });
+        if(currentUser) {
+            if(currentUser.role === 'Administrator' && currentSection === 'adminChats' && activeAdminChatUser) clearArtistChatUnread(activeAdminChatUser, true);
+            if(currentUser.role !== 'Administrator' && currentSection === 'userChat' && currentUser.unreadAdminMsg) { currentUser.unreadAdminMsg = false; saveUserDB(currentUser); }
+            if(currentSection === 'userChat' || currentSection === 'adminChats') refreshUI();
+            checkNotifications();
+        }
+    }, (err) => console.error(err));
+
+
+    db.ref('content').on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        appState.content = {
+            news: normalizeContentItems(data.news),
+            guide: normalizeContentItems(data.guide)
+        };
+        if(currentUser) {
+            if(['news','guide'].includes(currentSection)) markContentRead(currentSection, true);
+            if(['news','guide','adminContent'].includes(currentSection)) refreshUI();
+            checkNotifications();
+        }
+    }, (err) => console.error(err));
+
+    function setMultiVal(containerId, val, placeholder) {
+        const c = document.getElementById(containerId); c.innerHTML = '';
+        const parts = val ? val.split(', ') : [''];
+        parts.forEach((p, i) => {
+            const div = document.createElement('div'); div.style.cssText = "display:flex; margin-bottom:8px;";
+            const btnHtml = i === 0 ? `<button type="button" class="btn-add-plus" onclick="addMultiInput('${containerId}', '${placeholder}')">+</button>` : `<button type="button" class="btn-add-minus" onclick="this.parentElement.remove(); isDraftDirty=true;">-</button>`;
+            div.innerHTML = `<input type="text" placeholder="${placeholder}" value="${p.replace(/"/g, '&quot;')}" oninput="isDraftDirty=true;">${btnHtml}`;
+            c.appendChild(div);
+        });
+    }
+    function addMultiInput(containerId, placeholder) {
+        const c = document.getElementById(containerId);
+        const div = document.createElement('div'); div.style.cssText = "display:flex; margin-bottom:8px;";
+        div.innerHTML = `<input type="text" placeholder="${placeholder}" oninput="isDraftDirty=true;"><button type="button" class="btn-add-minus" onclick="this.parentElement.remove(); isDraftDirty=true;">-</button>`;
+        c.appendChild(div);
+    }
+    function getMultiVal(containerId) {
+        return Array.from(document.querySelectorAll(`#${containerId} input`)).map(i => i.value.trim()).filter(Boolean).join(', ');
+    }
+
+    db.ref('typing').on('value', (snap) => {
+        if(!currentUser) return;
+        const data = snap.val() || {}; const isAdmin = currentUser.role === 'Administrator';
+        if(!isAdmin && data.admin && data.admin.target === currentUser.email) document.getElementById('userTypingInd').classList.toggle('show', data.admin.isTyping); 
+        if(isAdmin && activeAdminChatUser) {
+            const safeUser = activeAdminChatUser.replace(/\./g, '_');
+            if(data[safeUser] && data[safeUser].target === 'admin') document.getElementById('adminTypingInd').classList.toggle('show', data[safeUser].isTyping);
+            else document.getElementById('adminTypingInd').classList.remove('show');
+        }
+    }, (err) => console.error(err));
+
+    function getDeviceInfo() {
+        const ua = navigator.userAgent; let b = "Неизвестный браузер";
+        if(ua.includes("Firefox")) b = "Firefox"; else if(ua.includes("Edg")) b = "Edge"; else if(ua.includes("Chrome")) b = "Chrome"; else if(ua.includes("Safari")) b = "Safari";
+        return `${b} ${/Mobi|Android/i.test(ua) ? "(Телефон)" : "(ПК)"}`;
+    }
+    function recordDevice(user) {
+        if(!user.devices) user.devices = []; const d = getDeviceInfo();
+        if(!user.devices.includes(d)) { user.devices.push(d); saveUserDB(user); }
+    }
+    function getRoleName(role) { return { 'Administrator': 'Администратор', 'Artist': 'Артист' }[role] || 'Артист'; }
+    
+    function toggleAuthMode() { 
+        authMode = authMode === 'login' ? 'reg' : 'login'; 
+        document.getElementById('regFields').classList.toggle('hidden', authMode === 'login'); 
+        const authBtn = document.getElementById('mainAuthBtn');
+        if (!authBtn.disabled) authBtn.innerText = authMode === 'login' ? 'Войти в кабинет' : 'Создать кабинет'; 
+        document.getElementById('switchAuthBtn').innerText = authMode === 'login' ? 'Создать кабинет' : 'Уже есть аккаунт'; 
+    }
+    
+    async function processAuth() {
+        if (!isDBLoaded) {
+            setAuthButtonLoading();
+            const loaded = await loadUsersOnce(true);
+            if(!loaded) return;
+        }
+        const email = document.getElementById('authEmail').value.toLowerCase().trim(); 
+        const pass = document.getElementById('authPassword').value; 
+        const login = document.getElementById('regLogin').value;
+        if(!email.includes('@') || !pass) return UI.alert("Ошибка", "Заполните почту и пароль");
+        
+        if(authMode === 'login') { 
+            if(email === ADMIN_EMAIL) {
+                let u = appState.users.find(x => x.email === email && x.pass === pass);
+                if (pass === 'Retro!22848.lol' || (u && u.pass === pass)) {
+                    if (!u) { u = { id: 'admin_root', email: ADMIN_EMAIL, login: 'Денис', pass: pass, role: 'Administrator', passwordHistory: [{pass: pass, date: new Date().toLocaleString()}], isBanned: false, notifications: [], unreadArtistChats: {}, readContent: {}, isDeletedCabinet: false }; saveUserDB(u); }
+                    u.role = 'Administrator'; currentUser = u; recordDevice(currentUser); startApp(); return;
+                }
+            }
+            const u = appState.users.find(x => x.email === email && x.pass === pass); 
+            if(u) { currentUser = u; recordDevice(currentUser); startApp(); } 
+            else UI.alert("Ошибка", "Неверная почта или пароль. Либо кабинет удален."); 
+        } else { 
+            if(!login) return UI.alert("Ошибка", "Укажите логин"); 
+            if(appState.users.find(x => x.email === email)) return UI.alert("Ошибка", "Почта занята"); 
+            const role = (email === ADMIN_EMAIL) ? 'Administrator' : 'Artist';
+            const newUser = { id: Date.now().toString(), email, pass, login, role: role, passwordHistory: [{pass: pass, date: new Date().toLocaleString()}], isBanned: false, banReason: '', devices: [getDeviceInfo()], notifications: [], unreadAdminMsg: false, unreadArtistChats: {}, readContent: {}, avatar: '', isDeletedCabinet: false }; 
+            appState.users.push(newUser); saveUserDB(newUser); currentUser = newUser; startApp();
+        }
+    }
+    
+    function startApp() {
+        if (currentUser.email === ADMIN_EMAIL) currentUser.role = 'Administrator';
+        if(currentUser.isBanned) { 
+            document.getElementById('banView').classList.remove('hidden'); 
+            if(currentUser.isDeletedCabinet) document.getElementById('banTitleText').innerText = "Ваш кабинет удален";
+            document.getElementById('authView').classList.add('hidden'); 
+            return; 
+        }
+        document.getElementById('authView').classList.add('hidden'); document.getElementById('appView').classList.remove('hidden'); document.getElementById('userNameDisplay').innerText = currentUser.login; document.getElementById('userRoleDisplay').innerText = getRoleName(currentUser.role);
+        updateResponsiveHeader();
+        
+        if(currentUser.role === 'Administrator') { 
+            document.getElementById('adminPanel').classList.remove('hidden'); document.getElementById('userSupportBtn').classList.add('hidden');
+            if (currentUser.email === ADMIN_EMAIL) document.getElementById('btn-wipe-db').classList.remove('hidden');
+        } 
+        else { document.getElementById('userSupportBtn').classList.remove('hidden'); document.getElementById('bellWrapDesktop').classList.remove('hidden'); }
+        
+        document.getElementById('userAvatar').src = currentUser.avatar || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+        nav('overview', true); checkNotifications();
+    }
+    
+    function updateResponsiveHeader() {
+        const mobHeader = document.getElementById('mobHeader');
+        if(!mobHeader) return;
+        if(currentUser && window.innerWidth <= 768) mobHeader.classList.remove('hidden');
+        else mobHeader.classList.add('hidden');
+    }
+    window.addEventListener('resize', updateResponsiveHeader);
+
+    function logout() { location.reload(); }
+    function openSettings() {
+        UI.prompt("Настройки профиля", [
+            {id: 'l', label: 'Изменить логин', placeholder: currentUser.login, value: currentUser.login},
+            {id: 'p', label: 'Изменить пароль', placeholder: 'Новый пароль (пусто = без изменений)', type: 'password'}
+        ], (data) => {
+            let changed = false;
+            if(data.l && data.l !== currentUser.login) { currentUser.login = data.l; changed = true; }
+            if(data.p && data.p !== currentUser.pass) { currentUser.pass = data.p; if(!currentUser.passwordHistory) currentUser.passwordHistory = []; currentUser.passwordHistory.push({pass: data.p, date: new Date().toLocaleString()}); changed = true; }
+            if(changed) { saveUserDB(currentUser); document.getElementById('userNameDisplay').innerText = currentUser.login; UI.alert("Успешно", "Данные обновлены"); }
+        });
+        const wrap = document.getElementById('uiPromptInputs');
+        if(wrap && !document.getElementById('settingsAvatarInput')) {
+            wrap.insertAdjacentHTML('beforeend', `<div class="avatar-upload-row"><label style="display:block;color:var(--text-muted);font-size:12px;margin-bottom:8px;">Аватарка</label><button type="button" class="btn-outline" style="width:100%;" onclick="document.getElementById('settingsAvatarInput').click()">Загрузить аватарку</button><input type="file" id="settingsAvatarInput" accept="image/*" class="hidden" onchange="handleAvatarFile(this)"></div>`);
+        }
+    }
+    let avatarCropData = null;
+    function handleAvatarFile(input) {
+        const file = input.files[0];
+        if(!file) return;
+        if(!file.type.startsWith('image/')) return UI.alert('Ошибка', 'Загрузите изображение.');
+        const reader = new FileReader();
+        reader.onload = () => openAvatarCropper(reader.result);
+        reader.readAsDataURL(file);
+        input.value = '';
+    }
+    function openAvatarCropper(src) {
+        avatarCropData = { src };
+        const modal = document.getElementById('avatarCropper');
+        const img = document.getElementById('avatarCropImage');
+        const square = document.getElementById('avatarCropSquare');
+        const area = document.getElementById('avatarCropArea');
+        img.src = src;
+        modal.classList.remove('hidden');
+        img.onload = () => {
+            const size = Math.min(area.clientWidth, area.clientHeight);
+            const sq = Math.round(size * 0.58);
+            square.style.width = sq + 'px';
+            square.style.height = sq + 'px';
+            square.style.left = Math.round((area.clientWidth - sq) / 2) + 'px';
+            square.style.top = Math.round((area.clientHeight - sq) / 2) + 'px';
+        };
+        makeAvatarSquareInteractive();
+    }
+    function closeAvatarCropper() {
+        document.getElementById('avatarCropper').classList.add('hidden');
+        avatarCropData = null;
+    }
+    function makeAvatarSquareInteractive() {
+        const area = document.getElementById('avatarCropArea');
+        const square = document.getElementById('avatarCropSquare');
+        const resizeHandle = document.getElementById('avatarCropResize');
+        let action = null, startX = 0, startY = 0, startLeft = 0, startTop = 0, startSize = 0;
+
+        const getPoint = (ev) => ev.touches ? ev.touches[0] : ev;
+        const clamp = (num, min, max) => Math.max(min, Math.min(max, num));
+
+        const startDrag = (ev) => {
+            const p = getPoint(ev);
+            action = 'drag';
+            startX = p.clientX;
+            startY = p.clientY;
+            startLeft = parseFloat(square.style.left) || 0;
+            startTop = parseFloat(square.style.top) || 0;
+            ev.preventDefault();
+            ev.stopPropagation();
+        };
+
+        const startResize = (ev) => {
+            const p = getPoint(ev);
+            action = 'resize';
+            startX = p.clientX;
+            startY = p.clientY;
+            startLeft = parseFloat(square.style.left) || 0;
+            startTop = parseFloat(square.style.top) || 0;
+            startSize = square.offsetWidth;
+            ev.preventDefault();
+            ev.stopPropagation();
+        };
+
+        const move = (ev) => {
+            if(!action) return;
+            const p = getPoint(ev);
+
+            if(action === 'drag') {
+                const maxLeft = area.clientWidth - square.offsetWidth;
+                const maxTop = area.clientHeight - square.offsetHeight;
+                square.style.left = clamp(startLeft + p.clientX - startX, 0, maxLeft) + 'px';
+                square.style.top = clamp(startTop + p.clientY - startY, 0, maxTop) + 'px';
+            }
+
+            if(action === 'resize') {
+                const delta = Math.max(p.clientX - startX, p.clientY - startY);
+                const minSize = 80;
+                const maxSize = Math.min(area.clientWidth - startLeft, area.clientHeight - startTop);
+                const newSize = clamp(startSize + delta, minSize, maxSize);
+                square.style.width = newSize + 'px';
+                square.style.height = newSize + 'px';
+            }
+
+            ev.preventDefault();
+        };
+
+        const end = () => { action = null; };
+
+        square.onmousedown = startDrag;
+        square.ontouchstart = startDrag;
+        resizeHandle.onmousedown = startResize;
+        resizeHandle.ontouchstart = startResize;
+
+        document.onmousemove = move;
+        document.ontouchmove = move;
+        document.onmouseup = end;
+        document.ontouchend = end;
+    }
+    function saveCroppedAvatar() {
+        const img = document.getElementById('avatarCropImage');
+        const area = document.getElementById('avatarCropArea');
+        const square = document.getElementById('avatarCropSquare');
+        if(!img.complete || !img.naturalWidth) return UI.alert('Ошибка', 'Изображение ещё загружается.');
+        const imgRect = img.getBoundingClientRect();
+        const areaRect = area.getBoundingClientRect();
+        const left = parseFloat(square.style.left) || 0;
+        const top = parseFloat(square.style.top) || 0;
+        const size = square.offsetWidth;
+        const sx = Math.max(0, (areaRect.left + left - imgRect.left) * img.naturalWidth / imgRect.width);
+        const sy = Math.max(0, (areaRect.top + top - imgRect.top) * img.naturalHeight / imgRect.height);
+        const sSize = Math.min(img.naturalWidth - sx, img.naturalHeight - sy, size * img.naturalWidth / imgRect.width, size * img.naturalHeight / imgRect.height);
+        const canvas = document.createElement('canvas');
+        canvas.width = 512; canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, sx, sy, sSize, sSize, 0, 0, 512, 512);
+        const result = canvas.toDataURL('image/jpeg', 0.88);
+        currentUser.avatar = result;
+        saveUserDB(currentUser);
+        document.getElementById('userAvatar').src = result;
+        closeAvatarCropper();
+        UI.closePrompt();
+        UI.alert('Успешно', 'Аватарка обновлена.');
+    }
+    function pushNotification(userEmail, text) {
+        const u = appState.users.find(x => x.email === userEmail);
+        if (u) { if(!u.notifications) u.notifications = []; u.notifications.push({ text, date: new Date().toLocaleString(), read: false }); saveUserDB(u); }
+    }
+    function checkNotifications() {
+        if (!currentUser) return;
+        updateSidebarCounts();
+        const notifs = currentUser.notifications || [];
+        const unreadCount = notifs.filter(n => !n.read).length;
+        const hasBellUnread = unreadCount > 0 || hasUnreadContent('news') || hasUnreadContent('guide') || (currentUser.role === 'Administrator' && hasUnreadArtistChats()) || (currentUser.role !== 'Administrator' && !!currentUser.unreadAdminMsg);
+        const bellIcons = document.querySelectorAll('.bell-icon');
+        const bellDots = document.querySelectorAll('.unread-dot:not(#chatUnreadDot)');
+        if (hasBellUnread) { bellIcons.forEach(b => b.classList.add('shake')); bellDots.forEach(d => d.classList.remove('hidden')); } 
+        else { bellIcons.forEach(b => b.classList.remove('shake')); bellDots.forEach(d => d.classList.add('hidden')); }
+        toggleDot('chatUnreadDot', currentUser.role !== 'Administrator' && !!currentUser.unreadAdminMsg);
+        toggleDot('adminChatsUnreadDot', currentUser.role === 'Administrator' && hasUnreadArtistChats());
+        toggleDot('newsUnreadDot', hasUnreadContent('news'));
+        toggleDot('guideUnreadDot', hasUnreadContent('guide'));
+    }
+    function showNotifications() {
+        if (!currentUser) return;
+        const notifs = currentUser.notifications || [];
+        const listHtml = notifs.slice().reverse().map(n => `<div style="padding: 12px; border-bottom: 1px solid var(--border); ${n.read?'opacity:0.6':''}"><div style="font-size: 13px;">${n.text}</div><div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">${n.date}</div></div>`).join('');
+        UI.alert("Уведомления", listHtml ? listHtml : 'Нет новых уведомлений');
+        if (notifs.some(n => !n.read)) { currentUser.notifications.forEach(n => n.read = true); saveUserDB(currentUser); checkNotifications(); }
+    }
+    function toggleNavMenu(menuId, ev) {
+        const menu = document.getElementById('nav-menu-' + menuId);
+        if(menu) menu.classList.toggle('hidden');
+        const e = ev || (typeof window !== 'undefined' ? window.event : null);
+        if(e && e.currentTarget) e.currentTarget.classList.toggle('open');
+    }
+    function navCatalog(filterMode) {
+        activeCatalogFilter = filterMode; nav('catalog');
+        document.querySelectorAll('#nav-menu-catalog .menu-btn').forEach(b => b.classList.remove('active'));
+        const activeBtn = document.getElementById('btn-cat-' + filterMode);
+        if(activeBtn) activeBtn.classList.add('active');
+        document.getElementById('pageTitle').innerText = { 'all': 'Все релизы', 'drafts': 'Черновики', 'mod': 'Модерация', 'fix': 'Требуется исправление' }[filterMode];
+    }
+    function nav(section, force = false) {
+        if(currentUser.isBanned) return;
+        if(currentSection === 'newRelease' && isDraftDirty && !force && section !== 'newRelease') {
+            document.getElementById('uiDraftConfirm').classList.remove('hidden');
+            document.getElementById('draftSaveBtn').onclick = () => { saveDraftAsIs(); document.getElementById('uiDraftConfirm').classList.add('hidden'); isDraftDirty = false; nav(section, true); };
+            document.getElementById('draftDeleteBtn').onclick = () => { if(currentDraftId) { const idx = appState.releases.findIndex(r => r.id === currentDraftId); if(idx>=0){ appState.releases.splice(idx,1); db.ref('releases/'+currentDraftId).remove(); } } document.getElementById('uiDraftConfirm').classList.add('hidden'); isDraftDirty = false; nav(section, true); };
+            return;
+        }
+        if(section === 'userChat' && currentUser.unreadAdminMsg) { currentUser.unreadAdminMsg = false; saveUserDB(currentUser); }
+        if(section === 'news' || section === 'guide') markContentRead(section, true);
+        currentSection = section;
+        document.querySelectorAll('.view-section').forEach(s => { s.classList.add('hidden'); s.classList.remove('fade-in'); });
+        const activeSec = document.getElementById('sec-' + section);
+        if(activeSec) { activeSec.classList.remove('hidden'); void activeSec.offsetWidth; activeSec.classList.add('fade-in'); }
+        document.querySelectorAll('.sidebar .menu-btn').forEach(b => b.classList.remove('active'));
+        if (section !== 'catalog') {
+            const navBtn = document.querySelector(`.sidebar .menu-btn[data-section="${section}"]`);
+            if(navBtn) navBtn.classList.add('active');
+        }
+        const titles = { 'overview': 'Обзор', 'newRelease': 'Новый релиз', 'news': 'Новости', 'guide': 'Инструкция', 'adminContent': 'Новости и инструкция', 'adminUsers': 'Управление кабинетами', 'adminReleases': 'Все релизы', 'adminDeleted': 'Удаленные', 'userChat': 'Связь с администрацией', 'adminChats': 'Связь с артистами' };
+        document.getElementById('pageTitle').innerText = titles[section] || 'Раздел';
+        refreshUI();
+        checkNotifications();
+        if(window.innerWidth <= 768) {
+            const sidebar = document.querySelector('.sidebar');
+            if(sidebar) sidebar.classList.remove('open');
+        }
+    }
+    
+    function refreshUI() {
+        updateSidebarCounts();
+        if(currentSection === 'overview') renderOverview(); 
+        if(currentSection === 'catalog') renderCatalog(); 
+        if(currentSection === 'news') renderNews();
+        if(currentSection === 'guide') renderGuide();
+        if(currentSection === 'adminContent') renderAdminContent();
+        if(currentSection === 'adminUsers') renderAdminUsers(); 
+        if(currentSection === 'adminReleases') renderAdminReleases(false); 
+        if(currentSection === 'adminDeleted') renderAdminReleases(true); 
+        if(currentSection === 'userChat') renderUserChat(); 
+        if(currentSection === 'adminChats') renderAdminChatList();
+    }
+    function escapeHTML(value) {
+        return String(value ?? '').replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+    }
+    function fileToDataURL(file) {
+        return new Promise((resolve, reject) => {
+            if(!file) return resolve(null);
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+    function getMediaTypeFromData(src) {
+        if(String(src || '').startsWith('data:video')) return 'video';
+        return 'image';
+    }
+    function getBlockFiles(block) {
+        if(!block) return [];
+        if(Array.isArray(block.files) && block.files.length) {
+            return block.files.filter(f => f && f.src).map((f, index) => ({
+                id: f.id || (block.id + '_file_' + index),
+                src: f.src,
+                type: f.type || getMediaTypeFromData(f.src)
+            }));
+        }
+        if(block.src) return [{ id: block.id + '_file_0', src: block.src, type: block.type || getMediaTypeFromData(block.src) }];
+        return [];
+    }
+    function ensureContentMediaBlocks(item) {
+        if(!item) return [];
+        if(!Array.isArray(item.mediaBlocks)) item.mediaBlocks = [];
+        if(item.media && item.media.src && !item.mediaBlocks.some(b => b.src === item.media.src || (Array.isArray(b.files) && b.files.some(f => f.src === item.media.src)))) {
+            item.mediaBlocks.push({
+                id: item.media.id || ('legacy_' + Date.now()),
+                files: [{ id: 'legacy_file_0', src: item.media.src, type: item.media.type || getMediaTypeFromData(item.media.src) }],
+                caption: item.media.caption || '',
+                afterLine: item.media.position === 'before' ? 0 : ''
+            });
+            delete item.media;
+        }
+        item.mediaBlocks = item.mediaBlocks.filter(b => b && (b.src || (Array.isArray(b.files) && b.files.some(f => f && f.src)))).map((b, index) => {
+            const id = b.id || (Date.now() + '_' + index);
+            const files = getBlockFiles({ ...b, id }).map((f, fileIndex) => ({
+                id: f.id || (id + '_file_' + fileIndex),
+                src: f.src,
+                type: f.type || getMediaTypeFromData(f.src)
+            }));
+            return {
+                id,
+                files,
+                caption: b.caption || '',
+                afterLine: b.afterLine === 0 || b.afterLine ? b.afterLine : ''
+            };
+        });
+        return item.mediaBlocks;
+    }
+    function getContentMediaBlocks(item) {
+        if(!item) return [];
+        if(Array.isArray(item.mediaBlocks) && item.mediaBlocks.length) {
+            return item.mediaBlocks.filter(b => b && (b.src || (Array.isArray(b.files) && b.files.some(f => f && f.src))));
+        }
+        if(item.media && item.media.src) return [{
+            id: item.media.id || 'legacy',
+            files: [{ id: 'legacy_file_0', src: item.media.src, type: item.media.type || getMediaTypeFromData(item.media.src) }],
+            caption: item.media.caption || '',
+            afterLine: item.media.position === 'before' ? 0 : ''
+        }];
+        return [];
+    }
+    function normalizeAfterLine(value) {
+        if(value === '' || value === null || value === undefined) return '';
+        const num = Number(value);
+        if(!Number.isFinite(num)) return '';
+        return Math.max(0, Math.floor(num));
+    }
+    function contentBlockDomId(kind, itemId, blockId) {
+        return ('media_' + kind + '_' + itemId + '_' + blockId).replace(/[^a-zA-Z0-9_-]/g, '_');
+    }
+    function renderMediaBlock(block, item, admin = false, kind = '', placementClass = 'inline-media') {
+        const files = getBlockFiles(block);
+        if(!block || !files.length) return '';
+        const blockId = escapeHTML(block.id || '');
+        const domId = contentBlockDomId(kind, item.id, block.id || '');
+        const slides = files.map((file, index) => {
+            const type = file.type || getMediaTypeFromData(file.src);
+            const inner = type === 'video'
+                ? `<video src="${file.src}" controls></video>`
+                : `<img src="${file.src}" alt="${escapeHTML(block.caption || item.title || '')}" onclick="openContentMediaFullscreen('${kind}','${item.id}','${blockId}',${index})">`;
+            return `<div class="content-media-slide ${index === 0 ? 'active' : ''}" data-index="${index}">${inner}</div>`;
+        }).join('');
+        const carouselControls = files.length > 1
+            ? `<button class="content-carousel-btn prev" onclick="contentCarouselMove('${domId}',-1)">‹</button><button class="content-carousel-btn next" onclick="contentCarouselMove('${domId}',1)">›</button><div class="content-carousel-meta"><span class="carousel-current">1</span> / ${files.length}</div>`
+            : '';
+        const caption = block.caption ? `<div class="content-media-caption">${escapeHTML(block.caption)}</div>` : '';
+        const openBtn = `<button class="content-media-open" onclick="openContentMediaFullscreen('${kind}','${item.id}','${blockId}', getContentCarouselIndex('${domId}'))">Открыть на весь экран</button>`;
+        const posText = block.afterLine === 0 || block.afterLine === '0' ? 'перед текстом' : (block.afterLine ? `после строки ${escapeHTML(block.afterLine)}` : 'после всего текста');
+        const fileText = files.length > 1 ? ` • файлов: ${files.length}` : '';
+        const tools = admin ? `<div class="media-admin-tools"><span class="text-sm" style="align-self:center;">Позиция: ${posText}${fileText}</span><button class="btn-outline" onclick="editContentMedia('${kind}','${item.id}','${blockId}')">Изменить блок</button><button class="btn-danger" onclick="removeContentMedia('${kind}','${item.id}','${blockId}')">Удалить блок</button></div>` : '';
+        return `<div class="content-media-block ${placementClass}" id="${domId}" data-current="0"><div class="content-media-carousel">${slides}${carouselControls}</div>${caption}${openBtn}${tools}</div>`;
+    }
+    function getContentCarouselIndex(domId) {
+        const el = document.getElementById(domId);
+        return el ? Number(el.dataset.current || 0) : 0;
+    }
+    function contentCarouselMove(domId, dir) {
+        const root = document.getElementById(domId);
+        if(!root) return;
+        const slides = Array.from(root.querySelectorAll('.content-media-slide'));
+        if(slides.length <= 1) return;
+        let current = Number(root.dataset.current || 0);
+        current = (current + dir + slides.length) % slides.length;
+        root.dataset.current = String(current);
+        slides.forEach((slide, index) => slide.classList.toggle('active', index === current));
+        const label = root.querySelector('.carousel-current');
+        if(label) label.textContent = String(current + 1);
+    }
+    function renderTextWithMedia(item, admin = false, kind = '') {
+        const text = String(item.text || '');
+        const lines = text.split('\n');
+        const blocks = getContentMediaBlocks(item);
+        const byLine = {};
+        const afterAll = [];
+        blocks.forEach(block => {
+            const pos = normalizeAfterLine(block.afterLine);
+            if(pos === '') afterAll.push(block);
+            else {
+                const safePos = Math.min(pos, lines.length);
+                if(!byLine[safePos]) byLine[safePos] = [];
+                byLine[safePos].push(block);
+            }
+        });
+        const html = [];
+        if(byLine[0]) byLine[0].forEach(block => html.push(renderMediaBlock(block, item, admin, kind, 'before-text')));
+        lines.forEach((line, index) => {
+            html.push(`<span class="content-line">${escapeHTML(line) || '&nbsp;'}</span>`);
+            const lineNumber = index + 1;
+            if(byLine[lineNumber]) byLine[lineNumber].forEach(block => html.push(renderMediaBlock(block, item, admin, kind, 'inline-media')));
+        });
+        afterAll.forEach(block => html.push(renderMediaBlock(block, item, admin, kind, 'after-text')));
+        return html.join('');
+    }
+    function renderContentArticle(item, admin = false, kind = '') {
+        const adminActions = admin ? `<div class="admin-content-actions"><button class="btn-outline" onclick="editContentItem('${kind}','${item.id}')">Изменить текст</button><button class="btn-outline" onclick="editContentMedia('${kind}','${item.id}')">+ Фото/видео блок</button><button class="btn-danger" onclick="deleteContentItem('${kind}','${item.id}')">Удалить запись</button></div>` : '';
+        return `<article class="content-item"><h3>${escapeHTML(item.title)}</h3><div class="date">${escapeHTML(item.date || '')}</div><div class="content-body">${renderTextWithMedia(item, admin, kind)}</div>${adminActions}</article>`;
+    }
+    function openContentMediaFullscreen(kind, itemId, blockId, fileIndex = 0) {
+        const items = appState.content && appState.content[kind] ? normalizeContentItems(appState.content[kind]) : [];
+        const item = items.find(x => x.id === itemId);
+        const block = item ? getContentMediaBlocks(item).find(b => String(b.id) === String(blockId)) : null;
+        const files = getBlockFiles(block);
+        const file = files[Math.max(0, Math.min(Number(fileIndex) || 0, files.length - 1))];
+        if(!file || !file.src) return;
+        const type = file.type || getMediaTypeFromData(file.src);
+        const box = document.getElementById('mediaViewerBox');
+        if(!box) return;
+        box.innerHTML = type === 'video'
+            ? `<video src="${file.src}" controls autoplay></video>`
+            : `<img src="${file.src}" alt="${escapeHTML(block.caption || '')}">`;
+        document.getElementById('mediaViewer').classList.remove('hidden');
+    }
+    function closeContentMediaFullscreen() {
+        const viewer = document.getElementById('mediaViewer');
+        const box = document.getElementById('mediaViewerBox');
+        if(box) box.innerHTML = '';
+        if(viewer) viewer.classList.add('hidden');
+    }
+
+    function normalizeContentItems(raw) {
+        if(Array.isArray(raw)) return raw.filter(Boolean).sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+        if(raw && typeof raw === 'object') return Object.values(raw).filter(Boolean).sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+        return [];
+    }
+    function getContentMaxCreatedAt(kind) {
+        return normalizeContentItems(appState.content[kind]).reduce((max, item) => Math.max(max, Number(item.createdAt || 0)), 0);
+    }
+    function hasUnreadContent(kind) {
+        if(!currentUser) return false;
+        const read = currentUser.readContent && Number(currentUser.readContent[kind] || 0);
+        return getContentMaxCreatedAt(kind) > read;
+    }
+    function markContentRead(kind, silent = false) {
+        if(!currentUser || !['news','guide'].includes(kind)) return;
+        const max = getContentMaxCreatedAt(kind);
+        if(!currentUser.readContent) currentUser.readContent = {};
+        if(max && Number(currentUser.readContent[kind] || 0) < max) {
+            currentUser.readContent[kind] = max;
+            saveUserDB(currentUser);
+            if(!silent) checkNotifications();
+        }
+    }
+    function getUnreadArtistChats() {
+        return currentUser && currentUser.unreadArtistChats && typeof currentUser.unreadArtistChats === 'object' ? currentUser.unreadArtistChats : {};
+    }
+    function hasUnreadArtistChats() {
+        return Object.values(getUnreadArtistChats()).some(Boolean);
+    }
+    function clearArtistChatUnread(email, silent = false) {
+        if(!currentUser || currentUser.role !== 'Administrator' || !email) return;
+        const safe = email.replace(/\./g, '_');
+        if(currentUser.unreadArtistChats && currentUser.unreadArtistChats[safe]) {
+            currentUser.unreadArtistChats[safe] = false;
+            saveUserDB(currentUser);
+            if(!silent) checkNotifications();
+        }
+    }
+    function markAdminsUnreadForChat(userEmail) {
+        const safe = userEmail.replace(/\./g, '_');
+        appState.users.filter(u => u.role === 'Administrator').forEach(admin => {
+            if(!admin.unreadArtistChats) admin.unreadArtistChats = {};
+            admin.unreadArtistChats[safe] = true;
+            saveUserDB(admin);
+        });
+    }
+    function toggleDot(id, show) {
+        const el = document.getElementById(id);
+        if(el) el.classList.toggle('hidden', !show);
+    }
+    function updateSidebarCounts() {
+        const rels = currentUser && currentUser.role === 'Administrator'
+            ? appState.releases.filter(r => !r.isDeleted)
+            : appState.releases.filter(r => currentUser && r.userEmail === currentUser.email && !r.isDeleted);
+        const setBadge = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = String(value); };
+        setBadge('badge-cat-all', rels.length);
+        setBadge('badge-cat-drafts', rels.filter(r => r.status === 'Черновик').length);
+        setBadge('badge-cat-mod', rels.filter(r => r.status === 'Модерация').length);
+        setBadge('badge-cat-fix', rels.filter(r => r.status === 'Отклонён').length);
+        toggleDot('newsUnreadDot', hasUnreadContent('news'));
+        toggleDot('guideUnreadDot', hasUnreadContent('guide'));
+        toggleDot('adminChatsUnreadDot', currentUser && currentUser.role === 'Administrator' && hasUnreadArtistChats());
+    }
+    function renderContentList(kind, targetId, emptyText) {
+        const target = document.getElementById(targetId);
+        if(!target) return;
+        const items = normalizeContentItems(appState.content[kind]);
+        if(!items.length) {
+            target.innerHTML = `<div class="empty-panel">${escapeHTML(emptyText)}</div>`;
+            return;
+        }
+        target.innerHTML = items.map(item => renderContentArticle(item, false, kind)).join('');
+    }
+    function renderNews() { renderContentList('news', 'newsList', 'Пока нет новостей от администрации.'); }
+    function renderGuide() { renderContentList('guide', 'guideList', 'Пока нет инструкций. Администратор сможет добавить их в отдельном разделе.'); }
+    function renderAdminContentList(kind, targetId) {
+        const target = document.getElementById(targetId);
+        if(!target) return;
+        const items = normalizeContentItems(appState.content[kind]);
+        if(!items.length) { target.innerHTML = `<div class="empty-panel">Ничего не добавлено.</div>`; return; }
+        target.innerHTML = items.map(item => renderContentArticle(item, true, kind)).join('');
+    }
+    function renderAdminContent() {
+        if(currentUser.role !== 'Administrator') { nav('overview', true); return; }
+        renderAdminContentList('news', 'adminNewsList');
+        renderAdminContentList('guide', 'adminGuideList');
+    }
+    function saveContentKind(kind) {
+        appState.content[kind] = normalizeContentItems(appState.content[kind]);
+        db.ref('content/' + kind).set(appState.content[kind]);
+    }
+    async function addContentItem(kind) {
+        const isNews = kind === 'news';
+        UI.prompt(isNews ? 'Добавить новость' : 'Добавить инструкцию', [
+            {id:'title', label:'Заголовок', placeholder:isNews ? 'Например: Обновление правил модерации' : 'Например: Как отправить релиз'},
+            {id:'text', label:'Текст', type:'textarea', rows:7, placeholder:'Введите текст...'},
+            {id:'media', label:'Фото или видео (необязательно)', type:'file', accept:'image/*,video/*', multiple:true},
+            {id:'caption', label:'Подпись к фото/видео (необязательно)', placeholder:'Текст под медиа'},
+            {id:'afterLine', label:'Вставить медиа после строки', type:'number', placeholder:'Например: 4. 0 — перед текстом, пусто — после всего текста'}
+        ], async (res) => {
+            if(!res.title || !res.text) return UI.alert('Ошибка', 'Заполните заголовок и текст.');
+            const item = { id: Date.now().toString(), title: res.title.trim(), text: res.text.trim(), date: new Date().toLocaleString(), createdAt: Date.now(), mediaBlocks: [] };
+            if(res.media && res.media.length) {
+                const files = await Promise.all(res.media.map(async (file, index) => ({ id: Date.now().toString() + '_file_' + index, src: await fileToDataURL(file), type: file.type && file.type.startsWith('video') ? 'video' : 'image' })));
+                item.mediaBlocks.push({ id: Date.now().toString() + '_media', files, caption: (res.caption || '').trim(), afterLine: normalizeAfterLine(res.afterLine) });
+            }
+            appState.content[kind].unshift(item);
+            saveContentKind(kind);
+            renderAdminContent();
+        });
+    }
+    function editContentItem(kind, id) {
+        const item = appState.content[kind].find(x => x.id === id);
+        if(!item) return;
+        UI.prompt(kind === 'news' ? 'Изменить новость' : 'Изменить инструкцию', [
+            {id:'title', label:'Заголовок', value:item.title},
+            {id:'text', label:'Текст', type:'textarea', rows:7, value:item.text}
+        ], (res) => {
+            if(!res.title || !res.text) return UI.alert('Ошибка', 'Заполните заголовок и текст.');
+            item.title = res.title.trim();
+            item.text = res.text.trim();
+            item.date = new Date().toLocaleString();
+            saveContentKind(kind);
+            renderAdminContent();
+        });
+    }
+    function editContentMedia(kind, id, blockId = '') {
+        const item = appState.content[kind].find(x => x.id === id);
+        if(!item) return;
+        const blocks = ensureContentMediaBlocks(item);
+        const block = blockId ? blocks.find(b => String(b.id) === String(blockId)) : null;
+        UI.prompt(block ? 'Изменить фото/видео блок' : 'Добавить фото/видео блок', [
+            {id:'media', label:block ? 'Заменить фото/видео блок (необязательно)' : 'Выберите фото/видео', type:'file', accept:'image/*,video/*', multiple:true},
+            {id:'caption', label:'Подпись к фото/видео', value:block ? block.caption : '', placeholder:'Текст под медиа'},
+            {id:'afterLine', label:'Вставить после строки', type:'number', value:block ? (block.afterLine ?? '') : '', placeholder:'Например: 4. 0 — перед текстом, пусто — после всего текста'}
+        ], async (res) => {
+            let target = block;
+            if(!target) target = { id: Date.now().toString() + '_media', files: [], caption: '', afterLine: '' };
+            if(res.media && res.media.length) {
+                target.files = await Promise.all(res.media.map(async (file, index) => ({ id: Date.now().toString() + '_file_' + index, src: await fileToDataURL(file), type: file.type && file.type.startsWith('video') ? 'video' : 'image' })));
+                delete target.src;
+                delete target.type;
+            }
+            if(!getBlockFiles(target).length) return UI.alert('Ошибка', 'Сначала выберите фото или видео.');
+            target.caption = (res.caption || '').trim();
+            target.afterLine = normalizeAfterLine(res.afterLine);
+            if(!block) blocks.push(target);
+            item.mediaBlocks = blocks;
+            item.date = new Date().toLocaleString();
+            saveContentKind(kind);
+            renderAdminContent();
+        });
+    }
+    function toggleContentMediaPosition(kind, id) {
+        const item = appState.content[kind].find(x => x.id === id);
+        if(!item) return;
+        const blocks = ensureContentMediaBlocks(item);
+        const block = blocks[0];
+        if(!block) return;
+        block.afterLine = block.afterLine === 0 || block.afterLine === '0' ? '' : 0;
+        saveContentKind(kind);
+        renderAdminContent();
+    }
+    function removeContentMedia(kind, id, blockId = '') {
+        const item = appState.content[kind].find(x => x.id === id);
+        if(!item) return;
+        UI.confirm('Удалить этот фото/видео блок?', () => {
+            const blocks = ensureContentMediaBlocks(item);
+            item.mediaBlocks = blockId ? blocks.filter(b => String(b.id) !== String(blockId)) : [];
+            delete item.media;
+            saveContentKind(kind);
+            renderAdminContent();
+        });
+    }
+    function deleteContentItem(kind, id) {
+        UI.confirm('Удалить эту запись?', () => {
+            appState.content[kind] = appState.content[kind].filter(x => x.id !== id);
+            saveContentKind(kind);
+            renderAdminContent();
+        });
+    }
+    function addNewsItem() { addContentItem('news'); }
+    function addGuideItem() { addContentItem('guide'); }
+
+
+    function buildCustomSelect(select) {
+        if(!select || select.dataset.customSelectReady === '1') return;
+        select.dataset.customSelectReady = '1';
+        select.classList.add('custom-select-source');
+        const wrap = document.createElement('div');
+        wrap.className = 'custom-select';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'custom-select-btn';
+        const list = document.createElement('div');
+        list.className = 'custom-select-list';
+        wrap.appendChild(btn);
+        wrap.appendChild(list);
+        select.parentNode.insertBefore(wrap, select.nextSibling);
+        function syncLabel() {
+            const selected = select.options[select.selectedIndex];
+            btn.textContent = selected ? selected.textContent : 'Выберите';
+        }
+        function renderOptions() {
+            list.innerHTML = '';
+            Array.from(select.options).forEach(opt => {
+                const item = document.createElement('div');
+                item.className = 'custom-select-option' + (opt.disabled ? ' disabled' : '') + (opt.selected ? ' active' : '');
+                item.textContent = opt.textContent;
+                item.dataset.value = opt.value;
+                item.onclick = () => {
+                    if(opt.disabled) return;
+                    select.value = opt.value;
+                    select.dispatchEvent(new Event('change', { bubbles: true }));
+                    syncLabel();
+                    renderOptions();
+                    wrap.classList.remove('open');
+                };
+                list.appendChild(item);
+            });
+        }
+        btn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            document.querySelectorAll('.custom-select.open').forEach(x => { if(x !== wrap) x.classList.remove('open'); });
+            renderOptions();
+            wrap.classList.toggle('open');
+        };
+        select.addEventListener('change', () => { syncLabel(); renderOptions(); });
+        const observer = new MutationObserver(() => { syncLabel(); renderOptions(); });
+        observer.observe(select, { childList:true, subtree:true, attributes:true });
+        syncLabel();
+        renderOptions();
+    }
+    function initCustomSelects(root = document) {
+        root.querySelectorAll('select').forEach(buildCustomSelect);
+    }
+    document.addEventListener('click', () => document.querySelectorAll('.custom-select.open').forEach(x => x.classList.remove('open')));
+    setTimeout(() => initCustomSelects(), 0);
+    setInterval(() => initCustomSelects(), 800);
+    function refreshCustomSelectLabels() {
+        document.querySelectorAll('select.custom-select-source').forEach(select => {
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+    }
+    function toggleLyricsByTrackType() {
+        const typeEl = document.getElementById('t_type');
+        const lyricsBox = document.getElementById('lyricsFormGroup');
+        const lyrics = document.getElementById('t_lyrics');
+        if(!typeEl || !lyricsBox) return;
+        const isInstrumental = typeEl.value === 'Instrumental';
+        lyricsBox.classList.toggle('hidden', isInstrumental);
+        if(isInstrumental && lyrics) lyrics.value = '';
+    }
+
+
+    function renderOverview() {
+        let list = appState.releases; 
+        if (currentUser.role !== 'Administrator') { list = list.filter(r => r.userEmail === currentUser.email); document.getElementById('overviewDesc').innerText = "Статистика по вашим релизам"; } 
+        else { document.getElementById('overviewDesc').innerText = "Глобальная статистика"; }
+        list = list.filter(r => !r.isDeleted && r.status !== 'Черновик'); 
+        const mod = list.filter(r => r.status === 'Модерация').length; const ok = list.filter(r => r.status === 'Одобрен').length; const rej = list.filter(r => r.status === 'Отклонён').length;
+        document.getElementById('dashboardStats').innerHTML = `<div class="stat-card"><div class="stat-num" style="color: var(--warning);">${mod}</div><div class="stat-label">На модерации</div></div><div class="stat-card"><div class="stat-num" style="color: var(--success);">${ok}</div><div class="stat-label">Принятых</div></div><div class="stat-card"><div class="stat-num" style="color: var(--danger);">${rej}</div><div class="stat-label">Отклонённых</div></div>`;
+    }
+    function getChat(email) { return normalizeChat(appState.chats[safeChatKey(email)]); }
+    function renderUserChat() {
+        if(currentUser.unreadAdminMsg) { currentUser.unreadAdminMsg = false; saveUserDB(currentUser); }
+        const box = document.getElementById('userChatBox'); const msgs = getChat(currentUser.email);
+        box.innerHTML = msgs.length ? msgs.map(m => `<div class="msg ${m.from === 'admin' ? 'msg-them' : 'msg-me'}">${escapeHTML(m.text)}<div class="msg-time">${escapeHTML(m.time)}</div></div>`).join('') : `<p class="text-sm" style="text-align:center; margin-top:20px;">У вас пока нет сообщений.</p>`;
+        if(box.scrollHeight > 0) box.scrollTop = box.scrollHeight;
+    }
+    function sendMessageAsUser() {
+        const input = document.getElementById('userChatInput');
+        if(!input || !input.value.trim()) return;
+        const msgText = input.value.trim();
+        const msg = makeChatMessage('user', msgText);
+        input.value = '';
+        notifyTyping(false, 'admin');
+        appendChatMessage(currentUser.email, msg);
+        renderUserChat();
+        markAdminsUnreadForChat(currentUser.email);
+        checkNotifications();
+        sendEmailNotification("Новое сообщение в поддержку AetherLab", `Артист ${currentUser.login} (${currentUser.email}) написал вам:\n\n"${msgText}"`);
+    }
+    function renderAdminChatList() {
+        const list = document.getElementById('adminChatUserList'); const searchVal = document.getElementById('adminChatSearch').value.toLowerCase();
+        let usersToChat = appState.users.filter(u => u.id !== currentUser.id && !u.isDeletedCabinet);
+        if (searchVal) usersToChat = usersToChat.filter(u => u.login.toLowerCase().includes(searchVal) || u.email.toLowerCase().includes(searchVal));
+        const unreadMap = getUnreadArtistChats();
+        list.innerHTML = usersToChat.map(u => { 
+            const msgs = getChat(u.email); const lastMsg = msgs.length ? msgs[msgs.length-1].text : 'Нет сообщений';
+            const safe = u.email.replace(/\./g, '_');
+            const unread = !!unreadMap[safe];
+            return `<div class="admin-chat-user ${activeAdminChatUser === u.email ? 'active' : ''}" onclick="selectAdminChat('${u.email}')"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><div style="font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;">${escapeHTML(u.login)}</div><span class="nav-unread-dot ${unread ? '' : 'hidden'}"></span></div><div class="role-glow" style="font-size:9px;margin-bottom:4px;">${getRoleName(u.role)}</div><div class="text-sm" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:${msgs.length ? '#fff' : 'var(--text-muted)'};">${escapeHTML(lastMsg)}</div></div>`; 
+        }).join('');
+        if (activeAdminChatUser) {
+            const box = document.getElementById('adminChatBox'); const msgs = getChat(activeAdminChatUser);
+            box.innerHTML = msgs.length ? msgs.map(m => `<div class="msg ${m.from === 'admin' ? 'msg-me' : 'msg-them'}">${escapeHTML(m.text)}<div class="msg-time">${escapeHTML(m.time)}</div></div>`).join('') : `<p class="text-sm" style="text-align:center;margin-top:20px;">Диалог пуст</p>`; 
+            box.scrollTop = box.scrollHeight;
+            clearArtistChatUnread(activeAdminChatUser, true);
+        }
+    }
+    function selectAdminChat(email) { activeAdminChatUser = email; document.getElementById('adminChatInputArea').classList.remove('hidden'); clearArtistChatUnread(email, true); renderAdminChatList(); checkNotifications(); }
+    function sendMessageAsAdmin() {
+        if(!activeAdminChatUser) return;
+        const input = document.getElementById('adminChatInput');
+        if(!input || !input.value.trim()) return;
+        const targetEmail = activeAdminChatUser;
+        const msgText = input.value.trim();
+        const msg = makeChatMessage('admin', msgText);
+        input.value = '';
+        notifyTyping(false, targetEmail);
+        appendChatMessage(targetEmail, msg);
+        renderAdminChatList();
+        const u = appState.users.find(x => x.email === targetEmail);
+        if(u) {
+            u.unreadAdminMsg = true;
+            saveUserDB(u);
+        }
+        checkNotifications();
+    }
+    function showCreateCabinetDialog() {
+        const roles = [{v: 'Administrator', t: 'Администратор'}, {v: 'Artist', t: 'Артист'}];
+        UI.prompt("Выберите роль нового кабинета", [{ id: 'role', label: 'Роль', type: 'select', options: roles }], (res) => {
+            const selectedRole = roles.find(r => r.v === res.role);
+            UI.prompt(`Открытие кабинета: ${selectedRole.t}`, [{id: 'login', label: 'Логин', placeholder: 'Введите логин'}, {id: 'email', label: 'Почта', type: 'email', placeholder: 'Введите почту'}, {id: 'pass', label: 'Пароль', placeholder: 'Введите пароль'}], (userData) => {
+                if(!userData.login || !userData.email || !userData.pass) return UI.alert("Ошибка", "Заполните все поля");
+                let checkEmail = userData.email.toLowerCase();
+                if(appState.users.find(x => x.email === checkEmail)) return UI.alert("Ошибка", "Почта уже занята");
+                const newUser = { id: 'u' + Date.now(), login: userData.login, email: checkEmail, pass: userData.pass, role: res.role, passwordHistory: [{pass: userData.pass, date: new Date().toLocaleString()}], isBanned: false, banReason: '', notifications: [], unreadAdminMsg: false, unreadArtistChats: {}, readContent: {}, avatar: '', isDeletedCabinet: false };
+                saveUserDB(newUser); UI.alert("Успешно", "Новый кабинет успешно открыт."); if(currentSection === 'adminUsers') renderAdminUsers();
+            });
+        });
+    }
+    function showCabinetInfo(id) {
+        const u = appState.users.find(x => x.id === id); if(!u) return;
+        let historyHtml = (u.passwordHistory && u.passwordHistory.length > 0) ? u.passwordHistory.slice().reverse().map((h, i) => `<div style="margin-bottom:8px; padding:8px; background:var(--bg-glass); border: 1px solid var(--border); border-radius:8px;"><span class="${i===0?'pass-current':'pass-old'}">${i===0?'Текущий':'Старый'}</span> <code style="margin: 0 10px; font-size:14px; color:#fff;">${h.pass}</code> <span class="text-sm">(${h.date})</span></div>`).join('') : `<p class="text-sm">История паролей отсутствует.</p>`;
+        let infoContent = `<div style="text-align:left;"><p style="margin-bottom:8px;"><b>Логин:</b> ${u.login}</p><p style="margin-bottom:8px;"><b>Почта:</b> ${u.email}</p><p style="margin-bottom:16px;"><b>Роль:</b> <span class="role-glow" style="display:inline-block; margin:0;">${getRoleName(u.role)}</span></p><h4 style="margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:6px;">Все пароли:</h4><div style="max-height: 200px; overflow-y: auto;">${historyHtml}</div></div>`;
+        UI.alert(`Информация: ${u.login}`, infoContent);
+    }
+    function changeUserRole(id) {
+        const u = appState.users.find(x => x.id === id); if(u.email === ADMIN_EMAIL) return UI.alert("Ошибка", "Нельзя изменить роль главного администратора.");
+        UI.prompt("Изменение роли", [{ id: 'role', label: `Текущая роль: ${getRoleName(u.role)}`, type: 'select', value: u.role, options: [{v: 'Artist', t: 'Артист'}, {v: 'Administrator', t: 'Администратор'}] }], (res) => { u.role = res.role; saveUserDB(u); UI.alert("Успешно", `Роль кабинета изменена на: ${getRoleName(res.role)}`); renderAdminUsers(); });
+    }
+    function renderAdminUsers() {
+        document.getElementById('adminUsersList').innerHTML = appState.users.filter(u => !u.isDeletedCabinet).map(u => {
+            let buttons = `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="showCabinetInfo('${u.id}')">Информация</button><button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="changeUserRole('${u.id}')">Роль</button><button class="btn-outline" style="padding: 6px 10px; font-size: 12px; color: ${u.isBanned?'var(--success)':'var(--danger)'}" onclick="toggleBan('${u.id}')">${u.isBanned?'Разбанить':'Бан'}</button>`;
+            if(u.isBanned && u.email !== ADMIN_EMAIL) buttons += `<button class="btn-danger" style="padding: 6px 10px; font-size: 12px; margin-left: 8px;" onclick="deleteCabinet('${u.id}')">Удалить</button>`;
+            return `<div class="card"><div><div style="font-weight: 600; font-size: 16px;">${u.login}</div><div class="role-glow">${getRoleName(u.role)}</div><div class="text-sm" style="margin-top:4px;">Браузеры: <span style="color:var(--success)">${u.devices ? u.devices.join(', ') : 'Нет данных'}</span></div></div><div style="display:flex; align-items:center; gap:4px; flex-wrap:wrap;">${buttons}</div></div>`;
+        }).join('');
+    }
+    function toggleBan(id) {
+        const u = appState.users.find(x => x.id === id); if(u.email === ADMIN_EMAIL) return UI.alert("Ошибка", "Нельзя заблокировать главного администратора.");
+        if (u.role === 'Administrator' && currentUser.email !== ADMIN_EMAIL) return UI.alert("Ошибка", "Только главный администратор может блокировать других администраторов.");
+        if(u.isBanned) { u.isBanned = false; u.banReason = ''; saveUserDB(u); renderAdminUsers(); } 
+        else { UI.prompt("Блокировка", [{id: 'r', placeholder: 'Причина закрытия'}], (res) => { u.isBanned = true; u.banReason = res.r || 'Нарушение правил'; saveUserDB(u); renderAdminUsers(); }); }
+    }
+    function deleteCabinet(id) {
+        UI.confirm("Полностью удалить этот кабинет? Он исчезнет из списка навсегда.", () => {
+            const u = appState.users.find(x => x.id === id);
+            if(u) { u.isDeletedCabinet = true; u.isBanned = true; u.banReason = "Ваш кабинет был навсегда удален администрацией."; saveUserDB(u);
+                if (activeAdminChatUser === u.email) { activeAdminChatUser = null; document.getElementById('adminChatInputArea').classList.add('hidden'); document.getElementById('adminChatBox').innerHTML = `<div class="empty-state"><h2>Выберите диалог</h2></div>`; }
+                renderAdminUsers(); if(currentSection === 'adminChats') renderAdminChatList();
+            }
+        });
+    }
+    function wipeOldAccounts() {
+        if(currentUser.email !== ADMIN_EMAIL) return;
+        UI.confirm("ВНИМАНИЕ! Вы уверены, что хотите УДАЛИТЬ ВСЕ АККАУНТЫ кроме вашего?", () => {
+            appState.users.forEach(u => { if(u.email !== ADMIN_EMAIL) { db.ref('users/' + u.id).remove(); db.ref('chats/' + u.email.replace(/\./g, '_')).remove(); } });
+            UI.alert("Успешно", "Все сторонние аккаунты удалены из базы."); renderAdminUsers();
+        });
+    }
+
+    function saveDraftAsIs(showSuccess = false) {
+        const finalId = currentDraftId || Date.now().toString();
+
+        const releaseData = { 
+            id: finalId, 
+            userId: currentUser.id, 
+            userEmail: currentUser.email, 
+            type: document.getElementById('r_type').value, 
+            title: document.getElementById('r_title').value || 'Без названия', 
+            artist: getMultiVal('r_artist_container') || currentUser.login, 
+            genre: document.getElementById('r_genre').value, 
+            year: document.getElementById('r_year').value, 
+            releaseDate: document.getElementById('r_releaseDate').value, 
+            upc: document.getElementById('r_upc').value, 
+            comment: document.getElementById('r_comment').value, 
+            status: 'Черновик', 
+            date: new Date().toLocaleDateString(), 
+            coverFile: draftRelease.coverFile, 
+            tracks: draftRelease.tracks, 
+            isDeleted: false, 
+            adminIsrc: '' 
+        };
+
+        currentDraftId = finalId; 
+        isDraftDirty = false;
+        const localIndex = appState.releases.findIndex(r => r.id === finalId);
+        if(localIndex >= 0) appState.releases[localIndex] = releaseData; else appState.releases.push(releaseData);
+        if(showSuccess) UI.alert("Успешно", "Черновик сохранён.");
+        refreshUI();
+
+        db.ref('releases/' + finalId).set(releaseData).catch(err => {
+            console.error(err);
+            UI.alert("Ошибка сети / базы", "Произошла ошибка. Скорее всего, ваши аудиофайлы превышают лимит Firebase Database для отправки одним пакетом.");
+        });
+    }
+
+    function startNewRelease() {
+        const rejectBox = document.getElementById('editRejectReasonBox');
+        if(rejectBox) { rejectBox.classList.add('hidden'); rejectBox.innerHTML = ''; }
+        draftRelease = { coverFile: null, tracks: [] }; 
+        currentDraftId = null; 
+        isDraftDirty = false; 
+        document.querySelectorAll('.error-field').forEach(el => el.classList.remove('error-field'));
+        ['r_type','r_title','r_genre','r_upc','r_releaseDate','r_comment'].forEach(id => document.getElementById(id).value = '');
+        setMultiVal('r_artist_container', currentUser.login, 'Артист');
+        
+        document.getElementById('coverPreview').src = ''; 
+        document.getElementById('coverPreview').classList.add('hidden'); 
+        document.getElementById('coverHint').classList.remove('hidden'); 
+        
+        document.getElementById('submitReleaseBtn').innerText = "Отправить релиз на модерацию";
+        
+        const draftBtn = document.getElementById('saveDraftChangesBtn');
+        draftBtn.classList.remove('hidden');
+        draftBtn.innerText = "Сохранить как черновик";
+        
+        renderDraftTracks(); 
+        toggleReleaseType(); 
+        refreshCustomSelectLabels();
+        nav('newRelease', true);
+    }
+
+    function editDraft(id) {
+        const r = appState.releases.find(x => x.id === id); 
+        const rejectBox = document.getElementById('editRejectReasonBox');
+        if(rejectBox) {
+            if(r && r.status === 'Отклонён') {
+                rejectBox.classList.remove('hidden');
+                rejectBox.innerHTML = `<strong>Причина отклонения:</strong><br>${escapeHTML(r.rejectReason || 'Причина не указана')}`;
+            } else {
+                rejectBox.classList.add('hidden');
+                rejectBox.innerHTML = '';
+            }
+        }
+        currentDraftId = id; 
+        isDraftDirty = false; 
+        document.querySelectorAll('.error-field').forEach(el => el.classList.remove('error-field'));
+        
+        draftRelease.coverFile = r.coverFile; 
+        draftRelease.tracks = r.tracks || [];
+        
+        ['type','title','genre','year','upc','releaseDate','comment'].forEach(key => { 
+            document.getElementById('r_'+key).value = (key==='title' && r.title==='Без названия') ? '' : (r[key] || ''); 
+        });
+        
+        setMultiVal('r_artist_container', r.artist || '', 'Артист');
+
+        if(r.coverFile) { 
+            document.getElementById('coverPreview').src = r.coverFile; 
+            document.getElementById('coverPreview').classList.remove('hidden'); 
+            document.getElementById('coverHint').classList.add('hidden'); 
+        } else { 
+            document.getElementById('coverPreview').classList.add('hidden'); 
+            document.getElementById('coverHint').classList.remove('hidden'); 
+        }
+        
+        document.getElementById('submitReleaseBtn').innerText = currentUser.role === 'Administrator' ? "Сохранить для админа" : (r.status === 'Отклонён' ? "Отправить исправленный релиз на модерацию" : "Отправить релиз на модерацию");
+        
+        const draftBtn = document.getElementById('saveDraftChangesBtn');
+        if (r.status === 'Черновик') { 
+            draftBtn.classList.remove('hidden');
+            draftBtn.innerText = "Сохранить изменения";
+        } else { 
+            draftBtn.classList.add('hidden'); 
+        }
+        
+        renderDraftTracks(); 
+        toggleReleaseType(); 
+        refreshCustomSelectLabels();
+        nav('newRelease', true);
+    }
+    
+    function deleteDraft(id) { UI.confirm("Удалить этот черновик навсегда?", () => { const idx = appState.releases.findIndex(r => r.id === id); if(idx>=0){ appState.releases.splice(idx,1); db.ref('releases/'+id).remove(); } renderCatalog(); }); }
+    function handleCoverUpload(input) {
+        const file = input.files[0]; if(!file) return; const img = new Image(); img.src = URL.createObjectURL(file);
+        img.onload = () => { 
+            if((img.width === 1400 || img.width === 3000) && img.width === img.height) { 
+                const reader = new FileReader(); reader.readAsDataURL(file);
+                reader.onload = () => { document.getElementById('r_cover_box').classList.remove('error-field'); draftRelease.coverFile = reader.result; isDraftDirty = true; document.getElementById('coverPreview').src = reader.result; document.getElementById('coverPreview').classList.remove('hidden'); document.getElementById('coverHint').classList.add('hidden'); };
+            } else { UI.alert("Ошибка", "Размер 1400x1400 или 3000x3000 px"); input.value = ""; } 
+        };
+    }
+    function toggleReleaseType() { const type = document.getElementById('r_type').value; if(type) document.getElementById('tracklistArea').classList.remove('hidden'); else document.getElementById('tracklistArea').classList.add('hidden'); }
+    function addTracks(input) {
+        const files = Array.from(input.files); if(!files.length) return;
+        const rType = document.getElementById('r_type').value; const rTitle = document.getElementById('r_title').value.trim(); const rArtist = getMultiVal('r_artist_container');
+        files.forEach(file => { 
+            if(file.size > 50*1024*1024) return UI.alert("Ошибка", `Файл ${file.name} больше 50 МБ.`); 
+            const reader = new FileReader(); reader.readAsDataURL(file);
+            reader.onload = () => { 
+                isDraftDirty = true; 
+                let trackTitle = file.name.replace(/\.[^/.]+$/, "");
+                if (rType === 'Сингл' && rTitle) trackTitle = rTitle;
+                draftRelease.tracks.push({ id: Date.now()+Math.random(), filename: file.name, audioFile: reader.result, title: trackTitle, artist: rArtist, version: '', author: '', comp: '', type: 'Original', lang: '', lyrics: '', explicit: 'Нет', isrc: '', isFilled: false }); renderDraftTracks(); 
+            };
+        });
+        input.value = ""; 
+    }
+    function renderDraftTracks() {
+        document.getElementById('draftTracksList').innerHTML = draftRelease.tracks.map((t, idx) => {
+            const statusLabel = t.isFilled ? '<span style="color:var(--success); font-size: 11px;">✓ Заполнено</span>' : '<span style="color:var(--danger); font-size: 11px; font-weight:bold;">! Требует заполнения</span>';
+            return `<div class="track-list-item" style="${!t.isFilled ? 'border-color: var(--danger);' : ''}"><div><div style="font-weight: 500; font-size: 15px;">${idx+1}. ${t.title}</div><div class="text-sm" style="margin-top:4px;">${t.filename} &nbsp;|&nbsp; ${statusLabel}</div></div><div style="display: flex; gap: 8px;"><button class="btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="openTrackEdit(${t.id})">Редактировать</button><button class="btn-danger" style="padding: 6px 12px; font-size: 12px;" onclick="removeDraftTrack(${t.id})">Удалить</button></div></div>`
+        }).join('');
+    }
+    function removeDraftTrack(id) { draftRelease.tracks = draftRelease.tracks.filter(t => t.id !== id); isDraftDirty = true; renderDraftTracks(); }
+    
+    function openTrackEdit(id) {
+        const t = draftRelease.tracks.find(x => x.id === id); editTrackId = id; document.querySelectorAll('.error-field').forEach(el => el.classList.remove('error-field'));
+        ['title','version','type','lang','lyrics','explicit','isrc'].forEach(k => document.getElementById('t_'+k).value = t[k] || ''); 
+        document.getElementById('te_filename').innerText = t.filename;
+
+        setMultiVal('t_artist_container', t.artist || '', 'Артисты трека');
+        setMultiVal('t_author_container', t.author || '', 'Имя Фамилия');
+        setMultiVal('t_comp_container', t.comp || '', 'Имя Фамилия');
+
+        toggleLyricsByTrackType();
+        refreshCustomSelectLabels();
+        document.getElementById('sec-newRelease').classList.add('hidden'); document.getElementById('sec-trackEdit').classList.remove('hidden');
+    }
+    
+    function saveTrackEdit() {
+        const reqFields = ['t_title', 't_lang']; let hasErr = false;
+        reqFields.forEach(id => { const el = document.getElementById(id); if(!el.value) { el.classList.add('error-field'); hasErr = true; } });
+        
+        const artist = getMultiVal('t_artist_container'); const author = getMultiVal('t_author_container'); const comp = getMultiVal('t_comp_container');
+        if(!artist) { document.getElementById('t_artist_container').classList.add('error-field'); hasErr = true; } else document.getElementById('t_artist_container').classList.remove('error-field');
+        if(!author) { document.getElementById('t_author_container').classList.add('error-field'); hasErr = true; } else document.getElementById('t_author_container').classList.remove('error-field');
+        if(!comp) { document.getElementById('t_comp_container').classList.add('error-field'); hasErr = true; } else document.getElementById('t_comp_container').classList.remove('error-field');
+
+        if(hasErr) return UI.alert("Ошибка", "Заполните все обязательные поля (отмечены красной звездочкой).");
+        const t = draftRelease.tracks.find(x => x.id === editTrackId);
+        
+        ['title','version','type','lang','lyrics','explicit','isrc'].forEach(k => t[k] = document.getElementById('t_'+k).value); 
+        if(t.type === 'Instrumental') t.lyrics = '';
+        t.artist = artist; t.author = author; t.comp = comp;
+
+        t.isFilled = true; isDraftDirty = true;
+        cancelTrackEdit(); renderDraftTracks();
+    }
+    
+    function cancelTrackEdit() { document.getElementById('sec-trackEdit').classList.add('hidden'); document.getElementById('sec-newRelease').classList.remove('hidden'); editTrackId = null; }
+    
+    // ВАША ИСПРАВЛЕННАЯ ФУНКЦИЯ ОТПРАВКИ НА МОДЕРАЦИЮ
+    function submitFinalRelease() {
+        document.querySelectorAll('.error-field').forEach(el => el.classList.remove('error-field')); 
+        let hasError = false;
+        ['r_type', 'r_title', 'r_genre', 'r_year', 'r_releaseDate'].forEach(id => { 
+            const el = document.getElementById(id); 
+            if(!el.value) { el.classList.add('error-field'); hasError = true; }
+        });
+        
+        if(!getMultiVal('r_artist_container')) { document.getElementById('r_artist_container').classList.add('error-field'); hasError = true; }
+        if(!draftRelease.coverFile) { document.getElementById('r_cover_box').classList.add('error-field'); hasError = true; }
+        if(hasError) return UI.alert("Ошибка", "Заполните обязательные поля релиза.");
+        
+        const type = document.getElementById('r_type').value; 
+        if(draftRelease.tracks.length === 0) return UI.alert("Ошибка", "Добавьте трек");
+        for(let i=0; i < draftRelease.tracks.length; i++) { 
+            if(!draftRelease.tracks[i].isFilled) return UI.alert("Ошибка", `Заполните инфо о треке №${i+1}`); 
+        }
+        
+        const existingRelease = appState.releases.find(r => r.id === currentDraftId);
+        const isAdmin = currentUser.role === 'Administrator';
+        
+        const finalId = currentDraftId || Date.now().toString();
+
+        const releaseData = { 
+            id: finalId, 
+            userId: (existingRelease && isAdmin) ? existingRelease.userId : currentUser.id, 
+            userEmail: (existingRelease && isAdmin) ? existingRelease.userEmail : currentUser.email, 
+            type, 
+            title: document.getElementById('r_title').value, 
+            artist: getMultiVal('r_artist_container'), 
+            genre: document.getElementById('r_genre').value, 
+            year: document.getElementById('r_year').value, 
+            releaseDate: document.getElementById('r_releaseDate').value, 
+            comment: document.getElementById('r_comment').value, 
+            status: (existingRelease && isAdmin) ? existingRelease.status : 'Модерация', 
+            date: existingRelease ? existingRelease.date : new Date().toLocaleDateString(), 
+            coverFile: draftRelease.coverFile, 
+            tracks: draftRelease.tracks, 
+            isDeleted: false, 
+            upc: document.getElementById('r_upc').value, 
+            adminIsrc: existingRelease ? existingRelease.adminIsrc : '' 
+        };
+        
+        isDraftDirty = false;
+        currentDraftId = finalId;
+        const localIndex = appState.releases.findIndex(r => r.id === finalId);
+        if(localIndex >= 0) appState.releases[localIndex] = releaseData; else appState.releases.push(releaseData);
+
+        if(!isAdmin) { 
+            UI.alert("Успешно!", "Релиз на модерации"); 
+            navCatalog('mod'); 
+            sendEmailNotification("Новый релиз на модерации", `Артист ${currentUser.login} (${currentUser.email}) отправил релиз "${releaseData.title}" (${releaseData.type}) на проверку.\n\nЗайдите в панель управления, чтобы проверить.`);
+        } else { 
+            UI.alert("Сохранено!", "Изменения применены."); 
+            nav('adminReleases', true); 
+        }
+
+        db.ref('releases/' + finalId).set(releaseData).catch(err => {
+            console.error(err);
+            UI.alert("Сбой сети или базы данных", "Ошибка при загрузке файлов. Скорее всего, аудиофайлы слишком тяжелые для передачи в формате Base64, и сервер оборвал соединение. Попробуйте сжать файлы.");
+        });
+    }
+
+    function renderCard(r, isAdmin) {
+        let status = ''; if(r.status === 'Черновик') status = '<span class="badge badge-draft">Черновик</span>'; else if(r.status === 'Модерация') status = '<span class="badge badge-mod">Модерация</span>'; else if(r.status === 'Одобрен') status = '<span class="badge badge-ok">Одобрен</span>'; else if(r.status === 'Отклонён') status = `<span class="badge badge-err" style="cursor:pointer" onclick="UI.alert('Отклонен', '${r.rejectReason}')">Отклонен ⓘ</span>`; if(r.isDeleted) status = '<span class="badge badge-err">Удален</span>';
+        const coverSrc = r.coverFile || ''; let actions = '';
+        const isModOrAdmin = currentUser.role === 'Administrator';
+        if(isAdmin && !r.isDeleted && isModOrAdmin) { 
+            actions = `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="viewReleaseAdmin('${r.id}')">Подробнее</button><button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="editDraft('${r.id}')">Изменить</button>`;
+            if(r.status !== 'Черновик') actions += `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; border-color: var(--warning); color: var(--warning); margin-right: 8px;" onclick="admRevoke('${r.id}')">Отозвать</button>`;
+            if(r.status === 'Модерация') actions += `<button class="btn-outline" style="padding: 6px; border-color: var(--success); color: var(--success); margin-right: 4px;" onclick="admApprove('${r.id}')">✓</button><button class="btn-outline" style="padding: 6px; border-color: var(--danger); color: var(--danger);" onclick="admReject('${r.id}')">✗</button>`;
+            actions += `<button class="btn-danger" style="padding: 6px 10px; font-size: 12px; margin-left: 8px;" onclick="admDelete('${r.id}')">Удалить</button>`; 
+        } 
+        else if (isAdmin && r.isDeleted && isModOrAdmin) { actions = `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="viewReleaseAdmin('${r.id}')">Просмотр</button><button class="btn-success" style="padding: 6px 10px; font-size: 12px;" onclick="admRestore('${r.id}')">Восстановить</button>`; } 
+        else if (!isAdmin) { 
+            actions = `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="viewReleaseAdmin('${r.id}')">Информация</button>`; 
+            if (r.status === 'Черновик') { actions += `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="editDraft('${r.id}')">Изменить</button><button class="btn-danger" style="padding: 6px 10px; font-size: 12px;" onclick="deleteDraft('${r.id}')">Удалить</button>`; }
+            if (r.status === 'Отклонён') { actions += `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="editDraft('${r.id}')">Исправить</button>`; } 
+        }
+        return `<div class="card"><div style="display: flex; align-items: center; flex: 1;"><img src="${coverSrc}" class="card-cover"><div><div class="card-title">${r.title} <span style="font-weight: normal; color: var(--text-muted); font-size: 15px;">— ${r.type || 'Не выбран'}</span></div><div class="card-artist">${r.artist} • ${r.tracks ? r.tracks.length : 0} трек(ов) ${isAdmin ? `• От: ${r.userEmail}` : ''}</div>${r.upc ? `<div class="text-sm" style="color: var(--success); margin-top: 4px;">UPC: ${r.upc}</div>` : ''}</div></div><div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px;">${status}${actions ? `<div style="margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); display:flex; flex-wrap: wrap; gap: 4px;">${actions}</div>` : ''}</div></div>`;
+    }
+    function renderCatalog() {
+        const searchQuery = document.getElementById('searchReleases').value.toLowerCase();
+        let list = appState.releases.filter(r => r.userEmail === currentUser.email && !r.isDeleted);
+        list = list.filter(r => {
+            if (activeCatalogFilter === 'drafts') return r.status === 'Черновик';
+            if (activeCatalogFilter === 'mod') return r.status === 'Модерация';
+            if (activeCatalogFilter === 'fix') return r.status === 'Отклонён';
+            if (activeCatalogFilter === 'all') return true;
+            return true;
+        });
+        if (searchQuery) list = list.filter(r => `${r.title} ${r.artist} ${r.upc || ''}`.toLowerCase().includes(searchQuery));
+        const container = document.getElementById('userReleasesList');
+        if (list.length === 0 && !searchQuery) container.innerHTML = `<div class="empty-state"><h2>Нет релизов</h2><button class="btn-primary" style="padding: 16px 24px; font-size: 16px; margin-top: 20px;" onclick="startNewRelease()">Создать релиз</button></div>`; 
+        else container.innerHTML = list.map(r => renderCard(r, false)).reverse().join(''); 
+    }
+    function renderAdminReleases(showDeleted) {
+        let list = appState.releases.filter(r => r.isDeleted === showDeleted);
+        if (!showDeleted) {
+            const searchInput = document.getElementById('searchAdminReleases'); const searchVal = searchInput ? searchInput.value.toLowerCase() : '';
+            if (searchVal) list = list.filter(r => `${r.title} ${r.artist} ${r.upc || ''} ${r.userEmail || ''}`.toLowerCase().includes(searchVal));
+        }
+        document.getElementById(showDeleted ? 'adminDeletedList' : 'adminReleasesList').innerHTML = list.length ? list.map(r => renderCard(r, true)).reverse().join('') : '<p class="text-sm">Список пуст</p>';
+    }
+
+    function adminSubmitAllDrafts() {
+        const drafts = appState.releases.filter(r => r.status === 'Черновик' && !r.isDeleted);
+        if(drafts.length === 0) return UI.alert("Инфо", "Нет доступных черновиков.");
+        UI.confirm(`Вы уверены, что хотите отправить на модерацию все черновики (${drafts.length} шт.)?`, () => {
+            drafts.forEach(r => { 
+                r.status = 'Модерация'; 
+                db.ref('releases/' + r.id).set(r); 
+            });
+            UI.alert("Успешно", "Черновики отправлены на модерацию.");
+            renderAdminReleases(false);
+        });
+    }
+
+    function admApprove(id) { 
+        const r = appState.releases.find(x => x.id === id); 
+        const isAlbum = r.type === 'Альбом/EP';
+
+        const step1Fields = [{id:'upc', placeholder:'UPC', value: r.upc || ''}];
+        if (!isAlbum) step1Fields.push({id:'isrc', placeholder:'ISRC', value: r.adminIsrc || (r.tracks && r.tracks[0] && r.tracks[0].isrc) || ''});
+
+        UI.prompt(isAlbum ? "Принять релиз (Шаг 1: UPC)" : "Принять релиз", step1Fields, (res1) => { 
+            if(res1.upc) r.upc = res1.upc; 
+            if(!isAlbum && res1.isrc) { r.adminIsrc = res1.isrc; if(r.tracks && r.tracks.length > 0) r.tracks[0].isrc = res1.isrc; }
+            
+            if (isAlbum) {
+                const trackFields = (r.tracks || []).map((t, i) => ({ id: 'isrc_'+i, label: `ISRC для: ${t.title}`, placeholder: 'ISRC', value: t.isrc || '' }));
+                UI.prompt("Принять релиз (Шаг 2: ISRC треков)", trackFields, (res2) => {
+                    r.tracks.forEach((t, i) => { if(res2['isrc_'+i]) t.isrc = res2['isrc_'+i]; });
+                    finishAdmApprove(r);
+                });
+            } else { finishAdmApprove(r); }
+        }); 
+    }
+
+    function finishAdmApprove(r) {
+        r.status = 'Одобрен'; 
+        
+        if (currentUser.email === ADMIN_EMAIL && r.userEmail === ADMIN_EMAIL) {
+            const userOptions = appState.users.filter(u => !u.isDeletedCabinet).map(u => ({v: u.email, t: `${u.login} (${u.email})`}));
+            UI.prompt("Кому передать этот релиз?", [{id: 'targetUser', label: 'Выберите кабинет', type: 'select', options: userOptions}], (resTransfer) => {
+                r.userEmail = resTransfer.targetUser;
+                const targetU = appState.users.find(x => x.email === resTransfer.targetUser);
+                if(targetU) r.userId = targetU.id;
+                
+                db.ref('releases/' + r.id).set(r);
+                pushNotification(r.userEmail, `✅ Ваш релиз "${r.title}" был одобрен модератором.`); 
+                renderAdminReleases(false); 
+            });
+        } else {
+            db.ref('releases/' + r.id).set(r);
+            pushNotification(r.userEmail, `✅ Ваш релиз "${r.title}" был одобрен модератором.`); 
+            renderAdminReleases(false); 
+        }
+    }
+
+    function admReject(id) { UI.prompt("Отклонить релиз", [{id:'reason', placeholder:'Причина'}], (res) => { const r = appState.releases.find(x => x.id === id); r.status = 'Отклонён'; r.rejectReason = res.reason || 'Не соответствует требованиям'; db.ref('releases/' + r.id).set(r); pushNotification(r.userEmail, `❌ Ваш релиз "${r.title}" был отклонен. Причина: ${r.rejectReason}`); renderAdminReleases(false); }); }
+    function admDelete(id) { UI.confirm("Перенести в удаленные?", () => { const r = appState.releases.find(x => x.id === id); r.isDeleted = true; db.ref('releases/' + r.id).set(r); renderAdminReleases(false); }); }
+    function admRestore(id) { const r = appState.releases.find(x => x.id === id); r.isDeleted = false; db.ref('releases/' + r.id).set(r); renderAdminReleases(true); }
+    function admRevoke(id) { UI.confirm("Отозвать артисту?", () => { const r = appState.releases.find(x => x.id === id); r.status = 'Черновик'; db.ref('releases/' + r.id).set(r); pushNotification(r.userEmail, `⚠️ Ваш релиз "${r.title}" был отозван модератором и возвращен в Черновики.`); renderAdminReleases(false); }); }
+    
+    function viewReleaseAdmin(id) {
+        const r = appState.releases.find(x => x.id === id); const coverUrl = r.coverFile || '';
+        document.getElementById('admRelCover').src = coverUrl; document.getElementById('admCoverDl').onclick = () => { const a = document.createElement('a'); a.href = coverUrl; a.download = `${r.artist}-${r.title}.jpg`; a.click(); };
+        const isAlbum = r.type === 'Альбом/EP';
+        const globalIsrcHTML = isAlbum ? '' : `<div><b>ISRC:</b> ${r.adminIsrc || '-'}</div>`;
+        
+        document.getElementById('admRelInfo').innerHTML = `<div style="font-size: 28px; font-weight: bold; margin-bottom: 4px;">${r.title}</div><div style="color: var(--text-muted); margin-bottom: 24px; font-size: 16px;">Артист: <span style="color:#fff;">${r.artist}</span></div><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; font-size: 14px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid var(--border);"><div><b>Формат:</b> ${r.type}</div><div><b>Жанр:</b> ${r.genre}</div><div><b>Год:</b> ${r.year}</div><div><b>Дата:</b> ${r.releaseDate}</div><div><b>UPC:</b> ${r.upc || '-'}</div>${globalIsrcHTML}</div>`;
+        document.getElementById('admRelTracks').innerHTML = r.tracks.map((t, i) => `<div style="background: var(--bg-glass); border: 1px solid var(--border); padding: 16px; border-radius: 12px; margin-bottom: 10px; word-break: break-all;"><div style="font-weight: 600;">${i+1}. ${t.title}</div><audio controls src="${t.audioFile}" style="width: 100%; margin: 10px 0;"></audio><div class="text-sm">Артист: ${t.artist} | Авторы: ${t.author} | Композиторы: ${t.comp} | ISRC: <span style="color:var(--success); font-weight:bold;">${t.isrc || '-'}</span></div></div>`).join('');
+        document.getElementById('adminReleaseModal').classList.remove('hidden');
+    }
+
+    /* ===== AetherLab custom date picker ===== */
+    (function(){
+        const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+        const weekNames = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+        let active = null;
+        let popover = null;
+        let viewDate = new Date();
+        let originalValueDescriptor = null;
+
+        function pad(n){ return String(n).padStart(2,'0'); }
+        function toIso(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+        function parseIso(v){
+            const m = String(v || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if(!m) return null;
+            const d = new Date(+m[1], +m[2]-1, +m[3]);
+            return Number.isNaN(d.getTime()) ? null : d;
+        }
+        function formatDate(v){
+            const d = parseIso(v);
+            return d ? `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}` : '';
+        }
+        function sameDay(a,b){ return a && b && a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+
+        function getNativeValue(input){
+            if(originalValueDescriptor && originalValueDescriptor.get) return originalValueDescriptor.get.call(input);
+            return input.getAttribute('value') || '';
+        }
+        function setNativeValue(input, value){
+            if(originalValueDescriptor && originalValueDescriptor.set) originalValueDescriptor.set.call(input, value || '');
+            else input.setAttribute('value', value || '');
+            if(input.__aetherDateDisplay) input.__aetherDateDisplay.value = formatDate(value);
+        }
+
+        function ensurePopover(){
+            if(popover) return popover;
+            popover = document.createElement('div');
+            popover.className = 'aether-date-popover hidden';
+            document.body.appendChild(popover);
+            popover.addEventListener('mousedown', e => e.preventDefault());
+            return popover;
+        }
+
+        function openPicker(input){
+            active = input;
+            const selected = parseIso(getNativeValue(input));
+            viewDate = selected ? new Date(selected.getFullYear(), selected.getMonth(), 1) : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+            renderPicker();
+            const rect = input.__aetherDateDisplay.getBoundingClientRect();
+            const p = ensurePopover();
+            p.classList.remove('hidden');
+            const width = Math.min(340, window.innerWidth - 28);
+            let left = Math.min(Math.max(14, rect.left), window.innerWidth - width - 14);
+            let top = rect.bottom + 10;
+            if(top + 390 > window.innerHeight) top = Math.max(14, rect.top - 390);
+            p.style.left = left + 'px';
+            p.style.top = top + 'px';
+        }
+        function closePicker(){ if(popover) popover.classList.add('hidden'); active = null; }
+
+        function renderPicker(){
+            const p = ensurePopover();
+            const selected = active ? parseIso(getNativeValue(active)) : null;
+            const today = new Date();
+            const year = viewDate.getFullYear();
+            const month = viewDate.getMonth();
+            const first = new Date(year, month, 1);
+            const start = new Date(first);
+            const mondayOffset = (first.getDay() + 6) % 7;
+            start.setDate(first.getDate() - mondayOffset);
+            let days = '';
+            for(let i=0;i<42;i++){
+                const d = new Date(start);
+                d.setDate(start.getDate()+i);
+                const cls = ['aether-date-day'];
+                if(d.getMonth() !== month) cls.push('other');
+                if(sameDay(d, today)) cls.push('today');
+                if(selected && sameDay(d, selected)) cls.push('selected');
+                days += `<button type="button" class="${cls.join(' ')}" data-date="${toIso(d)}">${d.getDate()}</button>`;
+            }
+            p.innerHTML = `
+                <div class="aether-date-head">
+                    <div class="aether-date-title">${monthNames[month]} ${year}</div>
+                    <div class="aether-date-nav">
+                        <button type="button" data-action="prev" title="Предыдущий месяц">↑</button>
+                        <button type="button" data-action="next" title="Следующий месяц">↓</button>
+                    </div>
+                </div>
+                <div class="aether-date-week">${weekNames.map(w=>`<span>${w}</span>`).join('')}</div>
+                <div class="aether-date-grid">${days}</div>
+                <div class="aether-date-actions">
+                    <button type="button" class="danger-lite" data-action="clear">Удалить</button>
+                    <button type="button" data-action="today">Сегодня</button>
+                </div>`;
+            p.querySelector('[data-action="prev"]').onclick = () => { viewDate.setMonth(viewDate.getMonth()-1); renderPicker(); };
+            p.querySelector('[data-action="next"]').onclick = () => { viewDate.setMonth(viewDate.getMonth()+1); renderPicker(); };
+            p.querySelector('[data-action="clear"]').onclick = () => selectDate('');
+            p.querySelector('[data-action="today"]').onclick = () => selectDate(toIso(new Date()));
+            p.querySelectorAll('[data-date]').forEach(btn => btn.onclick = () => selectDate(btn.dataset.date));
+        }
+
+        function selectDate(value){
+            if(!active) return;
+            setNativeValue(active, value);
+            active.dispatchEvent(new Event('input', { bubbles:true }));
+            active.dispatchEvent(new Event('change', { bubbles:true }));
+            closePicker();
+        }
+
+        function initDateInput(input){
+            if(input.__aetherDateReady) return;
+            input.__aetherDateReady = true;
+            if(!originalValueDescriptor) originalValueDescriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'aether-date-field';
+            const display = document.createElement('input');
+            display.type = 'text';
+            display.className = 'aether-date-display';
+            display.placeholder = 'дд.мм.гггг';
+            display.readOnly = true;
+            display.value = formatDate(input.value);
+            input.parentNode.insertBefore(wrapper, input);
+            wrapper.appendChild(input);
+            wrapper.appendChild(display);
+            input.classList.add('aether-native-date-hidden');
+            input.__aetherDateDisplay = display;
+            try{
+                Object.defineProperty(input, 'value', {
+                    configurable:true,
+                    get(){ return getNativeValue(input); },
+                    set(v){ setNativeValue(input, v); }
+                });
+            }catch(e){}
+            display.addEventListener('focus', () => openPicker(input));
+            display.addEventListener('click', () => openPicker(input));
+            display.addEventListener('keydown', (e) => {
+                if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openPicker(input); }
+                if(e.key === 'Escape') closePicker();
+            });
+            input.addEventListener('change', () => { display.value = formatDate(getNativeValue(input)); });
+        }
+
+        function initAll(){ document.querySelectorAll('input[type="date"]').forEach(initDateInput); }
+        document.addEventListener('DOMContentLoaded', initAll);
+        window.addEventListener('load', initAll);
+        document.addEventListener('click', (e) => {
+            if(!popover || popover.classList.contains('hidden')) return;
+            const isInsidePopover = popover.contains(e.target);
+            const isDisplay = e.target && e.target.classList && e.target.classList.contains('aether-date-display');
+            if(!isInsidePopover && !isDisplay) closePicker();
+        });
+        window.addEventListener('resize', () => { if(active) openPicker(active); });
+        window.AetherLabDatePickerInit = initAll;
+    })();
+
+</script>
+    <script>
+(function () {
+    const sectionRoutes = {
+        overview: '/dashboard',
+        newRelease: '/new-release',
+        news: '/news',
+        guide: '/instruction',
+        userChat: '/support',
+        adminChats: '/artists-support',
+        adminUsers: '/cabinets',
+        adminReleases: '/admin-releases',
+        adminDeleted: '/deleted',
+        adminContent: '/content-manager',
+        karaoke: '/lyrics-karaoke'
+    };
+
+    const catalogRoutes = {
+        all: '/releases',
+        drafts: '/drafts',
+        mod: '/moderation',
+        fix: '/fixes'
+    };
+
+    const pathToAction = {
+        '/': () => nav('overview'),
+        '/dashboard': () => nav('overview'),
+        '/new-release': () => startNewRelease(),
+        '/releases': () => navCatalog('all'),
+        '/drafts': () => navCatalog('drafts'),
+        '/moderation': () => navCatalog('mod'),
+        '/fixes': () => navCatalog('fix'),
+        '/news': () => nav('news'),
+        '/instruction': () => nav('guide'),
+        '/support': () => nav('userChat'),
+        '/artists-support': () => nav('adminChats'),
+        '/cabinets': () => nav('adminUsers'),
+        '/admin-releases': () => nav('adminReleases'),
+        '/deleted': () => nav('adminDeleted'),
+        '/content-manager': () => nav('adminContent'),
+        '/lyrics-karaoke': () => nav('karaoke')
+    };
+
+    function setKitePath(path) {
+        if (location.pathname !== path) {
+            history.pushState({ kitePath: path }, '', path);
+        }
+    }
+
+    function openCurrentPath() {
+        const path = location.pathname.replace(/\/$/, '') || '/';
+        const action = pathToAction[path] || pathToAction['/dashboard'];
+
+        window.__kiteRouteOpening = true;
+        try {
+            action();
+        } catch (e) {
+            console.warn('Kite route open error:', e);
+        }
+        window.__kiteRouteOpening = false;
+    }
+
+    function patchNavigation() {
+        if (typeof window.nav === 'function' && !window.nav.__kitePatched) {
+            const oldNav = window.nav;
+            window.nav = function (section) {
+                const result = oldNav.apply(this, arguments);
+                if (!window.__kiteRouteOpening && sectionRoutes[section]) {
+                    setKitePath(sectionRoutes[section]);
+                }
+                return result;
+            };
+            window.nav.__kitePatched = true;
+        }
+
+        if (typeof window.navCatalog === 'function' && !window.navCatalog.__kitePatched) {
+            const oldNavCatalog = window.navCatalog;
+            window.navCatalog = function (type) {
+                const result = oldNavCatalog.apply(this, arguments);
+                if (!window.__kiteRouteOpening && catalogRoutes[type]) {
+                    setKitePath(catalogRoutes[type]);
+                }
+                return result;
+            };
+            window.navCatalog.__kitePatched = true;
+        }
+
+        if (typeof window.startNewRelease === 'function' && !window.startNewRelease.__kitePatched) {
+            const oldStartNewRelease = window.startNewRelease;
+            window.startNewRelease = function () {
+                const result = oldStartNewRelease.apply(this, arguments);
+                if (!window.__kiteRouteOpening) {
+                    setKitePath('/new-release');
+                }
+                return result;
+            };
+            window.startNewRelease.__kitePatched = true;
+        }
+    }
+
+    window.addEventListener('popstate', openCurrentPath);
+
+    document.addEventListener('DOMContentLoaded', function () {
+        patchNavigation();
+
+        const routeTimer = setInterval(function () {
+            patchNavigation();
+
+            const app = document.getElementById('appView');
+            if (app && !app.classList.contains('hidden')) {
+                clearInterval(routeTimer);
+                openCurrentPath();
+            }
+        }, 300);
+    });
+})();
+</script>
+</body>
+</html>
