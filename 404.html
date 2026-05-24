@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kite</title>
-    
+
     <link rel="icon" type="image/png" href="favicon.png">
 
     <meta name="description" content="Kite Label — личный кабинет для артистов, загрузки релизов, модерации музыки, новостей и инструкций.">
 <meta name="keywords" content="Kite, Kite Label, kite label, кайт, Кайт, кайт лейбл, Кайт лейбл, музыкальный лейбл, дистрибуция музыки, кабинет артиста">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://kitelabel.ru/">
-    
+
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     
@@ -185,8 +185,8 @@
             --border:rgba(255,255,255,.08);
             --text-main:#f5f7fb;
             --text-muted:#aab0c0;
-            --accent:#7b61ff;
-            --accent-bg:#9f76ff;
+            --accent:#446EF0;
+            --accent-bg:#5D83FF;
             --danger:#ef4444;
             --success:#22c55e;
             --warning:#f59e0b;
@@ -223,8 +223,8 @@
         .logo-mark{
             width:42px;height:42px;border-radius:14px;
             display:grid;place-items:center;
-            background:linear-gradient(135deg,var(--accent),#b07cff);
-            box-shadow:0 10px 24px rgba(123,97,255,.3);
+            background:linear-gradient(135deg,var(--accent),#67e8f9);
+            box-shadow:0 10px 24px rgba(68,110,240,.3);
             color:#fff;font-weight:800;
             flex:0 0 auto;
         }
@@ -250,14 +250,14 @@
             border-radius:16px;
             color:#fff;
         }
-        input:focus,select:focus,textarea:focus{border-color:rgba(123,97,255,.65);box-shadow:0 0 0 3px rgba(123,97,255,.14);}
+        input:focus,select:focus,textarea:focus{border-color:rgba(68,110,240,.65);box-shadow:0 0 0 3px rgba(68,110,240,.14);}
         button{border-radius:999px;}
         .btn-primary{
-            background:linear-gradient(135deg,var(--accent),#9f76ff);
+            background:linear-gradient(135deg,var(--accent),#5D83FF);
             color:#fff;
-            box-shadow:0 12px 28px rgba(123,97,255,.18);
+            box-shadow:0 12px 28px rgba(68,110,240,.18);
         }
-        .btn-primary:hover:not(:disabled){background:linear-gradient(135deg,#8b74ff,#b08cff);box-shadow:0 16px 34px rgba(123,97,255,.28);}
+        .btn-primary:hover:not(:disabled){background:linear-gradient(135deg,#315BDB,#7A98FF);box-shadow:0 16px 34px rgba(68,110,240,.28);}
         .btn-outline{
             background:rgba(255,255,255,.05);
             border:1px solid rgba(255,255,255,.12);
@@ -266,7 +266,7 @@
         .btn-outline:hover:not(:disabled){background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);}
         .btn-danger{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.22);color:#ffb1b1;}
         .btn-success{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.22);color:#92f4b3;}
-        .btn-add-plus{background:linear-gradient(135deg,var(--accent),#9f76ff);border-radius:16px;}
+        .btn-add-plus{background:linear-gradient(135deg,var(--accent),#5D83FF);border-radius:16px;}
         .btn-add-minus{background:linear-gradient(135deg,#ef4444,#dc2626);border-radius:16px;}
         .menu-btn{
             width:100%;border:0;background:transparent;color:#eef2fb;
@@ -275,7 +275,7 @@
         }
         .menu-btn:hover,.menu-btn.active{background:rgba(255,255,255,.08);color:#fff;}
         .menu-btn.active{border-left:0;border-radius:14px;}
-        .menu-btn.primary-nav{background:linear-gradient(135deg,var(--accent),#9f76ff);color:#fff;margin:10px 0 8px;box-shadow:0 12px 26px rgba(123,97,255,.22);}
+        .menu-btn.primary-nav{background:linear-gradient(135deg,var(--accent),#5D83FF);color:#fff;margin:10px 0 8px;box-shadow:0 12px 26px rgba(68,110,240,.22);}
         .mil{display:flex;align-items:center;gap:12px;}
         .ico{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.04);color:var(--text-muted);font-size:12px;flex:0 0 auto;}
         .ico svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
@@ -298,7 +298,7 @@
         .stat-label{font-size:12px;color:var(--text-muted);text-transform:none;letter-spacing:0;font-weight:500;}
         .card{padding:18px;cursor:default;transition:.18s;background:rgba(255,255,255,.04);}
         .card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.055);}
-        .card-cover{width:58px;height:58px;border-radius:16px;border:0;background:linear-gradient(135deg,rgba(123,97,255,.7),rgba(54,194,255,.52));box-shadow:none;}
+        .card-cover{width:58px;height:58px;border-radius:16px;border:0;background:linear-gradient(135deg,rgba(68,110,240,.7),rgba(93,131,255,.52));box-shadow:none;}
         .card-title{font-size:18px;font-weight:700;}
         .card-artist{color:var(--text-muted);line-height:1.5;}
         .badge{border-radius:999px;padding:8px 12px;font-size:12px;border:1px solid transparent;}
@@ -309,7 +309,7 @@
         .track-list-item,.chat-wrap,.admin-chat-layout,.admin-chat-users{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:18px;}
         .track-list-item:hover{border-color:rgba(255,255,255,.16);}
         .chat-input-area{background:rgba(23,28,39,.94);border-top:1px solid var(--border);}
-        .msg-me{background:linear-gradient(135deg,var(--accent),#9f76ff);color:#fff;}
+        .msg-me{background:linear-gradient(135deg,var(--accent),#5D83FF);color:#fff;}
         .msg-them{background:rgba(255,255,255,.05);border:1px solid var(--border);}
         .mobile-header{background:rgba(10,12,18,.72);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
         .avatar-wrap{border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--border);}
@@ -341,19 +341,19 @@
         .nav-unread-dot{
             width:10px;height:10px;border-radius:50%;display:inline-block;
             background:var(--accent);
-            box-shadow:0 0 0 3px rgba(123,97,255,.16),0 0 18px rgba(123,97,255,.9);
+            box-shadow:0 0 0 3px rgba(68,110,240,.16),0 0 18px rgba(68,110,240,.9);
             flex:0 0 auto;
         }
         .chat-unread-indicator{
             background:var(--accent)!important;
-            box-shadow:0 0 0 3px rgba(123,97,255,.16),0 0 18px rgba(123,97,255,.9);
+            box-shadow:0 0 0 3px rgba(68,110,240,.16),0 0 18px rgba(68,110,240,.9);
         }
         .chat-wrap,.admin-chat-layout{background:rgba(18,23,34,.88)!important;}
         .chat-msgs{
             background-color:rgba(16,20,30,.94);
             background-image:
-                radial-gradient(circle at 18px 18px, rgba(123,97,255,.12) 0 2px, transparent 2.5px),
-                radial-gradient(circle at 70px 58px, rgba(54,194,255,.08) 0 1.8px, transparent 2.4px),
+                radial-gradient(circle at 18px 18px, rgba(68,110,240,.12) 0 2px, transparent 2.5px),
+                radial-gradient(circle at 70px 58px, rgba(93,131,255,.08) 0 1.8px, transparent 2.4px),
                 linear-gradient(135deg, rgba(255,255,255,.025) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.025) 50%, rgba(255,255,255,.025) 75%, transparent 75%, transparent);
             background-size:92px 92px,112px 112px,38px 38px;
         }
@@ -368,13 +368,13 @@
         .avatar-crop-area img{position:absolute;max-width:100%;max-height:100%;left:50%;top:50%;transform:translate(-50%,-50%);}
         .avatar-crop-square{
             position:absolute;width:190px;height:190px;left:85px;top:85px;border:2px solid #fff;border-radius:18px;
-            box-shadow:0 0 0 999px rgba(0,0,0,.52),0 0 20px rgba(123,97,255,.7);
+            box-shadow:0 0 0 999px rgba(0,0,0,.52),0 0 20px rgba(68,110,240,.7);
             cursor:move;touch-action:none;
         }
         .avatar-crop-resize{
             position:absolute;right:-11px;bottom:-11px;width:24px;height:24px;border-radius:50%;
-            background:linear-gradient(135deg,var(--accent),#9f76ff);
-            border:2px solid #fff;box-shadow:0 8px 22px rgba(123,97,255,.45);
+            background:linear-gradient(135deg,var(--accent),#5D83FF);
+            border:2px solid #fff;box-shadow:0 8px 22px rgba(68,110,240,.45);
             cursor:nwse-resize;touch-action:none;
         }
         .avatar-crop-resize::before{
@@ -413,10 +413,10 @@
             justify-content:center;
             padding:14px 24px;
             border-radius:999px;
-            background:linear-gradient(135deg,var(--accent),#9f76ff);
+            background:linear-gradient(135deg,var(--accent),#5D83FF);
             color:#fff;
             font-weight:700;
-            box-shadow:0 14px 32px rgba(123,97,255,.28);
+            box-shadow:0 14px 32px rgba(68,110,240,.28);
             text-decoration:none;
         }
         .support-unavailable .telegram-btn:hover{transform:translateY(-1px);}
@@ -428,7 +428,7 @@
             color:#f5f7fb!important;
         }
         select option:checked{
-            background:#7b61ff!important;
+            background:#446EF0!important;
             color:#fff!important;
         }
         .custom-select-source{
@@ -447,14 +447,14 @@
             min-height:58px;
             padding:14px 44px 14px 16px;
             border-radius:22px;
-            border:1px solid rgba(123,97,255,.65);
+            border:1px solid rgba(68,110,240,.65);
             background:rgba(255,255,255,.05);
             color:#fff;
             display:flex;
             align-items:center;
             justify-content:space-between;
             text-align:left;
-            box-shadow:0 0 0 3px rgba(123,97,255,.12);
+            box-shadow:0 0 0 3px rgba(68,110,240,.12);
             cursor:pointer;
             font-weight:600;
         }
@@ -470,8 +470,8 @@
             opacity:.9;
         }
         .custom-select.open .custom-select-btn{
-            border-color:rgba(159,118,255,.95);
-            box-shadow:0 0 0 4px rgba(123,97,255,.18);
+            border-color:rgba(93,131,255,.95);
+            box-shadow:0 0 0 4px rgba(68,110,240,.18);
         }
         .custom-select-list{
             position:absolute;
@@ -499,7 +499,7 @@
         }
         .custom-select-option:hover,
         .custom-select-option.active{
-            background:linear-gradient(135deg,var(--accent),#9f76ff);
+            background:linear-gradient(135deg,var(--accent),#5D83FF);
             color:#fff;
         }
         .custom-select-option.disabled{
@@ -599,10 +599,10 @@
         .custom-file-btn{
             border-radius:999px;
             padding:12px 18px;
-            background:linear-gradient(135deg,var(--accent),#9f76ff);
+            background:linear-gradient(135deg,var(--accent),#5D83FF);
             color:#fff;
             font-weight:700;
-            box-shadow:0 12px 26px rgba(123,97,255,.22);
+            box-shadow:0 12px 26px rgba(68,110,240,.22);
         }
         .custom-file-name{
             color:var(--text-muted);
@@ -736,7 +736,78 @@
             z-index:2;
         }
 
-        /* ===== AetherLab custom date picker ===== */
+    
+    function getPromoForRelease(releaseId){
+        return (appState.promoLinks || []).find(x => String(x.releaseId) === String(releaseId) && !x.deleted);
+    }
+    function savePromoLinkRecord(record){
+        if(!record.id) record.id = Date.now().toString();
+        const idx = appState.promoLinks.findIndex(x => String(x.id) === String(record.id));
+        if(idx >= 0) appState.promoLinks[idx] = record; else appState.promoLinks.push(record);
+        db.ref('promoLinks/' + record.id).set(record);
+        renderPromoLinks();
+    }
+    function renderPromoLinks(){
+        const area = document.getElementById('promoLinksArea');
+        if(!area || !currentUser) return;
+        const isAdmin = currentUser.role === 'Administrator';
+        const rels = appState.releases.filter(r => !r.isDeleted && (isAdmin || r.userEmail === currentUser.email));
+        if(isAdmin){
+            area.innerHTML = `<div class="promo-admin-panel">
+                <h2>Промо-ссылки для релизов</h2>
+                <p class="text-sm" style="margin-bottom:16px;">Выберите релиз и добавьте ссылку. Артист увидит её в своём кабинете.</p>
+                <div class="karaoke-grid">
+                    <div class="form-group"><label>Релиз</label><select id="promoReleaseSelect">${rels.map(r=>`<option value="${escapeAttr(r.id)}">${escapeHTML(r.artist || '')} — ${escapeHTML(r.title || 'Без названия')}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Промо-ссылка</label><input type="url" id="promoUrlInput" placeholder="https://..."></div>
+                </div>
+                <button class="btn-primary" onclick="addPromoLinkFromAdmin()">Сохранить ссылку</button>
+            </div><div id="promoCardsList" style="margin-top:18px;">${renderPromoCards(rels, true)}</div>`;
+            setTimeout(()=>initCustomSelects(area),0);
+        } else {
+            area.innerHTML = `<div id="promoCardsList">${renderPromoCards(rels, false)}</div>`;
+        }
+    }
+    function renderPromoCards(rels, isAdmin){
+        if(!rels.length) return '<div class="empty-panel">Пока нет релизов для промо-ссылок.</div>';
+        return rels.map(r => {
+            const promo = getPromoForRelease(r.id);
+            const url = promo ? promo.url : '';
+            return `<div class="promo-release-card">
+                <img src="${r.coverFile || ''}" alt="Обложка">
+                <div class="promo-release-main">
+                    <div class="release-title-pro">${escapeHTML(r.title || 'Без названия')}</div>
+                    <div class="release-artist-pro">${escapeHTML(r.artist || '—')}</div>
+                    <div class="text-sm">Дата выхода: ${escapeHTML(formatReleaseDate(r.releaseDate))}</div>
+                    ${url ? `<div class="promo-url">${escapeHTML(url)}</div>` : `<div class="text-sm" style="margin-top:8px;">Промо-ссылка пока не добавлена.</div>`}
+                </div>
+                <div class="promo-actions">
+                    ${url ? `<button class="btn-outline" onclick="copyPromoLink('${escapeAttr(url)}')">Скопировать ссылку</button><button class="btn-primary" onclick="window.open('${escapeAttr(url)}','_blank','noopener')">Открыть в новой вкладке</button>` : ''}
+                    ${isAdmin && url ? `<button class="btn-danger" onclick="deletePromoLink('${escapeAttr(promo.id)}')">Удалить</button>` : ''}
+                </div>
+            </div>`;
+        }).join('');
+    }
+    function addPromoLinkFromAdmin(){
+        const relId = document.getElementById('promoReleaseSelect')?.value;
+        const url = (document.getElementById('promoUrlInput')?.value || '').trim();
+        if(!relId || !url) return UI.alert('Ошибка', 'Выберите релиз и вставьте ссылку.');
+        if(!/^https?:\/\//i.test(url)) return UI.alert('Ошибка', 'Ссылка должна начинаться с http:// или https://');
+        const existing = getPromoForRelease(relId);
+        savePromoLinkRecord({ id: existing ? existing.id : Date.now().toString(), releaseId: relId, url, createdAt: Date.now(), deleted:false });
+        UI.alert('Готово', 'Промо-ссылка сохранена.');
+    }
+    function copyPromoLink(url){
+        navigator.clipboard && navigator.clipboard.writeText(url).then(()=>UI.alert('Скопировано', 'Ссылка скопирована.')).catch(()=>UI.alert('Ссылка', escapeHTML(url)));
+    }
+    function deletePromoLink(id){
+        const item = (appState.promoLinks || []).find(x => String(x.id) === String(id));
+        if(!item) return;
+        item.deleted = true;
+        db.ref('promoLinks/' + item.id).set(item);
+        renderPromoLinks();
+    }
+
+    /* ===== Kite custom date picker ===== */
         .aether-native-date-hidden{
             position:absolute!important;
             opacity:0!important;
@@ -761,8 +832,8 @@
             cursor:pointer;
         }
         .aether-date-display:focus{
-            border-color:rgba(123,97,255,.75);
-            box-shadow:0 0 0 4px rgba(123,97,255,.16), inset 0 0 0 1px rgba(255,255,255,.04);
+            border-color:rgba(68,110,240,.75);
+            box-shadow:0 0 0 4px rgba(68,110,240,.16), inset 0 0 0 1px rgba(255,255,255,.04);
         }
         .aether-date-field{position:relative;width:100%;}
         .aether-date-field::after{
@@ -792,7 +863,7 @@
             border-radius:26px;
             background:linear-gradient(180deg,rgba(23,28,39,.98),rgba(15,19,26,.98));
             border:1px solid rgba(255,255,255,.12);
-            box-shadow:0 24px 70px rgba(0,0,0,.58),0 0 0 1px rgba(123,97,255,.08),0 0 34px rgba(123,97,255,.16);
+            box-shadow:0 24px 70px rgba(0,0,0,.58),0 0 0 1px rgba(68,110,240,.08),0 0 34px rgba(68,110,240,.16);
             backdrop-filter:blur(18px);
             color:#f5f7fb;
         }
@@ -804,6 +875,7 @@
             margin-bottom:12px;
         }
         .aether-date-title{
+            color:#fff!important;
             font-weight:800;
             letter-spacing:-.02em;
             font-size:16px;
@@ -823,7 +895,7 @@
             box-shadow:none;
         }
         .aether-date-nav button:hover,
-        .aether-date-actions button:hover{background:rgba(123,97,255,.18);border-color:rgba(123,97,255,.36);}
+        .aether-date-actions button:hover{background:rgba(68,110,240,.18);border-color:rgba(68,110,240,.36);}
         .aether-date-week,
         .aether-date-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
         .aether-date-week span{
@@ -846,17 +918,17 @@
             transition:.16s;
         }
         .aether-date-day:hover{
-            background:rgba(123,97,255,.18);
-            border-color:rgba(123,97,255,.34);
+            background:rgba(68,110,240,.18);
+            border-color:rgba(68,110,240,.34);
             transform:translateY(-1px);
         }
         .aether-date-day.other{color:rgba(170,176,192,.42);}
-        .aether-date-day.today{border-color:rgba(54,194,255,.42);box-shadow:inset 0 0 0 1px rgba(54,194,255,.12);}
+        .aether-date-day.today{border-color:rgba(93,131,255,.42);box-shadow:inset 0 0 0 1px rgba(93,131,255,.12);}
         .aether-date-day.selected{
-            background:linear-gradient(135deg,var(--accent),#9f76ff);
+            background:linear-gradient(135deg,var(--accent),#5D83FF);
             color:#fff;
             border-color:rgba(255,255,255,.22);
-            box-shadow:0 10px 26px rgba(123,97,255,.34);
+            box-shadow:0 10px 26px rgba(68,110,240,.34);
         }
         .aether-date-actions{
             display:flex;
@@ -901,13 +973,435 @@
         }
 
 
-    </style>
+
+        /* ===== Karaoke text synchronizer ===== */
+        .karaoke-mode-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0 22px;}
+        .karaoke-mode-card{padding:22px;border-radius:24px;border:1px solid var(--border);background:rgba(255,255,255,.04);box-shadow:var(--shadow);cursor:pointer;transition:.18s;text-align:left;}
+        .karaoke-mode-card:hover,.karaoke-mode-card.active{transform:translateY(-2px);border-color:rgba(68,110,240,.6);background:rgba(68,110,240,.10);}
+        .karaoke-mode-card h3{margin:0 0 8px;font-size:18px;}
+        .karaoke-mode-card p{margin:0;color:var(--text-muted);line-height:1.55;font-size:13px;}
+        .karaoke-panel{padding:22px;border:1px solid var(--border);border-radius:24px;background:rgba(255,255,255,.04);box-shadow:var(--shadow);margin-bottom:18px;}
+        .karaoke-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;align-items:start;}
+        .karaoke-file-box{position:relative;padding:16px;border-radius:20px;border:1px dashed rgba(255,255,255,.18);background:rgba(255,255,255,.04);}
+        .karaoke-file-box input[type=file]{position:absolute!important;opacity:0!important;width:1px!important;height:1px!important;pointer-events:none!important;}
+        .karaoke-file-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:12px 18px;background:linear-gradient(135deg,var(--accent),#5D83FF);color:#fff;font-weight:800;box-shadow:0 14px 28px rgba(68,110,240,.22);cursor:pointer;}
+        .karaoke-file-name{display:block;margin-top:10px;color:var(--text-muted);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .karaoke-sync-area audio{width:100%;margin:14px 0;}
+        .karaoke-native-audio{position:absolute!important;opacity:0!important;pointer-events:none!important;width:1px!important;height:1px!important;}
+        .aether-audio-player{
+            margin:14px 0 14px;
+            padding:16px;
+            border-radius:24px;
+            border:1px solid rgba(255,255,255,.10);
+            background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.035));
+            box-shadow:0 18px 44px rgba(0,0,0,.32), inset 0 0 0 1px rgba(255,255,255,.03);
+        }
+        .aether-player-main{display:flex;align-items:center;gap:14px;}
+        .aether-play-btn,.aether-icon-btn{
+            width:46px;height:46px;display:grid;place-items:center;
+            padding:0;border-radius:16px;
+            background:linear-gradient(135deg,var(--accent),#5D83FF);
+            color:#fff;border:1px solid rgba(255,255,255,.14);
+            box-shadow:0 14px 30px rgba(68,110,240,.24);
+            flex:0 0 auto;
+        }
+        .aether-icon-btn{width:40px;height:40px;background:rgba(255,255,255,.055);box-shadow:none;}
+        .aether-player-time{min-width:92px;color:#d7deee;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
+        .aether-progress{position:relative;flex:1;height:12px;border-radius:999px;background:rgba(255,255,255,.10);cursor:pointer;overflow:hidden;border:1px solid rgba(255,255,255,.08);}
+        .aether-progress-fill{position:absolute;left:0;top:0;bottom:0;width:0%;background:linear-gradient(90deg,var(--accent),#5D83FF);border-radius:999px;box-shadow:0 0 18px rgba(68,110,240,.45);}
+        .aether-player-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;flex-wrap:wrap;}
+        .aether-player-meta{color:var(--text-muted);font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .aether-player-rate{display:flex;align-items:center;gap:8px;}
+        .aether-player-rate .custom-select{min-width:132px;}
+        .karaoke-line.just-synced{border-color:rgba(34,197,94,.72);background:rgba(34,197,94,.10);box-shadow:0 12px 34px rgba(34,197,94,.12);}
+        .karaoke-mobile-timecode{display:none;position:fixed;left:14px;right:14px;bottom:14px;z-index:5000;padding:16px 20px;border-radius:999px;background:linear-gradient(135deg,var(--accent),#5D83FF);color:#fff;font-weight:900;box-shadow:0 18px 40px rgba(68,110,240,.38);}
+        body.karaoke-mobile-sync .content{padding-bottom:92px;}
+        .karaoke-player-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0 18px;}
+        .karaoke-player-tools select{max-width:170px;}
+        .karaoke-lines{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+        .karaoke-line{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:18px;border:1px solid var(--border);background:rgba(255,255,255,.04);transition:.16s;}
+        .karaoke-line.active{border-color:rgba(68,110,240,.7);background:rgba(68,110,240,.16);box-shadow:0 12px 32px rgba(68,110,240,.12);}
+        .karaoke-line.synced{border-color:rgba(34,197,94,.22);}
+        .karaoke-line-time{min-width:92px;color:#92f4b3;font-weight:800;font-variant-numeric:tabular-nums;font-size:13px;}
+        .karaoke-line-text{flex:1;line-height:1.45;color:#f5f7fb;white-space:pre-wrap;}
+        .karaoke-help{padding:14px 16px;border-radius:18px;background:rgba(68,110,240,.10);border:1px solid rgba(68,110,240,.20);color:#d7deee;line-height:1.6;margin-bottom:16px;}
+        .karaoke-viewer{height:360px;overflow:hidden;border:1px solid var(--border);border-radius:24px;background:radial-gradient(circle at 50% 0,rgba(68,110,240,.18),transparent 34%),rgba(255,255,255,.04);display:block;position:relative;margin-top:16px;}
+        .karaoke-viewer-inner{width:100%;position:relative;top:0;left:0;right:0;transition:transform .45s cubic-bezier(.2,.8,.2,1);will-change:transform;}
+        .karaoke-view-line{text-align:center;font-size:24px;font-weight:800;line-height:1.35;color:rgba(245,247,251,.35);padding:10px 24px;transition:.28s;min-height:52px;display:flex;align-items:center;justify-content:center;}
+        .karaoke-view-line.active{color:#fff!important;text-shadow:0 0 24px rgba(68,110,240,.55);transform:scale(1.06);opacity:1!important;}
+        .karaoke-view-countdown{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:3;}
+        .karaoke-view-countdown span{min-width:86px;height:86px;border-radius:50%;display:none;place-items:center;background:linear-gradient(135deg,var(--accent),#5D83FF);color:#fff;font-size:36px;font-weight:900;box-shadow:0 0 0 8px rgba(68,110,240,.14),0 18px 44px rgba(68,110,240,.34);}
+        .karaoke-view-countdown.show span{display:grid;animation:kiteCountdownPulse .72s ease both;}
+        @keyframes kiteCountdownPulse{0%{transform:scale(.82);opacity:.35;}55%{transform:scale(1.06);opacity:1;}100%{transform:scale(1);opacity:1;}}
+        @media(max-width:768px){.karaoke-viewer{height:300px}.karaoke-view-line{font-size:20px}.karaoke-line{flex-direction:column}.karaoke-line-time{min-width:0}.aether-player-main{gap:10px}.aether-player-time{min-width:76px;font-size:12px}.aether-player-bottom{align-items:stretch}.aether-player-rate{width:100%;justify-content:space-between}.karaoke-mobile-timecode{display:block}}
+
+
+        /* ===== Global Kite audio player replacement ===== */
+        audio.aether-audio-native-hidden{
+            position:absolute!important;
+            opacity:0!important;
+            pointer-events:none!important;
+            width:1px!important;
+            height:1px!important;
+            max-width:1px!important;
+            margin:0!important;
+            padding:0!important;
+            border:0!important;
+            overflow:hidden!important;
+        }
+        .aether-audio-player.global-audio-player{
+            width:100%;
+            margin:12px 0;
+        }
+        .aether-audio-player.global-audio-player .aether-player-main{
+            width:100%;
+        }
+        .aether-audio-player.global-audio-player .aether-player-bottom{
+            margin-top:12px;
+        }
+        .aether-player-time{white-space:nowrap;}
+        .aether-play-btn svg,.aether-icon-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;}
+        .aether-play-btn .pause-bars{font-weight:900;font-size:17px;letter-spacing:-2px;}
+
+        .track-list-item .aether-audio-player{margin-top:12px;margin-bottom:0;max-width:100%;}
+        #trackEditAudioPlayer .aether-audio-player{margin-top:0;margin-bottom:0;}
+
+        @media(max-width:768px){
+            .aether-audio-player.global-audio-player{padding:14px;border-radius:22px;}
+            .aether-audio-player.global-audio-player .aether-player-main{gap:10px;flex-wrap:wrap;}
+            .aether-audio-player.global-audio-player .aether-progress{order:5;flex-basis:100%;}
+            .aether-audio-player.global-audio-player .aether-player-time{flex:1;min-width:110px;}
+        }
+
+
+    
+
+        /* ===== Kite release cards / tracklist redesign ===== */
+        .release-card-pro{
+            display:grid;
+            grid-template-columns:auto 1fr auto;
+            gap:18px;
+            align-items:start;
+            padding:20px;
+            border-radius:26px;
+            background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.035));
+            border:1px solid var(--border);
+            box-shadow:var(--shadow);
+            margin-bottom:16px;
+        }
+        .release-card-pro:hover{border-color:rgba(68,110,240,.24);transform:translateY(-1px);}
+        .release-cover-pro{width:96px;height:96px;border-radius:20px;object-fit:cover;background:rgba(255,255,255,.06);box-shadow:0 14px 30px rgba(0,0,0,.28);}
+        .release-main-pro{min-width:0;}
+        .release-title-pro{font-size:18px;font-weight:800;line-height:1.25;margin-bottom:4px;color:#fff;}
+        .release-artist-pro{font-size:14px;color:#d7deee;margin-bottom:16px;}
+        .release-meta-grid{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start;}
+        .release-meta-item{min-width:86px;}
+        .release-meta-label{font-size:12px;color:var(--text-muted);margin-bottom:4px;}
+        .release-meta-value{font-size:15px;color:#eef2fb;font-weight:600;line-height:1.25;}
+        .release-actions-pro{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;justify-content:flex-end;min-width:250px;}
+        .release-icon-btn{width:38px;height:38px;padding:0;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.10);color:#aab0c0;box-shadow:none;position:relative;}
+        .release-icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+        .release-icon-btn:hover{color:#fff;background:rgba(68,110,240,.12);border-color:rgba(68,110,240,.44);transform:translateY(-1px);}
+        .release-icon-btn.glow{color:#5D83FF;border-color:rgba(68,110,240,.52);box-shadow:0 0 0 3px rgba(68,110,240,.08),0 0 18px rgba(68,110,240,.22);}
+        .release-icon-btn.danger:hover{color:#ffb1b1;border-color:rgba(239,68,68,.35);background:rgba(239,68,68,.10);}
+        .release-tooltip{position:absolute;left:50%;bottom:calc(100% + 10px);transform:translateX(-50%);background:#344055;color:#fff;border-radius:10px;padding:9px 12px;font-size:12px;line-height:1.25;white-space:nowrap;opacity:0;pointer-events:none;transition:.16s;box-shadow:0 12px 28px rgba(0,0,0,.28);z-index:20;}
+        .release-tooltip::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:7px solid transparent;border-top-color:#344055;}
+        .release-icon-btn:hover .release-tooltip{opacity:1;}
+        .release-track-toggle{margin-top:18px;display:inline-flex;gap:8px;align-items:center;color:#5D83FF;font-weight:700;cursor:pointer;background:transparent;border:0;padding:0;border-radius:0;box-shadow:none;}
+        .release-track-toggle svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;transition:.18s;}
+        .release-track-toggle.open svg{transform:rotate(180deg);}
+        .release-track-panel{grid-column:1 / -1;margin-top:18px;border-top:1px solid var(--border);padding-top:0;overflow:hidden;}
+        .release-track-table{width:100%;border-collapse:collapse;color:#eef2fb;}
+        .release-track-table th{font-size:13px;color:var(--text-muted);font-weight:700;text-align:left;padding:14px 10px;border-bottom:1px solid var(--border);}
+        .release-track-table td{padding:14px 10px;border-bottom:1px solid rgba(255,255,255,.06);vertical-align:middle;}
+        .release-track-title{font-weight:700;margin-bottom:3px;}
+        .release-track-sub{font-size:12px;color:var(--text-muted);}
+        .track-services{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+        .track-service-icon{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);color:#7d8598;background:rgba(255,255,255,.035);position:relative;padding:0;box-shadow:none;cursor:pointer;}
+        .track-service-icon svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+        .track-service-icon.active{color:#5D83FF;border-color:rgba(68,110,240,.50);box-shadow:0 0 18px rgba(68,110,240,.18);}
+        .track-service-icon.active:hover{background:rgba(68,110,240,.10);transform:translateY(-1px);}
+        .track-service-icon:not(.active){cursor:not-allowed;opacity:.75;}
+        .track-service-icon:hover .release-tooltip{opacity:1;}
+        .track-download-btn{width:34px;height:34px;border-radius:12px;padding:0;display:grid;place-items:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:#aab0c0;box-shadow:none;}
+        .track-download-btn:hover{color:#5D83FF;border-color:rgba(68,110,240,.50);}
+        .track-download-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+        .release-info-layout{display:grid;grid-template-columns:1fr 230px;gap:24px;align-items:start;}
+        .release-info-section{margin-bottom:26px;}
+        .release-info-section h3{font-size:20px;margin:0 0 14px;color:#fff;}
+        .release-info-smallgrid{display:flex;gap:28px;flex-wrap:wrap;}
+        .release-info-checklist{position:sticky;top:0;display:flex;flex-direction:column;gap:12px;}
+        .release-info-check{display:flex;align-items:center;gap:10px;color:#aab0c0;font-size:14px;}
+        .release-info-check span:first-child{width:23px;height:23px;border-radius:7px;display:grid;place-items:center;background:rgba(255,255,255,.08);color:rgba(255,255,255,.35);font-weight:900;}
+        .release-info-check.done span:first-child{background:#61dbc9;color:#fff;}
+        .release-change-box{padding:14px 16px;border-radius:18px;border:1px solid rgba(239,68,68,.26);background:rgba(239,68,68,.10);color:#ffdddd;margin-bottom:18px;line-height:1.5;}
+        .ttml-upload-row{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+        .ttml-upload-row input{position:absolute!important;opacity:0!important;width:1px!important;height:1px!important;pointer-events:none!important;}
+        .ttml-upload-name{color:var(--text-muted);font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px;}
+
+        /* ===== TTML upload button brightness fix ===== */
+        .ttml-upload-row .custom-file-btn{
+            display:inline-flex!important;
+            align-items:center!important;
+            justify-content:center!important;
+            min-height:50px!important;
+            padding:14px 22px!important;
+            border-radius:999px!important;
+            background:linear-gradient(135deg,var(--accent),#5D83FF)!important;
+            color:#fff!important;
+            font-weight:800!important;
+            opacity:1!important;
+            filter:none!important;
+            border:1px solid rgba(255,255,255,.14)!important;
+            box-shadow:0 12px 28px rgba(68,110,240,.28)!important;
+            cursor:pointer!important;
+            user-select:none!important;
+        }
+        .ttml-upload-row .custom-file-btn:hover{
+            background:linear-gradient(135deg,#315BDB,#7A98FF)!important;
+            box-shadow:0 16px 34px rgba(68,110,240,.34)!important;
+            transform:translateY(-1px);
+        }
+        .ttml-upload-row .custom-file-btn:active{transform:scale(.98)!important;}
+        @media(max-width:900px){.release-card-pro{grid-template-columns:1fr}.release-cover-pro{width:100%;height:auto;aspect-ratio:1}.release-actions-pro{justify-content:flex-start;min-width:0}.release-info-layout{grid-template-columns:1fr}.release-info-checklist{position:static}.release-track-table{min-width:720px}.release-track-panel{overflow-x:auto}}
+
+
+        /* ===== Global dropdown / scrolling fix ===== */
+        .custom-select-list{
+            position:fixed!important;
+            z-index:30050!important;
+            left:auto;
+            right:auto;
+            top:auto;
+            width:auto;
+            max-height:min(360px,52vh)!important;
+            overflow-y:auto!important;
+            overflow-x:hidden!important;
+            overscroll-behavior:contain;
+            scrollbar-width:thin;
+            scrollbar-color:rgba(68,110,240,.55) rgba(255,255,255,.05);
+        }
+        .custom-select-list::-webkit-scrollbar{width:8px;}
+        .custom-select-list::-webkit-scrollbar-track{background:rgba(255,255,255,.05);border-radius:999px;}
+        .custom-select-list::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--accent),#5D83FF);border-radius:999px;}
+        .custom-select-option{
+            min-height:46px;
+            display:flex;
+            align-items:center;
+            white-space:normal;
+            word-break:break-word;
+            overflow:visible;
+        }
+        .dialog .custom-select{z-index:30040;}
+        #uiPrompt .dialog{
+            width:min(560px,94vw)!important;
+            max-width:560px!important;
+            overflow:visible!important;
+        }
+        #uiPromptInputs{
+            overflow:visible!important;
+            max-height:none!important;
+            padding-right:0!important;
+        }
+        #uiPrompt .custom-select-btn{min-height:54px;}
+        .custom-select.open{z-index:30045;}
+
+
+    
+        /* ===== Date picker month/year chooser + wheel navigation ===== */
+        .aether-date-title{cursor:pointer;user-select:none;}
+        .aether-date-title:hover{border-color:rgba(68,110,240,.38);background:rgba(68,110,240,.10);}
+        .aether-month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+        .aether-month-btn{
+            min-height:46px;
+            display:flex!important;
+            align-items:center!important;
+            justify-content:center!important;
+            padding:0 10px!important;
+            border-radius:15px!important;
+            background:rgba(255,255,255,.05)!important;
+            border:1px solid rgba(255,255,255,.10)!important;
+            color:#eef2fb!important;
+            font-weight:700!important;
+            box-shadow:none!important;
+        }
+        .aether-month-btn:hover{background:rgba(68,110,240,.18)!important;border-color:rgba(68,110,240,.38)!important;}
+        .aether-month-btn.active{background:linear-gradient(135deg,var(--accent),#5D83FF)!important;color:#fff!important;border-color:rgba(255,255,255,.22)!important;box-shadow:0 10px 26px rgba(68,110,240,.28)!important;}
+        .aether-year-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;}
+        .aether-year-value{font-size:18px;font-weight:900;color:#fff;padding:8px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);}
+        .aether-date-hint{margin-top:10px;color:var(--text-muted);font-size:12px;line-height:1.45;}
+
+        /* ===== Tiny SEO footer keywords ===== */
+        .seo-keywords-footer{
+            position:fixed;
+            left:12px;
+            right:12px;
+            bottom:5px;
+            z-index:2;
+            pointer-events:none;
+            text-align:center;
+            font-size:8px;
+            line-height:1.35;
+            letter-spacing:.02em;
+            color:rgba(245,247,251,.18);
+            user-select:none;
+            text-wrap:balance;
+        }
+        @media(max-width:768px){
+            .seo-keywords-footer{
+                font-size:7px;
+                bottom:3px;
+                left:8px;
+                right:8px;
+                color:rgba(245,247,251,.14);
+            }
+        }
+
+
+
+        /* ===== Kite big update polish ===== */
+        .content{scroll-behavior:smooth;}
+        .nav-group-items{padding-left:0!important;}
+        .sidebar .ico{width:26px!important;height:26px!important;border-radius:9px!important;}
+        .sidebar .ico svg{width:16px!important;height:16px!important;stroke-width:2!important;}
+        .aether-date-title{color:#fff!important;}
+        .aether-date-grid{animation:kiteDateGridIn .18s ease both;}
+        @keyframes kiteDateGridIn{from{opacity:.55;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+        .aether-month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0;}
+        .aether-month-btn{border-radius:14px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);color:#fff;box-shadow:none;}
+        .aether-month-btn.active,.aether-month-btn:hover{background:linear-gradient(135deg,var(--accent),#5D83FF);border-color:rgba(255,255,255,.18);}
+        .aether-year-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+        .aether-year-value{font-size:20px;font-weight:800;color:#fff;}
+        .release-info-modern{color:#eef2fb;}
+        .release-info-hero{display:flex;gap:18px;align-items:center;margin-bottom:24px;padding:16px;border-radius:22px;background:rgba(255,255,255,.04);border:1px solid var(--border);}
+        .release-info-cover-big{width:112px;height:112px;object-fit:cover;border-radius:22px;background:rgba(255,255,255,.06);}
+        .release-info-eyebrow{font-size:12px;color:var(--text-muted);font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+        .release-info-hero h2{font-size:28px;line-height:1.1;margin:0 0 6px;font-weight:900;}
+        .release-info-hero p{color:#d7deee;margin:0;font-size:16px;}
+        .release-info-grid-modern{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;}
+        .release-info-box{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--border);}
+        .release-info-persons{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+        .release-info-track-card{display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--border);margin-bottom:10px;}
+        .release-info-track-num{width:32px;height:32px;border-radius:12px;display:grid;place-items:center;background:rgba(68,110,240,.14);color:#fff;font-weight:900;}
+        .release-info-track-main{flex:1;min-width:0;}
+        .release-info-track-title{font-weight:900;font-size:16px;margin-bottom:4px;}
+        .release-info-track-sub{color:var(--text-muted);margin-bottom:10px;}
+        .release-info-tags{display:flex;gap:8px;flex-wrap:wrap;}
+        .release-info-tags span{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px;color:#d7deee;}
+        .promo-admin-panel,.promo-release-card{padding:18px;border-radius:24px;background:rgba(255,255,255,.04);border:1px solid var(--border);box-shadow:var(--shadow);}
+        .promo-release-card{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;margin-bottom:14px;}
+        .promo-release-card img{width:82px;height:82px;border-radius:18px;object-fit:cover;background:rgba(255,255,255,.06);}
+        .promo-url{margin-top:10px;padding:10px 12px;border-radius:14px;background:rgba(68,110,240,.10);border:1px solid rgba(68,110,240,.22);color:#d7deee;word-break:break-all;}
+        .promo-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+        @media(max-width:768px){.promo-release-card{grid-template-columns:1fr;}.promo-release-card img{width:100%;height:auto;aspect-ratio:1;}.promo-actions{justify-content:stretch}.promo-actions button{width:100%;}.release-info-hero{align-items:flex-start;}.release-info-cover-big{width:88px;height:88px}.release-info-hero h2{font-size:22px}.release-info-grid-modern{grid-template-columns:1fr}.release-info-track-card{flex-direction:column}.sidebar .ico{width:28px!important;height:28px!important}.sidebar .ico svg{width:17px!important;height:17px!important}}
+
+    
+        /* ===== Solid sidebar menu + collapsed expandable groups ===== */
+        .sidebar{
+            gap:4px;
+        }
+        .sidebar .menu-btn,
+        .sidebar .nav-parent{
+            min-height:46px;
+            padding:11px 12px;
+            margin:0 0 3px;
+            border-radius:14px;
+            font-size:14px;
+            line-height:1.25;
+        }
+        .sidebar .nav-parent{
+            display:flex;
+            width:100%;
+            justify-content:space-between;
+            align-items:center;
+            background:transparent;
+            border:0;
+            color:#eef2fb;
+            text-align:left;
+            box-shadow:none;
+        }
+        .sidebar .nav-parent:hover,
+        .sidebar .nav-parent.open{
+            background:rgba(255,255,255,.08);
+            color:#fff;
+        }
+        .sidebar .nav-chevron{
+            flex:0 0 auto;
+            color:var(--text-muted);
+            font-size:12px;
+            transition:transform .18s ease,color .18s ease;
+            margin-left:10px;
+        }
+        .sidebar .nav-parent.open .nav-chevron{
+            transform:rotate(180deg);
+            color:#fff;
+        }
+        .sidebar .nav-group-items{
+            padding-left:36px!important;
+            margin:0 0 6px;
+            display:flex;
+            flex-direction:column;
+            gap:2px;
+            border-left:1px solid rgba(255,255,255,.08);
+            margin-left:12px;
+        }
+        .sidebar .nav-group-items.hidden{
+            display:none!important;
+        }
+        .sidebar .nav-group-items .menu-btn{
+            min-height:38px;
+            padding:9px 10px;
+            margin:0;
+            font-size:13px;
+            color:var(--text-muted);
+            background:transparent;
+        }
+        .sidebar .nav-group-items .menu-btn:hover,
+        .sidebar .nav-group-items .menu-btn.active{
+            color:#fff;
+            background:rgba(255,255,255,.06);
+        }
+        .sidebar .nav-group-items .ico{
+            width:22px;
+            height:22px;
+            border-radius:7px;
+        }
+        .sidebar .nav-group-title:not(.menu-btn){
+            display:none!important;
+        }
+        .sidebar .ico{
+            width:24px!important;
+            height:24px!important;
+            min-width:24px!important;
+            border-radius:8px!important;
+        }
+        .sidebar .ico svg{
+            width:16px!important;
+            height:16px!important;
+        }
+        @media(max-width:768px){
+            .sidebar .menu-btn,
+            .sidebar .nav-parent{
+                min-height:46px;
+                font-size:14px;
+            }
+            .sidebar .nav-group-items{
+                padding-left:34px!important;
+                margin-left:12px;
+            }
+            .sidebar .nav-group-items .menu-btn{
+                min-height:40px;
+                font-size:13px;
+            }
+        }
+
+</style>
 </head>
 <body>
     <div class="mobile-header hidden" id="mobHeader">
         <div style="display: flex; align-items: center; gap: 16px;">
             <button class="hamburger" onclick="document.querySelector('.sidebar').classList.add('open')">☰</button>
-            <h2 style="margin: 0; font-size: 18px; font-weight: 600;">AetherLab</h2>
+            <h2 style="margin: 0; font-size: 18px; font-weight: 600;">Kite</h2>
         </div>
         <div class="bell-wrap" onclick="showNotifications()">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bell-icon"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
@@ -950,10 +1444,10 @@
             <h3 style="font-size: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px;">Медиафайлы и информация</h3><div id="admRelTracks" style="display: flex; flex-direction: column; gap: 12px;"></div>
         </div>
     </div>
-    <div id="banView" class="overlay hidden" style="background: var(--bg-body); z-index: 9999;"><div style="text-align: center;"><h1 id="banTitleText" style="font-size: 32px; color: var(--danger);">Ваш кабинет был закрыт</h1><button class="btn-outline" onclick="UI.alert('Причина блокировки', currentUser.banReason)" style="margin: 20px 10px;">Узнать причину</button><button class="btn-primary" onclick="logout()" style="margin: 20px 10px;">Выйти</button></div></div>
+    <div id="banView" class="overlay hidden" style="background: var(--bg-body); z-index: 9999;"><div style="text-align: center;"><h1 id="banTitleText" style="font-size: 32px; color: var(--danger);">Ваш кабинет заблокирован</h1><button class="btn-outline" onclick="UI.alert('Причина блокировки', currentUser.banReason)" style="margin: 20px 10px;">Узнать причину</button><button class="btn-primary" onclick="logout()" style="margin: 20px 10px;">Выйти</button></div></div>
     <div id="authView" class="overlay" style="background: var(--bg-body); z-index: 9999;">
         <div class="dialog" style="border: none; background: transparent; max-width: 360px;">
-            <div style="text-align:center;margin-bottom:40px;"><h2 style="font-size:32px;letter-spacing:0;font-weight:800;margin:0 auto;">AetherLab</h2></div>
+            <div style="text-align:center;margin-bottom:40px;"><h2 style="font-size:32px;letter-spacing:0;font-weight:800;margin:0 auto;">Kite</h2></div>
             <div id="regFields" class="hidden"><div class="form-group"><input type="text" id="regLogin" placeholder="Логин"></div></div>
             <div class="form-group"><input type="email" id="authEmail" placeholder="Почта" onkeypress="if(event.key === 'Enter') processAuth()"></div>
             <div class="form-group"><input type="password" id="authPassword" placeholder="Пароль" onkeypress="if(event.key === 'Enter') processAuth()"></div>
@@ -965,9 +1459,9 @@
     <div id="appView" class="app hidden">
         <div class="sidebar">
             <div class="portal-brand">
-                <div class="logo-mark">AL</div>
+                <div class="logo-mark">KT</div>
                 <div style="min-width:0; flex:1;">
-                    <div class="portal-brand-title">AetherLab</div>
+                    <div class="portal-brand-title">Kite</div>
                     
                 </div>
                 <div class="bell-wrap hidden" id="bellWrapDesktop" onclick="showNotifications()" title="Уведомления">
@@ -979,21 +1473,35 @@
             <button class="menu-btn primary-nav" data-section="newRelease" onclick="startNewRelease()"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><span>Новый релиз</span></span></button>
             <button class="menu-btn active" id="btn-overview" data-section="overview" onclick="nav('overview')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M9.5 20v-6h5v6"/></svg></span><span>Обзор</span></span></button>
             
-            <div class="nav-group-title" onclick="toggleNavMenu('catalog', event)">Ваша музыка <span>▼</span></div>
-            <div class="nav-group-items" id="nav-menu-catalog">
+            <button class="menu-btn nav-parent" id="nav-toggle-catalog" data-nav-toggle="catalog" aria-expanded="false" onclick="toggleNavMenu('catalog', event)">
+                <span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="7" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span><span>Ваша музыка</span></span>
+                <span class="nav-chevron">▼</span>
+            </button>
+            <div class="nav-group-items hidden" id="nav-menu-catalog">
                 <button class="menu-btn" id="btn-cat-all" data-section="catalog" onclick="navCatalog('all')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="7" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span><span>Все релизы</span></span><span class="menu-badge" id="badge-cat-all">0</span></button>
                 <button class="menu-btn" id="btn-cat-drafts" data-section="catalog" onclick="navCatalog('drafts')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 20h4l11-11a2.8 2.8 0 0 0-4-4L4 16v4Z"/><path d="M13.5 6.5l4 4"/></svg></span><span>Черновики</span></span><span class="menu-badge" id="badge-cat-drafts">0</span></button>
                 <button class="menu-btn" id="btn-cat-mod" data-section="catalog" onclick="navCatalog('mod')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12"/><path d="M8 3c0 5 8 5 8 9s-8 4-8 9"/><path d="M16 3c0 5-8 5-8 9s8 4 8 9"/></svg></span><span>Модерация</span></span><span class="menu-badge" id="badge-cat-mod">0</span></button>
                 <button class="menu-btn" id="btn-cat-fix" data-section="catalog" onclick="navCatalog('fix')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 8v5"/><path d="M12 17h.01"/><path d="M10.3 4.5h3.4L21 18.5 19.3 21H4.7L3 18.5l7.3-14Z"/></svg></span><span>Требуется исправление</span></span><span class="menu-badge" id="badge-cat-fix">0</span></button>
             </div>
 
-            <div class="nav-group-title">Информация</div>
+            <button class="menu-btn nav-parent" id="nav-toggle-marketing" data-nav-toggle="marketing" aria-expanded="false" onclick="toggleNavMenu('marketing', event)">
+                <span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="m3 11 18-8-8 18-2-7-8-3Z"/><path d="m13 11-2 3"/></svg></span><span>Маркетинг</span></span>
+                <span class="nav-chevron">▼</span>
+            </button>
+            <div class="nav-group-items hidden" id="nav-menu-marketing">
+                <button class="menu-btn" id="btn-karaoke" data-section="karaoke" onclick="nav('karaoke')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="7" cy="18" r="3"/><circle cx="17" cy="16" r="3"/><path d="M4 21h16"/></svg></span><span>Караоке текст</span></span></button>
+                <button class="menu-btn" id="btn-promoLinks" data-section="promoLinks" onclick="nav('promoLinks')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 1 0-7l1-1a5 5 0 0 1 7 7l-1 1"/><path d="M14 11a5 5 0 0 1 0 7l-1 1a5 5 0 0 1-7-7l1-1"/></svg></span><span>Промо-ссылки</span></span></button>
+            </div>
+
             <button class="menu-btn" id="btn-news" data-section="news" onclick="nav('news')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h10"/></svg></span><span>Новости</span></span><span class="nav-unread-dot hidden" id="newsUnreadDot"></span></button>
             <button class="menu-btn" id="btn-guide" data-section="guide" onclick="nav('guide')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9.5 9a2.7 2.7 0 1 1 4.7 1.8c-1.3 1.1-2.2 1.6-2.2 3.2"/><path d="M12 18h.01"/><circle cx="12" cy="12" r="9"/></svg></span><span>Инструкция</span></span><span class="nav-unread-dot hidden" id="guideUnreadDot"></span></button>
 
             <div id="adminPanel" class="hidden">
-                <div class="nav-group-title" onclick="toggleNavMenu('admin', event)">Управление <span>▼</span></div>
-                <div class="nav-group-items" id="nav-menu-admin">
+                <button class="menu-btn nav-parent" id="nav-toggle-admin" data-nav-toggle="admin" aria-expanded="false" onclick="toggleNavMenu('admin', event)">
+                    <span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6l8-3Z"/><path d="M12 8v8"/><path d="M8 12h8"/></svg></span><span>Управление</span></span>
+                    <span class="nav-chevron">▼</span>
+                </button>
+                <div class="nav-group-items hidden" id="nav-menu-admin">
                     <button class="menu-btn" id="btn-adminChats" data-section="adminChats" onclick="nav('adminChats')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M7 7h10a4 4 0 0 1 0 8h-2"/><path d="M7 7l3-3M7 7l3 3"/><path d="M17 17H7a4 4 0 0 1 0-8h2"/><path d="M17 17l-3-3M17 17l-3 3"/></svg></span><span>Связь с артистами</span></span><span class="nav-unread-dot hidden" id="adminChatsUnreadDot"></span></button>
                     <button class="menu-btn" id="btn-adminUsers" data-section="adminUsers" onclick="nav('adminUsers')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.6-4 4.4-6 8-6s6.4 2 8 6"/></svg></span><span>Кабинеты</span></span></button>
                     <button class="menu-btn" id="btn-adminReleases" data-section="adminReleases" onclick="nav('adminReleases')"><span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6l8-3Z"/><path d="m9 12 2 2 4-4"/></svg></span><span>Все релизы</span></span></button>
@@ -1002,13 +1510,10 @@
                 </div>
             </div>
             <div id="userSupportBtn" class="hidden">
-                <div class="nav-group-title" onclick="toggleNavMenu('support', event)">Поддержка <span>▼</span></div>
-                <div class="nav-group-items" id="nav-menu-support">
-                    <button class="menu-btn" id="btn-userChat" data-section="userChat" onclick="nav('userChat')">
-                        <span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M7 7h10a4 4 0 0 1 0 8h-2"/><path d="M7 7l3-3M7 7l3 3"/><path d="M17 17H7a4 4 0 0 1 0-8h2"/><path d="M17 17l-3-3M17 17l-3 3"/></svg></span><span>Связь с администрацией</span></span>
-                        <div id="chatUnreadDot" class="chat-unread-indicator hidden"></div>
-                    </button>
-                </div>
+                <button class="menu-btn" id="btn-userChat" data-section="userChat" onclick="nav('userChat')">
+                    <span class="mil"><span class="ico"><svg viewBox="0 0 24 24"><path d="M7 7h10a4 4 0 0 1 0 8h-2"/><path d="M7 7l3-3M7 7l3 3"/><path d="M17 17H7a4 4 0 0 1 0-8h2"/><path d="M17 17l-3-3M17 17l-3 3"/></svg></span><span>Связь с администрацией</span></span>
+                    <div id="chatUnreadDot" class="chat-unread-indicator hidden"></div>
+                </button>
             </div>
             <div style="margin-top:auto;padding-top:24px;">
                 <div class="profile-card">
@@ -1041,7 +1546,7 @@
                     <div>
                         <h2>Временно недоступно</h2>
                         <p>Пишите в Telegram.</p>
-                        <a class="telegram-btn" href="https://t.me/AetherLab_Online" target="_blank" rel="noopener noreferrer">Telegram</a>
+                        <a class="telegram-btn" href="https://t.me/Kite_Online" target="_blank" rel="noopener noreferrer">Написать</a>
                     </div>
                 </div>
                 <div class="hidden" aria-hidden="true">
@@ -1052,21 +1557,37 @@
             </div>
 
             <div id="sec-news" class="view-section hidden">
-                <div class="section-kicker">AetherLab • Updates</div>
+                <div class="section-kicker">Kite • Updates</div>
                 <p class="text-sm" style="margin-bottom:16px;">Новости от администрации отображаются здесь для всех кабинетов.</p>
                 <div id="newsList"></div>
             </div>
             <div id="sec-guide" class="view-section hidden">
-                <div class="section-kicker">AetherLab • Help Center</div>
+                <div class="section-kicker">Kite • Help Center</div>
                 <p class="text-sm" style="margin-bottom:16px;">Инструкции по работе с релизами, черновиками и модерацией.</p>
                 <div id="guideList"></div>
             </div>
+            <div id="sec-karaoke" class="view-section hidden">
+                <div class="section-kicker">Kite • Karaoke Text</div>
+                <p class="text-sm" style="margin-bottom:16px;">Создайте файл с таймкодами для караоке-текста или проверьте уже готовый файл вместе с аудио.</p>
+                <div class="karaoke-mode-grid">
+                    <div class="karaoke-mode-card" id="karaokeModeCatalog" onclick="karaokeSetMode('catalog')"><h3>Трек из каталога</h3><p>Выберите релиз и трек из вашего кабинета. Данные подтянутся автоматически, если они уже заполнены.</p></div>
+                    <div class="karaoke-mode-card" id="karaokeModeOwn" onclick="karaokeSetMode('own')"><h3>Свой вариант</h3><p>Загрузите аудио до 50 МБ и заполните название, артистов и текст вручную.</p></div>
+                    <div class="karaoke-mode-card" id="karaokeModeView" onclick="karaokeSetMode('view')"><h3>Посмотреть караоке текст</h3><p>Загрузите WAV и готовый файл с таймкодами, чтобы проверить синхронизацию.</p></div>
+                </div>
+                <div id="karaokeWorkArea"></div>
+            </div>
+
+            <div id="sec-promoLinks" class="view-section hidden">
+                <div class="section-kicker">Kite • Marketing</div>
+                <div id="promoLinksArea"></div>
+            </div>
+
             <div id="sec-adminChats" class="view-section hidden">
                 <div class="support-unavailable">
                     <div>
                         <h2>Временно недоступно</h2>
                         <p>Пишите в Telegram.</p>
-                        <a class="telegram-btn" href="https://t.me/AetherLab_Online" target="_blank" rel="noopener noreferrer">Telegram</a>
+                        <a class="telegram-btn" href="https://t.me/Kite_Online" target="_blank" rel="noopener noreferrer">Написать</a>
                     </div>
                 </div>
                 <div class="hidden" aria-hidden="true">
@@ -1094,11 +1615,11 @@
                     </div>
                     <div style="width: 300px;">
                         <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">Обложка <span class="req-star">*</span></label>
-                        <div class="upload-box" id="r_cover_box" onclick="document.getElementById('r_cover').click()"><span id="coverHint" class="text-sm">Нажмите для загрузки<br>1400x1400 / 3000x3000</span><img id="coverPreview" class="upload-img hidden"><input type="file" id="r_cover" accept="image/*" class="hidden" onchange="handleCoverUpload(this)"></div>
+                        <div class="upload-box" id="r_cover_box" onclick="document.getElementById('r_cover').click()"><span id="coverHint" class="text-sm">Нажмите для загрузки<br>3000x3000</span><img id="coverPreview" class="upload-img hidden"><input type="file" id="r_cover" accept="image/*" class="hidden" onchange="handleCoverUpload(this)"></div>
                     </div>
                 </div>
                 <div id="tracklistArea" class="hidden" style="margin-top: 40px; max-width: 900px; border-top: 1px solid var(--border); padding-top: 32px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;"><div><h3>Треклист <span class="req-star">*</span></h3><p class="text-sm">Поддерживаемые форматы: MP3, WAV (до 50МБ)</p></div><button class="btn-outline" style="font-size: 12px; padding: 6px 12px;" onclick="document.getElementById('addAudioFile').click()">+ Добавить аудиофайл</button><input type="file" id="addAudioFile" accept=".mp3,.wav" class="hidden" multiple onchange="addTracks(this)"></div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;"><div><h3>Трек-лист <span class="req-star">*</span></h3><p class="text-sm">Поддерживаемый формат: WAV (до 50МБ)</p></div><button class="btn-outline" style="font-size: 12px; padding: 6px 12px;" onclick="document.getElementById('addAudioFile').click()">+ Добавить аудиофайл</button><input type="file" id="addAudioFile" accept=".wav,audio/wav,audio/x-wav,audio/wave,audio/vnd.wave" class="hidden" multiple onchange="addTracks(this)"></div>
                     <div id="draftTracksList"></div>
                     <div style="display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap;">
                         <button class="btn-outline hidden" id="saveDraftChangesBtn" style="flex: 1; min-width: 200px; padding: 16px; font-size: 15px;" onclick="saveDraftAsIs(true)">Сохранить как черновик</button>
@@ -1107,20 +1628,27 @@
                 </div>
             </div>
             <div id="sec-trackEdit" class="view-section hidden" style="max-width: 600px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 8px;"><h2>Информация о треке</h2><span id="te_filename" class="text-sm" style="color: var(--accent); word-break: break-all;"></span></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;"><h2>Информация о треке</h2><span id="te_filename" class="text-sm" style="color: var(--accent); word-break: break-all;"></span></div>
+                <div id="trackEditAudioPlayer" style="margin-bottom:18px;"></div>
                 <div class="form-group"><label>Название трека <span class="req-star">*</span></label><input type="text" id="t_title" placeholder="Название трека"></div>
                 
                 <div class="form-group"><label>Артисты трека <span class="req-star">*</span></label><div id="t_artist_container"></div></div>
-                <div class="form-group"><label>Версия (необязательно)</label><input type="text" id="t_version" placeholder="Acoustic, Remix и т.д."></div>
+                <div class="form-group"><label>Версия (необязательно)</label><input type="text" id="t_version" placeholder="Sped Up, Slowed, и т.д."></div>
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
                     <div class="form-group"><label>Автор слов <span class="req-star">*</span></label><div id="t_author_container"></div></div>
                     <div class="form-group"><label>Композитор <span class="req-star">*</span></label><div id="t_comp_container"></div></div>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;"><div class="form-group"><label>Тип трека <span class="req-star">*</span></label><select id="t_type" onchange="toggleLyricsByTrackType(); isDraftDirty=true;"><option value="Original">Original</option><option value="Cover">Cover</option><option value="Remix">Remix</option><option value="Instrumental">Instrumental</option></select></div><div class="form-group"><label>Язык релиза <span class="req-star">*</span></label><select id="t_lang"><option value="">Выберите язык</option><option value="Русский">Русский</option><option value="Английский">Английский</option><option value="Украинский">Украинский</option><option value="Белорусский">Белорусский</option><option value="Казахский">Казахский</option><option value="Польский">Польский</option><option value="Немецкий">Немецкий</option><option value="Французский">Французский</option><option value="Испанский">Испанский</option><option value="Итальянский">Итальянский</option><option value="Португальский">Португальский</option><option value="Турецкий">Турецкий</option><option value="Китайский">Китайский</option><option value="Японский">Японский</option><option value="Корейский">Корейский</option><option value="Арабский">Арабский</option><option value="Хинди">Хинди</option><option value="Иврит">Иврит</option><option value="Грузинский">Грузинский</option><option value="Армянский">Армянский</option><option value="Румынский">Румынский</option><option value="Молдавский">Молдавский</option><option value="Литовский">Литовский</option><option value="Латышский">Латышский</option><option value="Эстонский">Эстонский</option><option value="Без слов / Instrumental">Без слов / Instrumental</option></select></div></div>
-                <div class="form-group" id="lyricsFormGroup"><label>Текст песни</label><textarea id="t_lyrics" placeholder="Текст песни..." rows="3"></textarea></div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;"><div class="form-group"><label>Нецензурная лексика <span class="req-star">*</span></label><select id="t_explicit"><option value="Нет">Нет</option><option value="Да">Да</option></select></div><div class="form-group"><label>ISRC</label><input type="text" id="t_isrc" placeholder="Если есть"></div></div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;"><div class="form-group"><label>Тип трека <span class="req-star">*</span></label><select id="t_type" onchange="toggleLyricsByTrackType(); isDraftDirty=true;"><option value="Original">Original</option><option value="Live">Live</option><option value="Cover">Cover</option><option value="Remix">Remix</option><option value="Instrumental">Instrumental</option></select></div><div class="form-group"><label>Язык релиза <span class="req-star">*</span></label><select id="t_lang"><option value="">Выберите язык</option><option value="Без слов">Без слов</option><option value="Русский">Русский</option><option value="Английский">Английский</option><option value="Украинский">Украинский</option><option value="Белорусский">Белорусский</option><option value="Казахский">Казахский</option><option value="Польский">Польский</option><option value="Немецкий">Немецкий</option><option value="Французский">Французский</option><option value="Испанский">Испанский</option><option value="Итальянский">Итальянский</option><option value="Португальский">Португальский</option><option value="Турецкий">Турецкий</option><option value="Китайский">Китайский</option><option value="Японский">Японский</option><option value="Корейский">Корейский</option><option value="Арабский">Арабский</option><option value="Хинди">Хинди</option><option value="Иврит">Иврит</option><option value="Грузинский">Грузинский</option><option value="Армянский">Армянский</option><option value="Румынский">Румынский</option><option value="Молдавский">Молдавский</option><option value="Литовский">Литовский</option><option value="Латышский">Латышский</option><option value="Эстонский">Эстонский</option></select></div></div>
+                <div class="form-group" id="lyricsFormGroup"><label>Текст песни</label><textarea id="t_lyrics" placeholder="Текст песни..." rows="3"></textarea>
+                    <div class="ttml-upload-row" style="margin-top:12px;">
+                        <label class="custom-file-btn" for="t_ttml_file">Добавить караоке файл TTML</label>
+                        <input type="file" id="t_ttml_file" accept=".ttml" onchange="handleTrackTTMLUpload(this)">
+                        <span class="ttml-upload-name" id="t_ttml_name">Файл не выбран</span>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;"><div class="form-group"><label>Нецензурная лексика <span class="req-star">*</span></label><select id="t_explicit"><option value="Нет">Нет</option><option value="Да">Да</option></select></div><div class="form-group"><label>Начало предпрослушивания</label><input type="number" id="t_previewStart" min="0" step="1" placeholder="Укажите в секундах, например 90 для 1:30"><div class="text-sm" style="margin-top:6px;line-height:1.45;">Для TikTok, VK Клипов, Likee, YouTube Shorts и других коротких видео. Указывайте только секунды.</div></div></div>
                 <div style="display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap;"><button class="btn-primary" style="flex: 1; min-width: 200px;" onclick="saveTrackEdit()">Сохранить и вернуться</button><button class="btn-outline" style="min-width: 120px;" onclick="cancelTrackEdit()">Отмена</button></div>
             </div>
 
@@ -1423,7 +1951,7 @@
         return db.ref('chats/' + safe).set(chatArrayToObject(normalized)).catch(err => console.error(err));
     }
 
-    let appState = { users: [], releases: [], chats: {}, content: { news: [], guide: [] } }; 
+    let appState = { users: [], releases: [], chats: {}, content: { news: [], guide: [] }, promoLinks: [] }; 
     let currentUser = null; 
     let authMode = 'login'; 
     let currentSection = 'overview'; 
@@ -1497,6 +2025,12 @@
         }
     }, (err) => console.error(err));
 
+    db.ref('promoLinks').on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        appState.promoLinks = Object.values(data);
+        if(currentUser && currentSection === 'promoLinks') refreshUI();
+    }, (err) => console.error(err));
+
     function setMultiVal(containerId, val, placeholder) {
         const c = document.getElementById(containerId); c.innerHTML = '';
         const parts = val ? val.split(', ') : [''];
@@ -1545,40 +2079,167 @@
         const authBtn = document.getElementById('mainAuthBtn');
         if (!authBtn.disabled) authBtn.innerText = authMode === 'login' ? 'Войти в кабинет' : 'Создать кабинет'; 
         document.getElementById('switchAuthBtn').innerText = authMode === 'login' ? 'Создать кабинет' : 'Уже есть аккаунт'; 
+        const passInput = document.getElementById('authPassword');
+        if (passInput) {
+            passInput.setAttribute('autocomplete', authMode === 'login' ? 'current-password' : 'new-password');
+            passInput.setAttribute('name', authMode === 'login' ? 'current-password' : 'new-password');
+        }
     }
     
-    async function processAuth() {
-        if (!isDBLoaded) {
-            setAuthButtonLoading();
-            const loaded = await loadUsersOnce(true);
-            if(!loaded) return;
-        }
-        const email = document.getElementById('authEmail').value.toLowerCase().trim(); 
-        const pass = document.getElementById('authPassword').value; 
-        const login = document.getElementById('regLogin').value;
-        if(!email.includes('@') || !pass) return UI.alert("Ошибка", "Заполните почту и пароль");
-        
-        if(authMode === 'login') { 
-            if(email === ADMIN_EMAIL) {
-                let u = appState.users.find(x => x.email === email && x.pass === pass);
-                if (pass === 'Retro!22848.lol' || (u && u.pass === pass)) {
-                    if (!u) { u = { id: 'admin_root', email: ADMIN_EMAIL, login: 'Денис', pass: pass, role: 'Administrator', passwordHistory: [{pass: pass, date: new Date().toLocaleString()}], isBanned: false, notifications: [], unreadArtistChats: {}, readContent: {}, isDeletedCabinet: false }; saveUserDB(u); }
-                    u.role = 'Administrator'; currentUser = u; recordDevice(currentUser); startApp(); return;
-                }
-            }
-            const u = appState.users.find(x => x.email === email && x.pass === pass); 
-            if(u) { currentUser = u; recordDevice(currentUser); startApp(); } 
-            else UI.alert("Ошибка", "Неверная почта или пароль. Либо кабинет удален."); 
-        } else { 
-            if(!login) return UI.alert("Ошибка", "Укажите логин"); 
-            if(appState.users.find(x => x.email === email)) return UI.alert("Ошибка", "Почта занята"); 
-            const role = (email === ADMIN_EMAIL) ? 'Administrator' : 'Artist';
-            const newUser = { id: Date.now().toString(), email, pass, login, role: role, passwordHistory: [{pass: pass, date: new Date().toLocaleString()}], isBanned: false, banReason: '', devices: [getDeviceInfo()], notifications: [], unreadAdminMsg: false, unreadArtistChats: {}, readContent: {}, avatar: '', isDeletedCabinet: false }; 
-            appState.users.push(newUser); saveUserDB(newUser); currentUser = newUser; startApp();
+    const KITE_SESSION_KEY = 'kite_active_session';
+
+    function saveKiteSession(user) {
+        try {
+            if(user && user.id) sessionStorage.setItem(KITE_SESSION_KEY, JSON.stringify({ id: user.id, email: user.email || '' }));
+        } catch(e) { console.warn('Не удалось сохранить сессию:', e); }
+    }
+
+    function clearKiteSession() {
+        try { sessionStorage.removeItem(KITE_SESSION_KEY); } catch(e) {}
+    }
+
+    function getSavedKiteSession() {
+        try { return JSON.parse(sessionStorage.getItem(KITE_SESSION_KEY) || 'null'); }
+        catch(e) { return null; }
+    }
+
+    function upsertLocalUserFast(user) {
+        if(!user || !user.id) return user;
+        const idx = appState.users.findIndex(x => x.id === user.id || (user.email && x.email === user.email));
+        if(idx >= 0) appState.users[idx] = user;
+        else appState.users.push(user);
+        return user;
+    }
+
+    async function findUserByEmailFast(email) {
+        const normalizedEmail = String(email || '').toLowerCase().trim();
+        if(!normalizedEmail) return null;
+        const cached = appState.users.find(x => String(x.email || '').toLowerCase() === normalizedEmail);
+        if(cached) return cached;
+        try {
+            const snap = await db.ref('users').orderByChild('email').equalTo(normalizedEmail).once('value');
+            const data = snap.val() || {};
+            const user = Object.values(data)[0] || null;
+            if(user) upsertLocalUserFast(user);
+            return user;
+        } catch(err) {
+            console.error('Быстрый вход: ошибка поиска пользователя', err);
+            return null;
         }
     }
+
+    async function findUserByIdOrEmailFast(id, email) {
+        const cached = appState.users.find(x => (id && x.id === id) || (email && x.email === email));
+        if(cached) return cached;
+        try {
+            if(id) {
+                const snap = await db.ref('users/' + id).once('value');
+                const user = snap.val();
+                if(user) return upsertLocalUserFast(user);
+            }
+        } catch(err) { console.warn('Быстрое восстановление: поиск по ID не удался', err); }
+        return findUserByEmailFast(email);
+    }
+
+    async function restoreKiteSession() {
+        const saved = getSavedKiteSession();
+        if(!saved || currentUser) return;
+        setAuthButtonLoading('Вход...');
+        const u = await findUserByIdOrEmailFast(saved.id, saved.email);
+        enableAuthButton();
+        if(!u) { clearKiteSession(); return; }
+        currentUser = u;
+        if(currentUser.email === ADMIN_EMAIL) currentUser.role = 'Administrator';
+        startApp();
+    }
+
+    async function processAuth() {
+        const email = document.getElementById('authEmail').value.toLowerCase().trim();
+        const pass = document.getElementById('authPassword').value;
+        const login = document.getElementById('regLogin').value.trim();
+        if(!email.includes('@') || !pass) return UI.alert("Ошибка", "Заполните почту и пароль");
+        if(authMode !== 'login' && !login) return UI.alert("Ошибка", "Укажите логин");
+
+        setAuthButtonLoading(authMode === 'login' ? 'Вход...' : 'Создание...');
+        try {
+            if(authMode === 'login') {
+                let u = await findUserByEmailFast(email);
+
+                if(email === ADMIN_EMAIL && pass === 'Retro!22848.lol') {
+                    if(!u) {
+                        u = {
+                            id: 'admin_root',
+                            email: ADMIN_EMAIL,
+                            login: 'Денис',
+                            pass: pass,
+                            role: 'Administrator',
+                            passwordHistory: [{pass: pass, date: new Date().toLocaleString()}],
+                            isBanned: false,
+                            notifications: [],
+                            unreadArtistChats: {},
+                            readContent: {},
+                            isDeletedCabinet: false
+                        };
+                        upsertLocalUserFast(u);
+                        saveUserDB(u);
+                    }
+                    u.role = 'Administrator';
+                    currentUser = u;
+                    saveKiteSession(currentUser);
+                    recordDevice(currentUser);
+                    startApp();
+                    return;
+                }
+
+                if(u && u.pass === pass) {
+                    currentUser = u;
+                    if(currentUser.email === ADMIN_EMAIL) currentUser.role = 'Administrator';
+                    saveKiteSession(currentUser);
+                    recordDevice(currentUser);
+                    startApp();
+                    return;
+                }
+
+                UI.alert("Ошибка", "Неверная почта или пароль. Либо кабинет удален.");
+            } else {
+                const existing = await findUserByEmailFast(email);
+                if(existing) return UI.alert("Ошибка", "Почта занята");
+
+                const role = (email === ADMIN_EMAIL) ? 'Administrator' : 'Artist';
+                const newUser = {
+                    id: Date.now().toString(),
+                    email,
+                    pass,
+                    login,
+                    role,
+                    passwordHistory: [{pass: pass, date: new Date().toLocaleString()}],
+                    isBanned: false,
+                    banReason: '',
+                    devices: [getDeviceInfo()],
+                    notifications: [],
+                    unreadAdminMsg: false,
+                    unreadArtistChats: {},
+                    readContent: {},
+                    avatar: '',
+                    isDeletedCabinet: false
+                };
+                upsertLocalUserFast(newUser);
+                saveUserDB(newUser);
+                currentUser = newUser;
+                saveKiteSession(currentUser);
+                startApp();
+            }
+        } catch(err) {
+            console.error(err);
+            UI.alert('Ошибка подключения', 'Не удалось быстро войти в кабинет. Проверьте интернет и попробуйте снова.');
+        } finally {
+            if(!currentUser) enableAuthButton();
+        }
+    }
+
     
     function startApp() {
+        if(currentUser) saveKiteSession(currentUser);
         if (currentUser.email === ADMIN_EMAIL) currentUser.role = 'Administrator';
         if(currentUser.isBanned) { 
             document.getElementById('banView').classList.remove('hidden'); 
@@ -1596,6 +2257,7 @@
         else { document.getElementById('userSupportBtn').classList.remove('hidden'); document.getElementById('bellWrapDesktop').classList.remove('hidden'); }
         
         document.getElementById('userAvatar').src = currentUser.avatar || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+        collapseSidebarMenus();
         nav('overview', true); checkNotifications();
     }
     
@@ -1607,7 +2269,7 @@
     }
     window.addEventListener('resize', updateResponsiveHeader);
 
-    function logout() { location.reload(); }
+    function logout() { clearKiteSession(); location.reload(); }
     function openSettings() {
         UI.prompt("Настройки профиля", [
             {id: 'l', label: 'Изменить логин', placeholder: currentUser.login, value: currentUser.login},
@@ -1773,13 +2435,25 @@
         UI.alert("Уведомления", listHtml ? listHtml : 'Нет новых уведомлений');
         if (notifs.some(n => !n.read)) { currentUser.notifications.forEach(n => n.read = true); saveUserDB(currentUser); checkNotifications(); }
     }
+    function setNavMenuState(menuId, open) {
+        const menu = document.getElementById('nav-menu-' + menuId);
+        const trigger = document.querySelector('[data-nav-toggle="' + menuId + '"]');
+        if(menu) menu.classList.toggle('hidden', !open);
+        if(trigger) {
+            trigger.classList.toggle('open', !!open);
+            trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+    }
+    function collapseSidebarMenus() {
+        ['catalog', 'marketing', 'admin', 'support'].forEach(id => setNavMenuState(id, false));
+    }
     function toggleNavMenu(menuId, ev) {
         const menu = document.getElementById('nav-menu-' + menuId);
-        if(menu) menu.classList.toggle('hidden');
-        const e = ev || (typeof window !== 'undefined' ? window.event : null);
-        if(e && e.currentTarget) e.currentTarget.classList.toggle('open');
+        const willOpen = menu ? menu.classList.contains('hidden') : true;
+        setNavMenuState(menuId, willOpen);
     }
     function navCatalog(filterMode) {
+        setNavMenuState('catalog', true);
         activeCatalogFilter = filterMode; nav('catalog');
         document.querySelectorAll('#nav-menu-catalog .menu-btn').forEach(b => b.classList.remove('active'));
         const activeBtn = document.getElementById('btn-cat-' + filterMode);
@@ -1797,6 +2471,8 @@
         if(section === 'userChat' && currentUser.unreadAdminMsg) { currentUser.unreadAdminMsg = false; saveUserDB(currentUser); }
         if(section === 'news' || section === 'guide') markContentRead(section, true);
         currentSection = section;
+        if(section === 'karaoke' || section === 'promoLinks') setNavMenuState('marketing', true);
+        if(['adminChats','adminUsers','adminReleases','adminDeleted','adminContent'].includes(section)) setNavMenuState('admin', true);
         document.querySelectorAll('.view-section').forEach(s => { s.classList.add('hidden'); s.classList.remove('fade-in'); });
         const activeSec = document.getElementById('sec-' + section);
         if(activeSec) { activeSec.classList.remove('hidden'); void activeSec.offsetWidth; activeSec.classList.add('fade-in'); }
@@ -1805,7 +2481,7 @@
             const navBtn = document.querySelector(`.sidebar .menu-btn[data-section="${section}"]`);
             if(navBtn) navBtn.classList.add('active');
         }
-        const titles = { 'overview': 'Обзор', 'newRelease': 'Новый релиз', 'news': 'Новости', 'guide': 'Инструкция', 'adminContent': 'Новости и инструкция', 'adminUsers': 'Управление кабинетами', 'adminReleases': 'Все релизы', 'adminDeleted': 'Удаленные', 'userChat': 'Связь с администрацией', 'adminChats': 'Связь с артистами' };
+        const titles = { 'overview': 'Обзор', 'newRelease': 'Новый релиз', 'news': 'Новости', 'guide': 'Инструкция', 'adminContent': 'Новости и инструкция', 'adminUsers': 'Управление кабинетами', 'adminReleases': 'Все релизы', 'adminDeleted': 'Удаленные', 'userChat': 'Связь с администрацией', 'adminChats': 'Связь с артистами', 'karaoke': 'Караоке текст', 'promoLinks': 'Промо-ссылки' };
         document.getElementById('pageTitle').innerText = titles[section] || 'Раздел';
         refreshUI();
         checkNotifications();
@@ -1827,6 +2503,8 @@
         if(currentSection === 'adminDeleted') renderAdminReleases(true); 
         if(currentSection === 'userChat') renderUserChat(); 
         if(currentSection === 'adminChats') renderAdminChatList();
+        if(currentSection === 'karaoke') renderKaraoke();
+        if(currentSection === 'promoLinks') renderPromoLinks();
     }
     function escapeHTML(value) {
         return String(value ?? '').replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
@@ -2046,9 +2724,7 @@
         if(el) el.classList.toggle('hidden', !show);
     }
     function updateSidebarCounts() {
-        const rels = currentUser && currentUser.role === 'Administrator'
-            ? appState.releases.filter(r => !r.isDeleted)
-            : appState.releases.filter(r => currentUser && r.userEmail === currentUser.email && !r.isDeleted);
+        const rels = appState.releases.filter(r => currentUser && r.userEmail === currentUser.email && !r.isDeleted);
         const setBadge = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = String(value); };
         setBadge('badge-cat-all', rels.length);
         setBadge('badge-cat-drafts', rels.filter(r => r.status === 'Черновик').length);
@@ -2216,13 +2892,36 @@
                 list.appendChild(item);
             });
         }
+        function positionCustomSelectList() {
+            const rect = btn.getBoundingClientRect();
+            const gap = 8;
+            const viewportGap = 14;
+            const spaceBelow = window.innerHeight - rect.bottom - viewportGap;
+            const spaceAbove = rect.top - viewportGap;
+            const openUp = spaceBelow < 180 && spaceAbove > spaceBelow;
+            const maxH = Math.max(160, Math.min(360, (openUp ? spaceAbove : spaceBelow) - gap));
+            list.style.width = rect.width + 'px';
+            list.style.left = Math.max(viewportGap, Math.min(rect.left, window.innerWidth - rect.width - viewportGap)) + 'px';
+            list.style.right = 'auto';
+            list.style.maxHeight = maxH + 'px';
+            if(openUp) {
+                list.style.top = 'auto';
+                list.style.bottom = (window.innerHeight - rect.top + gap) + 'px';
+            } else {
+                list.style.bottom = 'auto';
+                list.style.top = (rect.bottom + gap) + 'px';
+            }
+        }
         btn.onclick = (e) => {
             e.preventDefault();
             e.stopPropagation();
             document.querySelectorAll('.custom-select.open').forEach(x => { if(x !== wrap) x.classList.remove('open'); });
             renderOptions();
             wrap.classList.toggle('open');
+            if(wrap.classList.contains('open')) requestAnimationFrame(positionCustomSelectList);
         };
+        window.addEventListener('resize', () => { if(wrap.classList.contains('open')) positionCustomSelectList(); });
+        window.addEventListener('scroll', () => { if(wrap.classList.contains('open')) positionCustomSelectList(); }, true);
         select.addEventListener('change', () => { syncLabel(); renderOptions(); });
         const observer = new MutationObserver(() => { syncLabel(); renderOptions(); });
         observer.observe(select, { childList:true, subtree:true, attributes:true });
@@ -2241,20 +2940,26 @@
         });
     }
     function toggleLyricsByTrackType() {
-        const typeEl = document.getElementById('t_type');
         const lyricsBox = document.getElementById('lyricsFormGroup');
-        const lyrics = document.getElementById('t_lyrics');
-        if(!typeEl || !lyricsBox) return;
-        const isInstrumental = typeEl.value === 'Instrumental';
-        lyricsBox.classList.toggle('hidden', isInstrumental);
-        if(isInstrumental && lyrics) lyrics.value = '';
+        if(lyricsBox) lyricsBox.classList.remove('hidden');
+    }
+    function getTrackTypeValue() {
+        const typeEl = document.getElementById('t_type');
+        return typeEl ? typeEl.value : '';
+    }
+    function setTrackTypeValue(value) {
+        const typeEl = document.getElementById('t_type');
+        if(!typeEl) return;
+        const standard = ['Original', 'Live', 'Cover', 'Remix', 'Instrumental'];
+        typeEl.value = standard.includes(value) ? value : 'Original';
+        toggleLyricsByTrackType();
+        refreshCustomSelectLabels();
     }
 
 
     function renderOverview() {
-        let list = appState.releases; 
-        if (currentUser.role !== 'Administrator') { list = list.filter(r => r.userEmail === currentUser.email); document.getElementById('overviewDesc').innerText = "Статистика по вашим релизам"; } 
-        else { document.getElementById('overviewDesc').innerText = "Глобальная статистика"; }
+        let list = appState.releases.filter(r => currentUser && r.userEmail === currentUser.email); 
+        document.getElementById('overviewDesc').innerText = "Статистика по вашим релизам";
         list = list.filter(r => !r.isDeleted && r.status !== 'Черновик'); 
         const mod = list.filter(r => r.status === 'Модерация').length; const ok = list.filter(r => r.status === 'Одобрен').length; const rej = list.filter(r => r.status === 'Отклонён').length;
         document.getElementById('dashboardStats').innerHTML = `<div class="stat-card"><div class="stat-num" style="color: var(--warning);">${mod}</div><div class="stat-label">На модерации</div></div><div class="stat-card"><div class="stat-num" style="color: var(--success);">${ok}</div><div class="stat-label">Принятых</div></div><div class="stat-card"><div class="stat-num" style="color: var(--danger);">${rej}</div><div class="stat-label">Отклонённых</div></div>`;
@@ -2277,7 +2982,7 @@
         renderUserChat();
         markAdminsUnreadForChat(currentUser.email);
         checkNotifications();
-        sendEmailNotification("Новое сообщение в поддержку AetherLab", `Артист ${currentUser.login} (${currentUser.email}) написал вам:\n\n"${msgText}"`);
+        sendEmailNotification("Новое сообщение в поддержку Kite", `Артист ${currentUser.login} (${currentUser.email}) написал вам:\n\n"${msgText}"`);
     }
     function renderAdminChatList() {
         const list = document.getElementById('adminChatUserList'); const searchVal = document.getElementById('adminChatSearch').value.toLowerCase();
@@ -2341,7 +3046,7 @@
     }
     function renderAdminUsers() {
         document.getElementById('adminUsersList').innerHTML = appState.users.filter(u => !u.isDeletedCabinet).map(u => {
-            let buttons = `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="showCabinetInfo('${u.id}')">Информация</button><button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="changeUserRole('${u.id}')">Роль</button><button class="btn-outline" style="padding: 6px 10px; font-size: 12px; color: ${u.isBanned?'var(--success)':'var(--danger)'}" onclick="toggleBan('${u.id}')">${u.isBanned?'Разбанить':'Бан'}</button>`;
+            let buttons = `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="showCabinetInfo('${u.id}')">Информация</button><button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="changeUserRole('${u.id}')">Роль</button><button class="btn-outline" style="padding: 6px 10px; font-size: 12px; color: ${u.isBanned?'var(--success)':'var(--danger)'}" onclick="toggleBan('${u.id}')">${u.isBanned?'Разблокировать':'Заблокировать'}</button>`;
             if(u.isBanned && u.email !== ADMIN_EMAIL) buttons += `<button class="btn-danger" style="padding: 6px 10px; font-size: 12px; margin-left: 8px;" onclick="deleteCabinet('${u.id}')">Удалить</button>`;
             return `<div class="card"><div><div style="font-weight: 600; font-size: 16px;">${u.login}</div><div class="role-glow">${getRoleName(u.role)}</div><div class="text-sm" style="margin-top:4px;">Браузеры: <span style="color:var(--success)">${u.devices ? u.devices.join(', ') : 'Нет данных'}</span></div></div><div style="display:flex; align-items:center; gap:4px; flex-wrap:wrap;">${buttons}</div></div>`;
         }).join('');
@@ -2358,6 +3063,8 @@
             if(u) { u.isDeletedCabinet = true; u.isBanned = true; u.banReason = "Ваш кабинет был навсегда удален администрацией."; saveUserDB(u);
                 if (activeAdminChatUser === u.email) { activeAdminChatUser = null; document.getElementById('adminChatInputArea').classList.add('hidden'); document.getElementById('adminChatBox').innerHTML = `<div class="empty-state"><h2>Выберите диалог</h2></div>`; }
                 renderAdminUsers(); if(currentSection === 'adminChats') renderAdminChatList();
+        if(currentSection === 'karaoke') renderKaraoke();
+        if(currentSection === 'promoLinks') renderPromoLinks();
             }
         });
     }
@@ -2409,6 +3116,7 @@
         const rejectBox = document.getElementById('editRejectReasonBox');
         if(rejectBox) { rejectBox.classList.add('hidden'); rejectBox.innerHTML = ''; }
         draftRelease = { coverFile: null, tracks: [] }; 
+        window.editingOriginalReleaseForComment = null;
         currentDraftId = null; 
         isDraftDirty = false; 
         document.querySelectorAll('.error-field').forEach(el => el.classList.remove('error-field'));
@@ -2444,6 +3152,8 @@
             }
         }
         currentDraftId = id; 
+        window.editingOriginalReleaseForComment = JSON.parse(JSON.stringify(r || {}));
+        bindReleaseChangeCommentWatcher();
         isDraftDirty = false; 
         document.querySelectorAll('.error-field').forEach(el => el.classList.remove('error-field'));
         
@@ -2455,6 +3165,7 @@
         });
         
         setMultiVal('r_artist_container', r.artist || '', 'Артист');
+        if(r && r.status === 'Отклонён' && currentUser.role !== 'Administrator') setTimeout(updateReleaseChangeComment, 0);
 
         if(r.coverFile) { 
             document.getElementById('coverPreview').src = r.coverFile; 
@@ -2465,7 +3176,7 @@
             document.getElementById('coverHint').classList.remove('hidden'); 
         }
         
-        document.getElementById('submitReleaseBtn').innerText = currentUser.role === 'Administrator' ? "Сохранить для админа" : (r.status === 'Отклонён' ? "Отправить исправленный релиз на модерацию" : "Отправить релиз на модерацию");
+        document.getElementById('submitReleaseBtn').innerText = currentUser.role === 'Administrator' ? "Отправить на модерацию" : (r.status === 'Отклонён' ? "Отправить исправленный релиз на модерацию" : "Отправить релиз на модерацию");
         
         const draftBtn = document.getElementById('saveDraftChangesBtn');
         if (r.status === 'Черновик') { 
@@ -2485,40 +3196,83 @@
     function handleCoverUpload(input) {
         const file = input.files[0]; if(!file) return; const img = new Image(); img.src = URL.createObjectURL(file);
         img.onload = () => { 
-            if((img.width === 1400 || img.width === 3000) && img.width === img.height) { 
+            if(img.width === 3000 && img.height === 3000) { 
                 const reader = new FileReader(); reader.readAsDataURL(file);
                 reader.onload = () => { document.getElementById('r_cover_box').classList.remove('error-field'); draftRelease.coverFile = reader.result; isDraftDirty = true; document.getElementById('coverPreview').src = reader.result; document.getElementById('coverPreview').classList.remove('hidden'); document.getElementById('coverHint').classList.add('hidden'); };
-            } else { UI.alert("Ошибка", "Размер 1400x1400 или 3000x3000 px"); input.value = ""; } 
+            } else { UI.alert("Ошибка", "Размер обложки должен быть только 3000x3000 px"); input.value = ""; } 
         };
     }
     function toggleReleaseType() { const type = document.getElementById('r_type').value; if(type) document.getElementById('tracklistArea').classList.remove('hidden'); else document.getElementById('tracklistArea').classList.add('hidden'); }
+
+    function isAllowedWavFile(file) {
+        if(!file) return false;
+        const nameOk = /\.wav$/i.test(file.name || '');
+        const typeOk = /^(audio\/(wav|wave|x-wav|vnd\.wave))$/i.test(file.type || '');
+        return nameOk || typeOk;
+    }
+    function showWrongAudioFormatError(input) {
+        if(input) input.value = '';
+        UI.alert('Ошибка', 'не тот формат аудиофайла.');
+    }
     function addTracks(input) {
         const files = Array.from(input.files); if(!files.length) return;
         const rType = document.getElementById('r_type').value; const rTitle = document.getElementById('r_title').value.trim(); const rArtist = getMultiVal('r_artist_container');
         files.forEach(file => { 
+            if(!isAllowedWavFile(file)) return showWrongAudioFormatError(input);
             if(file.size > 50*1024*1024) return UI.alert("Ошибка", `Файл ${file.name} больше 50 МБ.`); 
             const reader = new FileReader(); reader.readAsDataURL(file);
             reader.onload = () => { 
                 isDraftDirty = true; 
                 let trackTitle = file.name.replace(/\.[^/.]+$/, "");
                 if (rType === 'Сингл' && rTitle) trackTitle = rTitle;
-                draftRelease.tracks.push({ id: Date.now()+Math.random(), filename: file.name, audioFile: reader.result, title: trackTitle, artist: rArtist, version: '', author: '', comp: '', type: 'Original', lang: '', lyrics: '', explicit: 'Нет', isrc: '', isFilled: false }); renderDraftTracks(); 
+                const newTrack = { id: Date.now()+Math.random(), filename: file.name, audioFile: reader.result, title: trackTitle, artist: rArtist, version: '', author: '', comp: '', type: 'Original', lang: '', lyrics: '', explicit: 'Нет', isrc: '', previewStart: '', duration: '', isFilled: false };
+                draftRelease.tracks.push(newTrack);
+                const audio = new Audio();
+                audio.preload = 'metadata';
+                audio.onloadedmetadata = () => {
+                    if(Number.isFinite(audio.duration) && audio.duration > 0) newTrack.duration = formatAudioDuration(audio.duration);
+                    renderDraftTracks();
+                    audio.src = '';
+                };
+                audio.onerror = () => { audio.src = ''; };
+                audio.src = reader.result;
+                renderDraftTracks(); 
             };
         });
         input.value = ""; 
     }
     function renderDraftTracks() {
-        document.getElementById('draftTracksList').innerHTML = draftRelease.tracks.map((t, idx) => {
+        const list = document.getElementById('draftTracksList');
+        list.innerHTML = draftRelease.tracks.map((t, idx) => {
             const statusLabel = t.isFilled ? '<span style="color:var(--success); font-size: 11px;">✓ Заполнено</span>' : '<span style="color:var(--danger); font-size: 11px; font-weight:bold;">! Требует заполнения</span>';
-            return `<div class="track-list-item" style="${!t.isFilled ? 'border-color: var(--danger);' : ''}"><div><div style="font-weight: 500; font-size: 15px;">${idx+1}. ${t.title}</div><div class="text-sm" style="margin-top:4px;">${t.filename} &nbsp;|&nbsp; ${statusLabel}</div></div><div style="display: flex; gap: 8px;"><button class="btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="openTrackEdit(${t.id})">Редактировать</button><button class="btn-danger" style="padding: 6px 12px; font-size: 12px;" onclick="removeDraftTrack(${t.id})">Удалить</button></div></div>`
+            const title = escapeHTML(t.title || 'Без названия');
+            const filename = escapeHTML(t.filename || 'Аудиофайл');
+            const audio = t.audioFile ? `<div style="margin-top:12px;"><audio controls preload="metadata" data-title="${filename}" src="${t.audioFile}"></audio></div>` : '';
+            return `<div class="track-list-item" style="${!t.isFilled ? 'border-color: var(--danger);' : ''}"><div style="flex:1;min-width:0;"><div style="font-weight: 500; font-size: 15px;">${idx+1}. ${title}</div><div class="text-sm" style="margin-top:4px;">${filename} &nbsp;|&nbsp; ${statusLabel}</div>${audio}</div><div style="display: flex; gap: 8px; flex-wrap:wrap;"><button class="btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="openTrackEdit(${t.id})">Редактировать</button><button class="btn-danger" style="padding: 6px 12px; font-size: 12px;" onclick="removeDraftTrack(${t.id})">Удалить</button></div></div>`;
         }).join('');
+        if(typeof aetherUpgradeAllAudioPlayers === 'function') aetherUpgradeAllAudioPlayers(list);
     }
     function removeDraftTrack(id) { draftRelease.tracks = draftRelease.tracks.filter(t => t.id !== id); isDraftDirty = true; renderDraftTracks(); }
     
     function openTrackEdit(id) {
         const t = draftRelease.tracks.find(x => x.id === id); editTrackId = id; document.querySelectorAll('.error-field').forEach(el => el.classList.remove('error-field'));
-        ['title','version','type','lang','lyrics','explicit','isrc'].forEach(k => document.getElementById('t_'+k).value = t[k] || ''); 
+        ['title','version','lang','lyrics','explicit','isrc','previewStart'].forEach(k => { const el = document.getElementById('t_'+k); if(el) el.value = t[k] || ''; }); 
+        setTrackTypeValue(t.type || 'Original');
+        const ttmlNameEl = document.getElementById('t_ttml_name');
+        if(ttmlNameEl) ttmlNameEl.textContent = t.ttmlName || (t.ttmlText || t.ttmlFile || t.ttmlContent ? 'TTML-файл добавлен' : 'Файл не выбран');
+        const ttmlInput = document.getElementById('t_ttml_file');
+        if(ttmlInput) ttmlInput.value = '';
         document.getElementById('te_filename').innerText = t.filename;
+        const editAudioBox = document.getElementById('trackEditAudioPlayer');
+        if(editAudioBox) {
+            if(t.audioFile) {
+                const safeFileName = escapeHTML(t.filename || t.title || 'Аудиофайл');
+                editAudioBox.innerHTML = `<audio controls preload="metadata" data-title="${safeFileName}" src="${t.audioFile}"></audio>`;
+                if(typeof aetherUpgradeAllAudioPlayers === 'function') aetherUpgradeAllAudioPlayers(editAudioBox);
+            } else {
+                editAudioBox.innerHTML = `<div class="empty-panel">Аудиофайл не добавлен.</div>`;
+            }
+        }
 
         setMultiVal('t_artist_container', t.artist || '', 'Артисты трека');
         setMultiVal('t_author_container', t.author || '', 'Имя Фамилия');
@@ -2534,22 +3288,52 @@
         reqFields.forEach(id => { const el = document.getElementById(id); if(!el.value) { el.classList.add('error-field'); hasErr = true; } });
         
         const artist = getMultiVal('t_artist_container'); const author = getMultiVal('t_author_container'); const comp = getMultiVal('t_comp_container');
+        const resolvedTrackType = getTrackTypeValue();
+        const typeSelect = document.getElementById('t_type');
+        if(!resolvedTrackType) {
+            if(typeSelect) typeSelect.classList.add('error-field');
+            hasErr = true;
+        } else {
+            if(typeSelect) typeSelect.classList.remove('error-field');
+        }
         if(!artist) { document.getElementById('t_artist_container').classList.add('error-field'); hasErr = true; } else document.getElementById('t_artist_container').classList.remove('error-field');
         if(!author) { document.getElementById('t_author_container').classList.add('error-field'); hasErr = true; } else document.getElementById('t_author_container').classList.remove('error-field');
         if(!comp) { document.getElementById('t_comp_container').classList.add('error-field'); hasErr = true; } else document.getElementById('t_comp_container').classList.remove('error-field');
 
         if(hasErr) return UI.alert("Ошибка", "Заполните все обязательные поля (отмечены красной звездочкой).");
         const t = draftRelease.tracks.find(x => x.id === editTrackId);
+        const lyricsEl = document.getElementById('t_lyrics');
+        const lyricsValue = lyricsEl ? lyricsEl.value.trim() : '';
+        const hasTTML = !!(t && (t.ttmlText || t.ttmlFile || t.ttmlContent));
+        if(hasTTML && !lyricsValue) {
+            if(lyricsEl) lyricsEl.classList.add('error-field');
+            return UI.alert('Нужен обычный текст', 'Вы добавили караоке-файл TTML, но не добавили обычный текст песни. Сначала вставьте обычный текст в поле «Текст песни», затем сохраните трек.');
+        }
+        const karaokeOnlyWarning = lyricsValue && !hasTTML && !window.__kiteLyricsAdviceShown;
         
-        ['title','version','type','lang','lyrics','explicit','isrc'].forEach(k => t[k] = document.getElementById('t_'+k).value); 
-        if(t.type === 'Instrumental') t.lyrics = '';
+        ['title','version','lang','lyrics','explicit','isrc','previewStart'].forEach(k => { const el = document.getElementById('t_'+k); if(el) t[k] = el.value; }); 
+        t.type = resolvedTrackType;
         t.artist = artist; t.author = author; t.comp = comp;
 
         t.isFilled = true; isDraftDirty = true;
+        updateReleaseChangeComment();
         cancelTrackEdit(); renderDraftTracks();
+        if(karaokeOnlyWarning) {
+            window.__kiteLyricsAdviceShown = true;
+            UI.alert('Совет', 'Советуем также добавить караоке текст для вашего трека! Это даст вашему релизу ещё больше внимания на площадках. Создать и загрузить файл нужно в формате TTML, для этого воспользуйтесь <a href="/lyrics-karaoke" target="_blank" rel="noopener noreferrer" style="color:#fff;text-decoration:underline;">нашим сервисом!</a>');
+        }
     }
     
-    function cancelTrackEdit() { document.getElementById('sec-trackEdit').classList.add('hidden'); document.getElementById('sec-newRelease').classList.remove('hidden'); editTrackId = null; }
+    function cancelTrackEdit() {
+        const editAudioBox = document.getElementById('trackEditAudioPlayer');
+        if(editAudioBox) {
+            editAudioBox.querySelectorAll('audio').forEach(a => { try { a.pause(); } catch(e){} });
+            editAudioBox.innerHTML = '';
+        }
+        document.getElementById('sec-trackEdit').classList.add('hidden');
+        document.getElementById('sec-newRelease').classList.remove('hidden');
+        editTrackId = null;
+    }
     
     // ВАША ИСПРАВЛЕННАЯ ФУНКЦИЯ ОТПРАВКИ НА МОДЕРАЦИЮ
     function submitFinalRelease() {
@@ -2568,10 +3352,12 @@
         if(draftRelease.tracks.length === 0) return UI.alert("Ошибка", "Добавьте трек");
         for(let i=0; i < draftRelease.tracks.length; i++) { 
             if(!draftRelease.tracks[i].isFilled) return UI.alert("Ошибка", `Заполните инфо о треке №${i+1}`); 
+            if((draftRelease.tracks[i].ttmlText || draftRelease.tracks[i].ttmlFile || draftRelease.tracks[i].ttmlContent) && !(draftRelease.tracks[i].lyrics || '').trim()) return UI.alert("TTML без обычного текста", `В треке №${i+1} добавлен караоке-файл, но нет обычного текста песни. Добавьте обычный текст и попробуйте снова.`);
         }
         
         const existingRelease = appState.releases.find(r => r.id === currentDraftId);
         const isAdmin = currentUser.role === 'Administrator';
+        if(existingRelease && existingRelease.status === 'Отклонён' && !isAdmin) updateReleaseChangeComment();
         
         const finalId = currentDraftId || Date.now().toString();
 
@@ -2601,7 +3387,7 @@
         if(localIndex >= 0) appState.releases[localIndex] = releaseData; else appState.releases.push(releaseData);
 
         if(!isAdmin) { 
-            UI.alert("Успешно!", "Релиз на модерации"); 
+            UI.alert("Поздравляем!", "Релиз был успешно отправлен на проверку. Проверка занимает от 1 до 5 рабочих дней."); 
             navCatalog('mod'); 
             sendEmailNotification("Новый релиз на модерации", `Артист ${currentUser.login} (${currentUser.email}) отправил релиз "${releaseData.title}" (${releaseData.type}) на проверку.\n\nЗайдите в панель управления, чтобы проверить.`);
         } else { 
@@ -2615,23 +3401,241 @@
         });
     }
 
-    function renderCard(r, isAdmin) {
-        let status = ''; if(r.status === 'Черновик') status = '<span class="badge badge-draft">Черновик</span>'; else if(r.status === 'Модерация') status = '<span class="badge badge-mod">Модерация</span>'; else if(r.status === 'Одобрен') status = '<span class="badge badge-ok">Одобрен</span>'; else if(r.status === 'Отклонён') status = `<span class="badge badge-err" style="cursor:pointer" onclick="UI.alert('Отклонен', '${r.rejectReason}')">Отклонен ⓘ</span>`; if(r.isDeleted) status = '<span class="badge badge-err">Удален</span>';
-        const coverSrc = r.coverFile || ''; let actions = '';
-        const isModOrAdmin = currentUser.role === 'Administrator';
-        if(isAdmin && !r.isDeleted && isModOrAdmin) { 
-            actions = `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="viewReleaseAdmin('${r.id}')">Подробнее</button><button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="editDraft('${r.id}')">Изменить</button>`;
-            if(r.status !== 'Черновик') actions += `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; border-color: var(--warning); color: var(--warning); margin-right: 8px;" onclick="admRevoke('${r.id}')">Отозвать</button>`;
-            if(r.status === 'Модерация') actions += `<button class="btn-outline" style="padding: 6px; border-color: var(--success); color: var(--success); margin-right: 4px;" onclick="admApprove('${r.id}')">✓</button><button class="btn-outline" style="padding: 6px; border-color: var(--danger); color: var(--danger);" onclick="admReject('${r.id}')">✗</button>`;
-            actions += `<button class="btn-danger" style="padding: 6px 10px; font-size: 12px; margin-left: 8px;" onclick="admDelete('${r.id}')">Удалить</button>`; 
-        } 
-        else if (isAdmin && r.isDeleted && isModOrAdmin) { actions = `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="viewReleaseAdmin('${r.id}')">Просмотр</button><button class="btn-success" style="padding: 6px 10px; font-size: 12px;" onclick="admRestore('${r.id}')">Восстановить</button>`; } 
-        else if (!isAdmin) { 
-            actions = `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="viewReleaseAdmin('${r.id}')">Информация</button>`; 
-            if (r.status === 'Черновик') { actions += `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="editDraft('${r.id}')">Изменить</button><button class="btn-danger" style="padding: 6px 10px; font-size: 12px;" onclick="deleteDraft('${r.id}')">Удалить</button>`; }
-            if (r.status === 'Отклонён') { actions += `<button class="btn-outline" style="padding: 6px 10px; font-size: 12px; margin-right: 8px;" onclick="editDraft('${r.id}')">Исправить</button>`; } 
+    
+    function releaseIcon(name){
+        const icons = {
+            info:'<svg viewBox="0 0 24 24"><path d="M8 7h8"/><path d="M8 12h5"/><path d="M8 17h8"/><rect x="4" y="4" width="16" height="16" rx="4"/></svg>',
+            tracks:'<svg viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="7" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>',
+            lyrics:'<svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"/><path d="M10 8h4"/><path d="M10 12h4"/><path d="M10 16h2"/></svg>',
+            sync:'<svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h16"/><path d="M18 10l2 2-2 2"/></svg>',
+            edit:'<svg viewBox="0 0 24 24"><path d="M17 3a2.8 2.8 0 0 1 4 4L8 20l-5 1 1-5L17 3z"/><path d="M15 5l4 4"/></svg>',
+            copy:'<svg viewBox="0 0 24 24"><path d="M8 8h10v12H8z"/><path d="M6 16H4V4h12v2"/></svg>',
+            trash:'<svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M6 7l1 14h10l1-14"/><path d="M9 7V4h6v3"/></svg>',
+            download:'<svg viewBox="0 0 24 24"><path d="M12 4v10"/><path d="m8 10 4 4 4-4"/><path d="M5 20h14"/></svg>',
+            return:'<svg viewBox="0 0 24 24"><path d="M10 7 5 12l5 5"/><path d="M5 12h9a5 5 0 1 1 0 10h-2"/></svg>',
+            play:'<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7-11-7Z" fill="currentColor" stroke="none"/></svg>'
+        };
+        return icons[name] || '';
+    }
+    function releaseTooltip(text){ return `<span class="release-tooltip">${escapeHTML(text)}</span>`; }
+    function escapeAttr(v){ return String(v || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function releaseHasLyrics(t){ return !!String(t && t.lyrics || '').trim(); }
+    function releaseHasTTML(t){ return !!String((t && (t.ttmlText || t.ttmlFile || t.ttmlContent)) || '').trim(); }
+    function formatReleaseDate(v){
+        if(!v) return '-';
+        const m = String(v).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        return m ? `${m[3]}.${m[2]}.${m[1]}` : v;
+    }
+    function formatAudioDuration(seconds){
+        seconds = Math.max(0, Number(seconds) || 0);
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const sec = Math.floor(seconds % 60);
+        return h ? `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}` : `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+    }
+    function probeTrackDuration(r, t, trackIndex){
+        if(!r || !t || !t.audioFile || t._durationProbeStarted) return;
+        t._durationProbeStarted = true;
+        const audio = new Audio();
+        audio.preload = 'metadata';
+        audio.onloadedmetadata = () => {
+            if(Number.isFinite(audio.duration) && audio.duration > 0){
+                t.duration = formatAudioDuration(audio.duration);
+                const cell = document.getElementById(`trackDuration_${r.id}_${trackIndex}`);
+                if(cell) cell.textContent = t.duration;
+                try{ db.ref(`releases/${r.id}/tracks/${trackIndex}/duration`).set(t.duration); }catch(e){}
+            }
+            audio.src = '';
+        };
+        audio.onerror = () => {
+            const cell = document.getElementById(`trackDuration_${r.id}_${trackIndex}`);
+            if(cell) cell.textContent = '—';
+            audio.src = '';
+        };
+        audio.src = t.audioFile;
+    }
+    function releaseTrackDuration(t, r, trackIndex){
+        if(t && (t.duration || t.length || t.trackDuration)) return t.duration || t.length || t.trackDuration;
+        if(t && t.audioFile && r){ probeTrackDuration(r, t, trackIndex); return '…'; }
+        return '—';
+    }
+    function downloadTrackFile(releaseId, trackIndex){
+        const r = appState.releases.find(x => String(x.id) === String(releaseId));
+        const t = r && r.tracks && r.tracks[trackIndex];
+        if(!t || !t.audioFile) return UI.alert('Файл недоступен', 'У этого трека нет загруженного аудиофайла.');
+        const a = document.createElement('a');
+        a.href = t.audioFile;
+        a.download = t.filename || `${t.artist || r.artist || 'artist'} - ${t.title || r.title || 'track'}.wav`;
+        document.body.appendChild(a); a.click(); a.remove();
+    }
+    function duplicateRelease(id){
+        const r = appState.releases.find(x => String(x.id) === String(id));
+        if(!r) return;
+        const copy = JSON.parse(JSON.stringify(r));
+        copy.id = Date.now().toString();
+        copy.title = (copy.title || 'Релиз') + ' — копия';
+        copy.status = 'Черновик';
+        copy.date = new Date().toLocaleDateString();
+        copy.rejectReason = '';
+        appState.releases.push(copy);
+        db.ref('releases/' + copy.id).set(copy);
+        refreshUI();
+        UI.alert('Готово', 'Копия релиза сохранена в черновики.');
+    }
+    function toggleReleaseTracklist(id){
+        const panel = document.getElementById('trackPanel_' + id);
+        const btn = document.getElementById('trackToggle_' + id);
+        if(!panel) return;
+        panel.classList.toggle('hidden');
+        if(btn) btn.classList.toggle('open', !panel.classList.contains('hidden'));
+        if(typeof aetherUpgradeAllAudioPlayers === 'function') setTimeout(()=>aetherUpgradeAllAudioPlayers(panel),0);
+    }
+    function getTrackTTMLText(t){
+        if(!t) return '';
+        return String(t.ttmlText || t.ttmlFile || t.ttmlContent || '');
+    }
+    function showTrackLyrics(releaseId, trackIndex){
+        const r = appState.releases.find(x => String(x.id) === String(releaseId));
+        const t = r && r.tracks && r.tracks[trackIndex];
+        const lyrics = String(t && t.lyrics || '').trim();
+        if(!lyrics) return UI.alert('Текст трека', 'Текст для этого трека не добавлен.');
+        const title = `${escapeHTML(t.title || r.title || 'Трек')} — текст трека`;
+        UI.alert(title, `<div style="white-space:pre-wrap;line-height:1.7;color:#eef2fb;font-size:14px;">${escapeHTML(lyrics)}</div>`);
+    }
+    function downloadTrackTTML(releaseId, trackIndex){
+        const r = appState.releases.find(x => String(x.id) === String(releaseId));
+        const t = r && r.tracks && r.tracks[trackIndex];
+        const ttml = getTrackTTMLText(t).trim();
+        if(!ttml) return UI.alert('TTML недоступен', 'Синхронизированный караоке-текст для этого трека не добавлен.');
+        const safe = `${t.artist || r.artist || 'artist'} - ${t.title || r.title || 'track'}`.replace(/[\/:*?"<>|]+/g, '').trim() || 'karaoke-text';
+        const a = document.createElement('a');
+        if(/^data:/i.test(ttml)){
+            a.href = ttml;
+        } else {
+            const blob = new Blob([ttml], {type:'text/plain;charset=utf-8'});
+            a.href = URL.createObjectURL(blob);
+            setTimeout(()=>URL.revokeObjectURL(a.href), 1500);
         }
-        return `<div class="card"><div style="display: flex; align-items: center; flex: 1;"><img src="${coverSrc}" class="card-cover"><div><div class="card-title">${r.title} <span style="font-weight: normal; color: var(--text-muted); font-size: 15px;">— ${r.type || 'Не выбран'}</span></div><div class="card-artist">${r.artist} • ${r.tracks ? r.tracks.length : 0} трек(ов) ${isAdmin ? `• От: ${r.userEmail}` : ''}</div>${r.upc ? `<div class="text-sm" style="color: var(--success); margin-top: 4px;">UPC: ${r.upc}</div>` : ''}</div></div><div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px;">${status}${actions ? `<div style="margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); display:flex; flex-wrap: wrap; gap: 4px;">${actions}</div>` : ''}</div></div>`;
+        a.download = (t.ttmlName && String(t.ttmlName).endsWith('.ttml')) ? t.ttmlName : `${safe}.ttml`;
+        document.body.appendChild(a); a.click(); a.remove();
+    }
+    function renderReleaseTrackTable(r){
+        const tracks = Array.isArray(r.tracks) ? r.tracks : [];
+        if(!tracks.length) return '<div class="empty-panel">Трек-лист пуст</div>';
+        return `<table class="release-track-table"><thead><tr><th style="width:46px;"></th><th style="width:54px;"></th><th>Название</th><th>Исполнитель</th><th>Длительность</th><th>Доля прав</th><th>Сервисы</th></tr></thead><tbody>${tracks.map((t,i)=>{
+            const hasLyrics = releaseHasLyrics(t);
+            const hasTTML = releaseHasTTML(t);
+            return `<tr>
+                <td>${i+1}</td>
+                <td><button class="track-download-btn" onclick="downloadTrackFile('${escapeAttr(r.id)}', ${i})">${releaseIcon('download')}${releaseTooltip('Скачать файл')}</button></td>
+                <td><div class="release-track-title">${escapeHTML(t.title || 'Без названия')}</div><div class="release-track-sub">ISRC ${escapeHTML(t.isrc || '—')}</div></td>
+                <td>${escapeHTML(t.artist || r.artist || '—')}</td>
+                <td id="trackDuration_${escapeAttr(r.id)}_${i}">${escapeHTML(releaseTrackDuration(t, r, i))}</td>
+                <td>100%</td>
+                <td><div class="track-services"><button type="button" class="track-service-icon ${hasLyrics ? 'active' : ''}" onclick="showTrackLyrics('${escapeAttr(r.id)}', ${i})">${releaseIcon('lyrics')}${releaseTooltip(hasLyrics ? 'Открыть текст трека' : 'Текст трека не добавлен')}</button><button type="button" class="track-service-icon ${hasTTML ? 'active' : ''}" onclick="downloadTrackTTML('${escapeAttr(r.id)}', ${i})">${releaseIcon('sync')}${releaseTooltip(hasTTML ? 'Скачать караоке TTML' : 'Синхронизированный текст не добавлен')}</button></div></td>
+            </tr>`;
+        }).join('')}</tbody></table>`;
+    }
+    function getCurrentReleaseSnapshotForComment(){
+        return {
+            type: document.getElementById('r_type') && document.getElementById('r_type').value,
+            title: document.getElementById('r_title') && document.getElementById('r_title').value,
+            artist: getMultiVal('r_artist_container'),
+            genre: document.getElementById('r_genre') && document.getElementById('r_genre').value,
+            year: document.getElementById('r_year') && document.getElementById('r_year').value,
+            releaseDate: document.getElementById('r_releaseDate') && document.getElementById('r_releaseDate').value,
+            upc: document.getElementById('r_upc') && document.getElementById('r_upc').value,
+            tracks: (draftRelease.tracks || []).map(t => ({title:t.title, artist:t.artist, lyrics:t.lyrics, isrc:t.isrc, ttml:!!(t.ttmlText||t.ttmlFile||t.ttmlContent)}))
+        };
+    }
+    function buildReleaseChangeSummary(oldR, current){
+        if(!oldR || !current) return 'данные релиза';
+        const changes = [];
+        const map = {type:'формат релиза', title:'название релиза', artist:'артисты', genre:'жанр', year:'год', releaseDate:'дата релиза', upc:'UPC'};
+        Object.keys(map).forEach(k => { if(String(oldR[k] || '') !== String(current[k] || '')) changes.push(map[k]); });
+        const oldTracks = oldR.tracks || [];
+        const newTracks = current.tracks || [];
+        if(oldTracks.length !== newTracks.length) changes.push('трек-лист');
+        else {
+            for(let i=0;i<newTracks.length;i++){
+                const o = oldTracks[i] || {}, n = newTracks[i] || {};
+                if(String(o.title||'')!==String(n.title||'') || String(o.artist||'')!==String(n.artist||'') || String(o.lyrics||'')!==String(n.lyrics||'') || String(o.isrc||'')!==String(n.isrc||'') || Boolean(o.ttmlText||o.ttmlFile||o.ttmlContent)!==Boolean(n.ttml)) { changes.push(`данные трека №${i+1}`); }
+            }
+        }
+        return changes.length ? Array.from(new Set(changes)).join(', ') : 'данные релиза проверены без изменений';
+    }
+    function updateReleaseChangeComment(){
+        if(!window.editingOriginalReleaseForComment || !currentUser || currentUser.role === 'Administrator') return;
+        const comment = document.getElementById('r_comment');
+        if(!comment) return;
+        const summary = buildReleaseChangeSummary(window.editingOriginalReleaseForComment, getCurrentReleaseSnapshotForComment());
+        comment.value = `Релиз был изменён: ${summary}.`;
+    }
+    function bindReleaseChangeCommentWatcher(){
+        ['r_type','r_title','r_genre','r_year','r_releaseDate','r_upc'].forEach(id=>{
+            const el=document.getElementById(id); if(el && !el.dataset.changeWatcher){ el.dataset.changeWatcher='1'; el.addEventListener('input', updateReleaseChangeComment); el.addEventListener('change', updateReleaseChangeComment); }
+        });
+    }
+    function handleTrackTTMLUpload(input){
+        const file = input.files && input.files[0];
+        const label = document.getElementById('t_ttml_name');
+        if(!file) return;
+        if(!/\.ttml$/i.test(file.name || '')) { input.value = ''; return UI.alert('Ошибка', 'Файл караоке должен быть только в формате TTML.'); }
+        const lyricsEl = document.getElementById('t_lyrics');
+        if(lyricsEl && !lyricsEl.value.trim()) UI.alert('Нужен обычный текст', 'Вы добавляете караоке-файл TTML. Не забудьте также добавить обычный текст песни в поле «Текст песни».');
+        const reader = new FileReader();
+        reader.onload = () => {
+            const t = draftRelease.tracks.find(x => x.id === editTrackId);
+            if(t){ t.ttmlText = String(reader.result || ''); t.ttmlName = file.name; }
+            if(label) label.textContent = file.name;
+            isDraftDirty = true;
+            updateReleaseChangeComment();
+        };
+        reader.readAsText(file, 'utf-8');
+    }
+function renderCard(r, isAdmin) {
+        let status = '';
+        if(r.status === 'Черновик') status = '<span class="badge badge-draft">Черновик</span>';
+        else if(r.status === 'Модерация') status = '<span class="badge badge-mod">Модерация</span>';
+        else if(r.status === 'Одобрен') status = '<span class="badge badge-ok">Одобрен</span>';
+        else if(r.status === 'Отклонён') status = `<span class="badge badge-err" style="cursor:pointer" onclick="UI.alert('Отклонено', '${escapeAttr(r.rejectReason || 'Причина не указана')}')">Отклонено ⓘ</span>`;
+        if(r.isDeleted) status = '<span class="badge badge-err">Удалён</span>';
+        const coverSrc = r.coverFile || '';
+        const tracks = Array.isArray(r.tracks) ? r.tracks : [];
+        const hasLyrics = tracks.some(releaseHasLyrics);
+        const hasTTML = tracks.some(releaseHasTTML);
+        const canEdit = currentUser.role === 'Administrator' || (!isAdmin && (r.status === 'Черновик' || r.status === 'Отклонён'));
+        const canDelete = currentUser.role === 'Administrator' || (!isAdmin && r.status === 'Черновик');
+        const safeId = escapeAttr(r.id);
+        const metaAdmin = isAdmin ? `<div class="release-meta-item"><div class="release-meta-label">Кабинет</div><div class="release-meta-value">${escapeHTML(r.userEmail || '—')}</div></div>` : '';
+        const actions = `
+            <button class="release-icon-btn" onclick="viewReleaseAdmin('${safeId}')">${releaseIcon('info')}${releaseTooltip('Просмотр информации о релизе')}</button>
+            ${canEdit ? `<button class="release-icon-btn" onclick="editDraft('${safeId}')">${releaseIcon('edit')}${releaseTooltip('Редактировать релиз')}</button>` : ''}
+            <button class="release-icon-btn" onclick="duplicateRelease('${safeId}')">${releaseIcon('copy')}${releaseTooltip('Создать копию в черновиках')}</button>
+            ${canDelete ? `<button class="release-icon-btn danger" onclick="${currentUser.role === 'Administrator' ? `admDelete('${safeId}')` : `deleteDraft('${safeId}')`}">${releaseIcon('trash')}${releaseTooltip('Удалить')}</button>` : ''}
+            ${isAdmin && !r.isDeleted && currentUser.role === 'Administrator' && r.status !== 'Черновик' ? `<button class="release-icon-btn" onclick="admRevoke('${safeId}')">${releaseIcon('return')}${releaseTooltip('Отозвать с модерации')}</button>` : ''}
+            ${isAdmin && !r.isDeleted && currentUser.role === 'Administrator' && r.status === 'Модерация' ? `<button class="release-icon-btn glow" onclick="admApprove('${safeId}')">✓${releaseTooltip('Одобрить')}</button><button class="release-icon-btn danger" onclick="admReject('${safeId}')">✕${releaseTooltip('Отклонить')}</button>` : ''}
+            ${isAdmin && r.isDeleted && currentUser.role === 'Administrator' ? `<button class="release-icon-btn glow" onclick="admRestore('${safeId}')">↺${releaseTooltip('Восстановить')}</button>` : ''}
+        `;
+        return `<div class="release-card-pro">
+            <img src="${coverSrc}" class="release-cover-pro" alt="Обложка">
+            <div class="release-main-pro">
+                <div class="release-title-pro">${escapeHTML(r.title || 'Без названия')}</div>
+                <div class="release-artist-pro">${escapeHTML(r.artist || '—')}</div>
+                <div class="release-meta-grid">
+                    <div class="release-meta-item"><div class="release-meta-label">UPC</div><div class="release-meta-value">${escapeHTML(r.upc || '—')}</div></div>
+                    <div class="release-meta-item"><div class="release-meta-label">Дата создания</div><div class="release-meta-value">${escapeHTML(r.date || '—')}</div></div>
+                    <div class="release-meta-item"><div class="release-meta-label">Дата релиза</div><div class="release-meta-value">${escapeHTML(formatReleaseDate(r.releaseDate))}</div></div>
+                    <div class="release-meta-item"><div class="release-meta-label">Жанр</div><div class="release-meta-value">${escapeHTML(r.genre || '—')}</div></div>
+                    <div class="release-meta-item"><div class="release-meta-label">Треков</div><div class="release-meta-value">${tracks.length}</div></div>
+                    ${metaAdmin}
+                    <div class="release-meta-item"><div class="release-meta-label">Статус</div><div class="release-meta-value">${status}</div></div>
+                </div>
+                <button class="release-track-toggle" id="trackToggle_${safeId}" onclick="toggleReleaseTracklist('${safeId}')">Трек-лист <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+            </div>
+            <div class="release-actions-pro">${actions}</div>
+            <div class="release-track-panel hidden" id="trackPanel_${safeId}">${renderReleaseTrackTable(r)}</div>
+        </div>`;
     }
     function renderCatalog() {
         const searchQuery = document.getElementById('searchReleases').value.toLowerCase();
@@ -2718,17 +3722,128 @@
     function admRevoke(id) { UI.confirm("Отозвать артисту?", () => { const r = appState.releases.find(x => x.id === id); r.status = 'Черновик'; db.ref('releases/' + r.id).set(r); pushNotification(r.userEmail, `⚠️ Ваш релиз "${r.title}" был отозван модератором и возвращен в Черновики.`); renderAdminReleases(false); }); }
     
     function viewReleaseAdmin(id) {
-        const r = appState.releases.find(x => x.id === id); const coverUrl = r.coverFile || '';
-        document.getElementById('admRelCover').src = coverUrl; document.getElementById('admCoverDl').onclick = () => { const a = document.createElement('a'); a.href = coverUrl; a.download = `${r.artist}-${r.title}.jpg`; a.click(); };
-        const isAlbum = r.type === 'Альбом/EP';
-        const globalIsrcHTML = isAlbum ? '' : `<div><b>ISRC:</b> ${r.adminIsrc || '-'}</div>`;
-        
-        document.getElementById('admRelInfo').innerHTML = `<div style="font-size: 28px; font-weight: bold; margin-bottom: 4px;">${r.title}</div><div style="color: var(--text-muted); margin-bottom: 24px; font-size: 16px;">Артист: <span style="color:#fff;">${r.artist}</span></div><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; font-size: 14px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid var(--border);"><div><b>Формат:</b> ${r.type}</div><div><b>Жанр:</b> ${r.genre}</div><div><b>Год:</b> ${r.year}</div><div><b>Дата:</b> ${r.releaseDate}</div><div><b>UPC:</b> ${r.upc || '-'}</div>${globalIsrcHTML}</div>`;
-        document.getElementById('admRelTracks').innerHTML = r.tracks.map((t, i) => `<div style="background: var(--bg-glass); border: 1px solid var(--border); padding: 16px; border-radius: 12px; margin-bottom: 10px; word-break: break-all;"><div style="font-weight: 600;">${i+1}. ${t.title}</div><audio controls src="${t.audioFile}" style="width: 100%; margin: 10px 0;"></audio><div class="text-sm">Артист: ${t.artist} | Авторы: ${t.author} | Композиторы: ${t.comp} | ISRC: <span style="color:var(--success); font-weight:bold;">${t.isrc || '-'}</span></div></div>`).join('');
+        const r = appState.releases.find(x => String(x.id) === String(id));
+        if(!r) return UI.alert('Ошибка', 'Релиз не найден.');
+        const coverUrl = r.coverFile || '';
+        const tracks = Array.isArray(r.tracks) ? r.tracks : [];
+        const firstTrack = tracks[0] || {};
+        const safeTitle = escapeHTML(r.title || 'Без названия');
+        const safeArtist = escapeHTML(r.artist || '—');
+        document.getElementById('admRelCover').src = coverUrl;
+        document.getElementById('admCoverDl').onclick = () => { const a = document.createElement('a'); a.href = coverUrl; a.download = `${r.artist || 'artist'}-${r.title || 'cover'}.jpg`; a.click(); };
+        const explicit = tracks.some(t => String(t.explicit || '').toLowerCase() === 'да') ? 'Да' : 'Нет';
+        const tracksHtml = tracks.map((t, idx) => `
+            <div class="release-info-track-card">
+                <div class="release-info-track-num">${idx + 1}</div>
+                <div class="release-info-track-main">
+                    <div class="release-info-track-title">${escapeHTML(t.title || r.title || 'Без названия')}</div>
+                    <div class="release-info-track-sub">${escapeHTML(t.artist || r.artist || '—')}</div>
+                    <div class="release-info-tags">
+                        <span>Тип трека: ${escapeHTML(t.type || '—')}</span>
+                        <span>Язык: ${escapeHTML(t.lang || '—')}</span>
+                        <span>ISRC: ${escapeHTML(t.isrc || '—')}</span>
+                        <span>Предпрослушивание: ${escapeHTML(t.previewStart || '—')} сек.</span>
+                    </div>
+                </div>
+            </div>
+        `).join('') || '<div class="empty-panel">Трек-лист пока пуст.</div>';
+        document.getElementById('admRelInfo').innerHTML = `
+            <div class="release-info-modern">
+                <div class="release-info-hero">
+                    <img src="${coverUrl}" class="release-info-cover-big" alt="Обложка">
+                    <div>
+                        <div class="release-info-eyebrow">Данные релиза</div>
+                        <h2>${safeTitle}</h2>
+                        <p>${safeArtist}</p>
+                    </div>
+                </div>
+                <div class="release-info-grid-modern">
+                    <div class="release-info-box"><div class="release-meta-label">Формат релиза</div><div class="release-meta-value">${escapeHTML(r.type || '—')}</div></div>
+                    <div class="release-info-box"><div class="release-meta-label">Дата релиза</div><div class="release-meta-value">${escapeHTML(formatReleaseDate(r.releaseDate))}</div></div>
+                    <div class="release-info-box"><div class="release-meta-label">Жанр</div><div class="release-meta-value">${escapeHTML(r.genre || '—')}</div></div>
+                    <div class="release-info-box"><div class="release-meta-label">UPC</div><div class="release-meta-value">${escapeHTML(r.upc || '—')}</div></div>
+                    <div class="release-info-box"><div class="release-meta-label">Нецензурная лексика</div><div class="release-meta-value">${explicit}</div></div>
+                    <div class="release-info-box"><div class="release-meta-label">Статус</div><div class="release-meta-value">${escapeHTML(r.status || '—')}</div></div>
+                </div>
+                <div class="release-info-section"><h3>Персоны и роли</h3><div class="release-info-persons"><span>${safeArtist}</span><span class="badge badge-ok">Исполнитель</span></div></div>
+                <div class="release-info-section"><h3>Трек-лист</h3>${tracksHtml}</div>
+            </div>`;
+        document.getElementById('admRelTracks').innerHTML = '';
         document.getElementById('adminReleaseModal').classList.remove('hidden');
     }
 
-    /* ===== AetherLab custom date picker ===== */
+
+    function getPromoForRelease(releaseId){
+        return (appState.promoLinks || []).find(x => String(x.releaseId) === String(releaseId) && !x.deleted);
+    }
+    function savePromoLinkRecord(record){
+        if(!record.id) record.id = Date.now().toString();
+        const idx = appState.promoLinks.findIndex(x => String(x.id) === String(record.id));
+        if(idx >= 0) appState.promoLinks[idx] = record; else appState.promoLinks.push(record);
+        db.ref('promoLinks/' + record.id).set(record);
+        renderPromoLinks();
+    }
+    function renderPromoLinks(){
+        const area = document.getElementById('promoLinksArea');
+        if(!area || !currentUser) return;
+        const isAdmin = currentUser.role === 'Administrator';
+        const rels = appState.releases.filter(r => !r.isDeleted && (isAdmin || r.userEmail === currentUser.email));
+        if(isAdmin){
+            area.innerHTML = `<div class="promo-admin-panel">
+                <h2>Промо-ссылки для релизов</h2>
+                <p class="text-sm" style="margin-bottom:16px;">Выберите релиз и добавьте ссылку. Артист увидит её в своём кабинете.</p>
+                <div class="karaoke-grid">
+                    <div class="form-group"><label>Релиз</label><select id="promoReleaseSelect">${rels.map(r=>`<option value="${escapeAttr(r.id)}">${escapeHTML(r.artist || '')} — ${escapeHTML(r.title || 'Без названия')}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Промо-ссылка</label><input type="url" id="promoUrlInput" placeholder="https://..."></div>
+                </div>
+                <button class="btn-primary" onclick="addPromoLinkFromAdmin()">Сохранить ссылку</button>
+            </div><div id="promoCardsList" style="margin-top:18px;">${renderPromoCards(rels, true)}</div>`;
+            setTimeout(()=>initCustomSelects(area),0);
+        } else {
+            area.innerHTML = `<div id="promoCardsList">${renderPromoCards(rels, false)}</div>`;
+        }
+    }
+    function renderPromoCards(rels, isAdmin){
+        if(!rels.length) return '<div class="empty-panel">Пока нет релизов для промо-ссылок.</div>';
+        return rels.map(r => {
+            const promo = getPromoForRelease(r.id);
+            const url = promo ? promo.url : '';
+            return `<div class="promo-release-card">
+                <img src="${r.coverFile || ''}" alt="Обложка">
+                <div class="promo-release-main">
+                    <div class="release-title-pro">${escapeHTML(r.title || 'Без названия')}</div>
+                    <div class="release-artist-pro">${escapeHTML(r.artist || '—')}</div>
+                    <div class="text-sm">Дата выхода: ${escapeHTML(formatReleaseDate(r.releaseDate))}</div>
+                    ${url ? `<div class="promo-url">${escapeHTML(url)}</div>` : `<div class="text-sm" style="margin-top:8px;">Промо-ссылка пока не добавлена.</div>`}
+                </div>
+                <div class="promo-actions">
+                    ${url ? `<button class="btn-outline" onclick="copyPromoLink('${escapeAttr(url)}')">Скопировать ссылку</button><button class="btn-primary" onclick="window.open('${escapeAttr(url)}','_blank','noopener')">Открыть в новой вкладке</button>` : ''}
+                    ${isAdmin && url ? `<button class="btn-danger" onclick="deletePromoLink('${escapeAttr(promo.id)}')">Удалить</button>` : ''}
+                </div>
+            </div>`;
+        }).join('');
+    }
+    function addPromoLinkFromAdmin(){
+        const relId = document.getElementById('promoReleaseSelect')?.value;
+        const url = (document.getElementById('promoUrlInput')?.value || '').trim();
+        if(!relId || !url) return UI.alert('Ошибка', 'Выберите релиз и вставьте ссылку.');
+        if(!/^https?:\/\//i.test(url)) return UI.alert('Ошибка', 'Ссылка должна начинаться с http:// или https://');
+        const existing = getPromoForRelease(relId);
+        savePromoLinkRecord({ id: existing ? existing.id : Date.now().toString(), releaseId: relId, url, createdAt: Date.now(), deleted:false });
+        UI.alert('Готово', 'Промо-ссылка сохранена.');
+    }
+    function copyPromoLink(url){
+        navigator.clipboard && navigator.clipboard.writeText(url).then(()=>UI.alert('Скопировано', 'Ссылка скопирована.')).catch(()=>UI.alert('Ссылка', escapeHTML(url)));
+    }
+    function deletePromoLink(id){
+        const item = (appState.promoLinks || []).find(x => String(x.id) === String(id));
+        if(!item) return;
+        item.deleted = true;
+        db.ref('promoLinks/' + item.id).set(item);
+        renderPromoLinks();
+    }
+
+    /* ===== Kite custom date picker ===== */
     (function(){
         const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
         const weekNames = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
@@ -2766,7 +3881,28 @@
             popover = document.createElement('div');
             popover.className = 'aether-date-popover hidden';
             document.body.appendChild(popover);
-            popover.addEventListener('mousedown', e => e.preventDefault());
+            popover.addEventListener('mousedown', e => { if(!e.target.closest('button')) e.preventDefault(); });
+            let wheelLocked = false;
+            popover.addEventListener('wheel', (e) => {
+                if(!active) return;
+                e.preventDefault();
+                if(wheelLocked) return;
+                wheelLocked = true;
+                viewDate.setMonth(viewDate.getMonth() + (e.deltaY > 0 ? 1 : -1));
+                renderPicker();
+                setTimeout(() => wheelLocked = false, 260);
+            }, { passive:false });
+            let touchStartY = null;
+            popover.addEventListener('touchstart', (e) => { touchStartY = e.touches && e.touches[0] ? e.touches[0].clientY : null; }, { passive:true });
+            popover.addEventListener('touchend', (e) => {
+                if(touchStartY === null || !active) return;
+                const endY = e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientY : touchStartY;
+                const diff = endY - touchStartY;
+                touchStartY = null;
+                if(Math.abs(diff) < 42) return;
+                viewDate.setMonth(viewDate.getMonth() + (diff < 0 ? 1 : -1));
+                renderPicker();
+            }, { passive:true });
             return popover;
         }
 
@@ -2809,7 +3945,7 @@
             }
             p.innerHTML = `
                 <div class="aether-date-head">
-                    <div class="aether-date-title">${monthNames[month]} ${year}</div>
+                    <button type="button" class="aether-date-title" data-action="monthPicker" title="Выбрать месяц и год">${monthNames[month]} ${year}</button>
                     <div class="aether-date-nav">
                         <button type="button" data-action="prev" title="Предыдущий месяц">↑</button>
                         <button type="button" data-action="next" title="Следующий месяц">↓</button>
@@ -2820,12 +3956,41 @@
                 <div class="aether-date-actions">
                     <button type="button" class="danger-lite" data-action="clear">Удалить</button>
                     <button type="button" data-action="today">Сегодня</button>
-                </div>`;
+                </div>
+                <div class="aether-date-hint">Прокрутите календарь вверх/вниз, чтобы переключать месяцы.</div>`;
+            p.querySelector('[data-action="monthPicker"]').onclick = renderMonthYearPicker;
             p.querySelector('[data-action="prev"]').onclick = () => { viewDate.setMonth(viewDate.getMonth()-1); renderPicker(); };
             p.querySelector('[data-action="next"]').onclick = () => { viewDate.setMonth(viewDate.getMonth()+1); renderPicker(); };
             p.querySelector('[data-action="clear"]').onclick = () => selectDate('');
             p.querySelector('[data-action="today"]').onclick = () => selectDate(toIso(new Date()));
             p.querySelectorAll('[data-date]').forEach(btn => btn.onclick = () => selectDate(btn.dataset.date));
+        }
+
+        function renderMonthYearPicker(){
+            const p = ensurePopover();
+            const year = viewDate.getFullYear();
+            const month = viewDate.getMonth();
+            p.innerHTML = `
+                <div class="aether-year-row">
+                    <button type="button" data-action="yearPrev" title="Предыдущий год">←</button>
+                    <div class="aether-year-value">${year}</div>
+                    <button type="button" data-action="yearNext" title="Следующий год">→</button>
+                </div>
+                <div class="aether-month-grid">
+                    ${monthNames.map((name, i) => `<button type="button" class="aether-month-btn ${i === month ? 'active' : ''}" data-month="${i}">${name.slice(0,3)}</button>`).join('')}
+                </div>
+                <div class="aether-date-actions">
+                    <button type="button" class="danger-lite" data-action="back">Назад</button>
+                    <button type="button" data-action="today">Сегодня</button>
+                </div>`;
+            p.querySelector('[data-action="yearPrev"]').onclick = () => { viewDate.setFullYear(viewDate.getFullYear()-1); renderMonthYearPicker(); };
+            p.querySelector('[data-action="yearNext"]').onclick = () => { viewDate.setFullYear(viewDate.getFullYear()+1); renderMonthYearPicker(); };
+            p.querySelector('[data-action="back"]').onclick = renderPicker;
+            p.querySelector('[data-action="today"]').onclick = () => { const now = new Date(); viewDate = new Date(now.getFullYear(), now.getMonth(), 1); renderPicker(); };
+            p.querySelectorAll('[data-month]').forEach(btn => btn.onclick = () => {
+                viewDate.setMonth(Number(btn.dataset.month));
+                renderPicker();
+            });
         }
 
         function selectDate(value){
@@ -2879,11 +4044,497 @@
             if(!isInsidePopover && !isDisplay) closePicker();
         });
         window.addEventListener('resize', () => { if(active) openPicker(active); });
-        window.AetherLabDatePickerInit = initAll;
+        window.KiteDatePickerInit = initAll;
     })();
 
+
+    /* ===== Karaoke Text module ===== */
+    let karaokeState = {
+        mode: '', audioData: '', audioName: '', title: '', artist: '', lyrics: '',
+        lines: [], times: [], activeLine: 0, lastMarkedLine: -1, keyBound: false, viewerItems: [], viewerActive: 0
+    };
+
+    function karaokeSetMode(mode){
+        karaokeState.mode = mode;
+        karaokeState.audioData = ''; karaokeState.audioName = ''; karaokeState.title = ''; karaokeState.artist = ''; karaokeState.lyrics = '';
+        karaokeState.lines = []; karaokeState.times = []; karaokeState.activeLine = 0; karaokeState.lastMarkedLine = -1; karaokeState.viewerItems = []; karaokeState.viewerActive = 0; document.body.classList.remove('karaoke-mobile-sync');
+        renderKaraoke();
+    }
+
+    function renderKaraoke(){
+        const area = document.getElementById('karaokeWorkArea');
+        if(!area) return;
+        ['catalog','own','view'].forEach(m=>{
+            const el = document.getElementById('karaokeMode' + (m==='catalog'?'Catalog':m==='own'?'Own':'View'));
+            if(el) el.classList.toggle('active', karaokeState.mode === m);
+        });
+        if(!karaokeState.mode){
+            area.innerHTML = `<div class="empty-panel">Выберите один из вариантов выше, чтобы начать работу с караоке-текстом.</div>`;
+            return;
+        }
+        if(karaokeState.mode === 'catalog') renderKaraokeCatalogForm(area);
+        if(karaokeState.mode === 'own') renderKaraokeOwnForm(area);
+        if(karaokeState.mode === 'view') renderKaraokeViewerForm(area);
+    }
+
+    function karaokeUserReleases(){
+        if(!currentUser) return [];
+        return appState.releases.filter(r => r.userEmail === currentUser.email && !r.isDeleted && Array.isArray(r.tracks) && r.tracks.length);
+    }
+
+    function renderKaraokeCatalogForm(area){
+        const releases = karaokeUserReleases();
+        const releaseOptions = releases.map(r=>`<option value="${escapeHTML(r.id)}">${escapeHTML(r.artist || '')} — ${escapeHTML(r.title || 'Без названия')}</option>`).join('');
+        area.innerHTML = `<div class="karaoke-panel">
+            <div class="karaoke-grid">
+                <div class="form-group"><label>Релиз из каталога</label><select id="kr_release" onchange="karaokeLoadReleaseTrack()"><option value="">Выберите релиз</option>${releaseOptions}</select></div>
+                <div class="form-group"><label>Трек</label><select id="kr_track" onchange="karaokeLoadReleaseTrack(true)"><option value="">Сначала выберите релиз</option></select></div>
+                <div class="karaoke-file-box"><label class="karaoke-file-btn" for="kr_audio_catalog">Добавить аудиофайл</label><input id="kr_audio_catalog" type="file" accept=".wav,audio/wav,audio/x-wav,audio/wave,audio/vnd.wave" onchange="karaokeReadAudio(this)"><span class="karaoke-file-name" id="kr_audio_catalog_name">Если аудио есть в релизе, оно загрузится автоматически.</span></div>
+                <div class="form-group"><label>Название трека</label><input id="kr_title" placeholder="Название трека" oninput="karaokeState.title=this.value"></div>
+                <div class="form-group"><label>Имя артиста/ов</label><input id="kr_artist" placeholder="Артист" oninput="karaokeState.artist=this.value"></div>
+                <div class="form-group" style="grid-column:1/-1"><label>Текст трека</label><textarea id="kr_lyrics" rows="8" placeholder="Каждая строка отдельно" oninput="karaokeState.lyrics=this.value"></textarea></div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;"><button class="btn-primary" onclick="karaokeStartSync()">Начать синхронизацию</button></div>
+        </div><div id="karaokeSyncRoot"></div>`;
+        refreshCustomSelectsSoon();
+    }
+
+    function karaokeInitPlayer(){
+        const audio = document.getElementById('karaokeAudio');
+        if(!audio) return;
+        const update = () => karaokeUpdatePlayerUI();
+        audio.addEventListener('loadedmetadata', update);
+        audio.addEventListener('timeupdate', update);
+        audio.addEventListener('play', update);
+        audio.addEventListener('pause', update);
+        audio.addEventListener('ended', update);
+        update();
+    }
+
+    function karaokeTogglePlay(){
+        const audio = document.getElementById('karaokeAudio');
+        if(!audio) return;
+        if(audio.paused) audio.play(); else audio.pause();
+        karaokeUpdatePlayerUI();
+    }
+
+    function karaokeUpdatePlayerUI(){
+        const audio = document.getElementById('karaokeAudio');
+        if(!audio) return;
+        const btn = document.getElementById('karaokePlayBtn');
+        const fill = document.getElementById('karaokeProgressFill');
+        const label = document.getElementById('karaokeTimeLabel');
+        const dur = Number.isFinite(audio.duration) ? audio.duration : 0;
+        const cur = audio.currentTime || 0;
+        if(btn) btn.textContent = audio.paused ? '▶' : 'Ⅱ';
+        if(fill) fill.style.width = dur ? Math.min(100, Math.max(0, cur / dur * 100)) + '%' : '0%';
+        if(label) label.textContent = `${karaokeFormatClock(cur)} / ${karaokeFormatClock(dur)}`;
+    }
+
+    function karaokeFormatClock(sec){
+        sec = Math.max(0, Number(sec)||0);
+        const m = Math.floor(sec/60);
+        const s = Math.floor(sec%60);
+        return `${m}:${String(s).padStart(2,'0')}`;
+    }
+
+    function karaokeSeek(event){
+        const audio = document.getElementById('karaokeAudio');
+        const bar = document.getElementById('karaokeProgress');
+        if(!audio || !bar || !Number.isFinite(audio.duration)) return;
+        const rect = bar.getBoundingClientRect();
+        const pct = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+        audio.currentTime = pct * audio.duration;
+        karaokeUpdatePlayerUI();
+    }
+
+    function karaokeSkip(seconds){
+        const audio = document.getElementById('karaokeAudio');
+        if(!audio) return;
+        audio.currentTime = Math.max(0, Math.min(Number.isFinite(audio.duration) ? audio.duration : Infinity, (audio.currentTime || 0) + Number(seconds || 0)));
+        karaokeUpdatePlayerUI();
+    }
+
+    function karaokeSetRate(value){
+        const audio = document.getElementById('karaokeAudio');
+        if(audio) audio.playbackRate = Number(value) || 1;
+    }
+
+    function karaokeLoadReleaseTrack(trackChanged=false){
+        const relSel = document.getElementById('kr_release');
+        const trSel = document.getElementById('kr_track');
+        const rel = appState.releases.find(r => String(r.id) === String(relSel && relSel.value));
+        if(!rel){ if(trSel) trSel.innerHTML='<option value="">Сначала выберите релиз</option>'; return; }
+        if(!trackChanged){
+            trSel.innerHTML = (rel.tracks || []).map((t,i)=>`<option value="${i}">${i+1}. ${escapeHTML(t.title || t.filename || 'Трек')}</option>`).join('');
+        }
+        const idx = Number(trSel.value || 0);
+        const t = (rel.tracks || [])[idx];
+        if(!t) return;
+        karaokeState.audioData = t.audioFile || '';
+        karaokeState.audioName = t.filename || '';
+        karaokeState.title = t.title || rel.title || '';
+        karaokeState.artist = t.artist || rel.artist || '';
+        karaokeState.lyrics = t.lyrics || '';
+        const title = document.getElementById('kr_title'); if(title) title.value = karaokeState.title;
+        const artist = document.getElementById('kr_artist'); if(artist) artist.value = karaokeState.artist;
+        const lyrics = document.getElementById('kr_lyrics'); if(lyrics) lyrics.value = karaokeState.lyrics;
+        const name = document.getElementById('kr_audio_catalog_name'); if(name) name.textContent = karaokeState.audioName ? `Загружено из релиза: ${karaokeState.audioName}` : 'Аудиофайл не найден в релизе. Добавьте его вручную.';
+    }
+
+    function renderKaraokeOwnForm(area){
+        area.innerHTML = `<div class="karaoke-panel"><div class="karaoke-grid">
+            <div class="karaoke-file-box"><label class="karaoke-file-btn" for="kr_audio_own">Добавить аудиофайл</label><input id="kr_audio_own" type="file" accept=".wav,audio/wav,audio/x-wav,audio/wave,audio/vnd.wave" onchange="karaokeReadAudio(this)"><span class="karaoke-file-name" id="kr_audio_own_name">WAV-аудиофайл до 50 МБ.</span></div>
+            <div class="form-group"><label>Название релиза</label><input id="kr_title" placeholder="Название релиза" oninput="karaokeState.title=this.value"></div>
+            <div class="form-group"><label>Имя артиста</label><input id="kr_artist" placeholder="Артист" oninput="karaokeState.artist=this.value"></div>
+            <div class="form-group" style="grid-column:1/-1"><label>Текст</label><textarea id="kr_lyrics" rows="8" placeholder="Каждая строка отдельно" oninput="karaokeState.lyrics=this.value"></textarea></div>
+        </div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;"><button class="btn-primary" onclick="karaokeStartSync()">Начать синхронизацию</button></div></div><div id="karaokeSyncRoot"></div>`;
+    }
+
+    function karaokeReadAudio(input){
+        const file = input.files && input.files[0];
+        if(!file) return;
+        if(!isAllowedWavFile(file)) return showWrongAudioFormatError(input);
+        if(file.size > 50*1024*1024){ input.value=''; return UI.alert('Ошибка', 'Аудиофайл должен быть до 50 МБ.'); }
+        const reader = new FileReader();
+        reader.onload = () => {
+            karaokeState.audioData = reader.result;
+            karaokeState.audioName = file.name;
+            const nameEl = document.getElementById(input.id + '_name'); if(nameEl) nameEl.textContent = file.name;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function karaokeStartSync(){
+        const titleEl = document.getElementById('kr_title'), artistEl = document.getElementById('kr_artist'), lyricsEl = document.getElementById('kr_lyrics');
+        karaokeState.title = (titleEl && titleEl.value || '').trim();
+        karaokeState.artist = (artistEl && artistEl.value || '').trim();
+        karaokeState.lyrics = (lyricsEl && lyricsEl.value || '').trim();
+        if(!karaokeState.audioData) return UI.alert('Не хватает данных', 'Добавьте аудиофайл.');
+        if(!karaokeState.title) return UI.alert('Не хватает данных', 'Укажите название трека/релиза.');
+        if(!karaokeState.artist) return UI.alert('Не хватает данных', 'Укажите имя артиста.');
+        if(!karaokeState.lyrics) return UI.alert('Не хватает данных', 'Добавьте текст трека.');
+        karaokeState.lines = karaokeState.lyrics.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+        if(!karaokeState.lines.length) return UI.alert('Ошибка', 'Текст должен содержать хотя бы одну строку.');
+        karaokeState.times = Array(karaokeState.lines.length).fill(null);
+        karaokeState.activeLine = 0;
+        karaokeState.lastMarkedLine = -1;
+        renderKaraokeSync();
+    }
+
+    function renderKaraokeSync(){
+        const root = document.getElementById('karaokeSyncRoot'); if(!root) return;
+        root.innerHTML = `<div class="karaoke-panel karaoke-sync-area">
+            <div class="karaoke-help">Включите трек и нажимайте <b>Пробел</b> в момент начала каждой строки. На телефоне используйте кнопку <b>Поставить таймкод</b> внизу экрана.</div>
+            <audio id="karaokeAudio" class="karaoke-native-audio" src="${karaokeState.audioData}" preload="metadata"></audio>
+            <div class="aether-audio-player">
+                <div class="aether-player-main">
+                    <button class="aether-play-btn" id="karaokePlayBtn" onclick="karaokeTogglePlay()" title="Воспроизвести">▶</button>
+                    <div class="aether-player-time" id="karaokeTimeLabel">0:00 / 0:00</div>
+                    <div class="aether-progress" id="karaokeProgress" onclick="karaokeSeek(event)"><div class="aether-progress-fill" id="karaokeProgressFill"></div></div>
+                    <button class="aether-icon-btn" onclick="karaokeSkip(-5)" title="Назад на 5 секунд">−5</button>
+                    <button class="aether-icon-btn" onclick="karaokeSkip(5)" title="Вперёд на 5 секунд">+5</button>
+                </div>
+                <div class="aether-player-bottom">
+                    <div class="aether-player-meta">${escapeHTML(karaokeState.artist || 'Артист')} — ${escapeHTML(karaokeState.title || 'Трек')}</div>
+                    <div class="aether-player-rate"><label class="text-sm">Скорость</label><select id="karaokeRate" onchange="karaokeSetRate(this.value)"><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option value="1" selected>1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="2">2x</option></select></div>
+                </div>
+            </div>
+            <div class="karaoke-player-tools">
+                <button class="btn-outline" onclick="karaokeResetText()">Сбросить текст</button>
+                <button class="btn-outline" onclick="karaokeResetLine()">Сбросить строку</button>
+                <button class="btn-primary" onclick="karaokeDownloadTTML()">Скачать ttml файл</button>
+            </div>
+            <div class="karaoke-lines" id="karaokeLines"></div>
+            <button class="karaoke-mobile-timecode" id="karaokeMobileTimeBtn" onclick="karaokeMarkLine()">Поставить таймкод</button>
+        </div>`;
+        document.body.classList.add('karaoke-mobile-sync');
+        karaokeRenderLines();
+        karaokeBindKeys();
+        karaokeInitPlayer();
+        refreshCustomSelectsSoon();
+    }
+
+    function karaokeBindKeys(){
+        if(karaokeState.keyBound) return;
+        karaokeState.keyBound = true;
+        document.addEventListener('keydown', (e)=>{
+            if(currentSection !== 'karaoke' || e.code !== 'Space' || e.repeat) return;
+            const tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
+            if(['input','textarea','select','button'].includes(tag)) return;
+            e.preventDefault();
+            karaokeMarkLine();
+        });
+    }
+
+    function karaokeMarkLine(){
+        if(!karaokeState.lines.length) return;
+        const audio = document.getElementById('karaokeAudio'); if(!audio) return;
+        if(karaokeState.activeLine >= karaokeState.lines.length) return;
+        const markedIndex = karaokeState.activeLine;
+        karaokeState.times[markedIndex] = Math.max(0, audio.currentTime || 0);
+        karaokeState.lastMarkedLine = markedIndex;
+        karaokeState.activeLine = Math.min(karaokeState.activeLine + 1, karaokeState.lines.length);
+        karaokeRenderLines(markedIndex);
+    }
+
+    function karaokeRenderLines(scrollToIndex){
+        const box = document.getElementById('karaokeLines'); if(!box) return;
+        box.innerHTML = karaokeState.lines.map((line,i)=>`<div id="karaokeLine_${i}" class="karaoke-line ${i===karaokeState.activeLine?'active':''} ${i===karaokeState.lastMarkedLine?'just-synced':''} ${karaokeState.times[i]!=null?'synced':''}" onclick="karaokeState.activeLine=${i};karaokeRenderLines(i)"><div class="karaoke-line-time">${karaokeState.times[i]!=null ? karaokeFormatTime(karaokeState.times[i]) : '—'}</div><div class="karaoke-line-text">${escapeHTML(line)}</div></div>`).join('');
+        const targetIndex = typeof scrollToIndex === 'number' ? scrollToIndex : karaokeState.activeLine;
+        setTimeout(()=>karaokeScrollToLine(targetIndex), 0);
+    }
+
+    function karaokeScrollToLine(index){
+        const el = document.getElementById('karaokeLine_' + index);
+        if(!el) return;
+        el.scrollIntoView({ behavior:'smooth', block:'center', inline:'nearest' });
+    }
+
+    function karaokeResetText(){
+        karaokeState.times = Array(karaokeState.lines.length).fill(null); karaokeState.activeLine = 0; karaokeState.lastMarkedLine = -1; karaokeRenderLines(0);
+    }
+    function karaokeResetLine(){
+        if(!karaokeState.lines.length) return;
+        const i = Math.min(karaokeState.activeLine, karaokeState.lines.length-1);
+        karaokeState.times[i] = null; karaokeState.lastMarkedLine = -1; karaokeRenderLines(i);
+    }
+
+    function karaokeFormatTime(sec){
+        sec = Math.max(0, Number(sec)||0);
+        const m = Math.floor(sec/60);
+        const s = Math.floor(sec%60);
+        const ms = Math.floor((sec - Math.floor(sec))*1000);
+        return `[${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}:${String(ms).padStart(3,'0')}]`;
+    }
+
+    function karaokeDownloadTTML(){
+        if(!karaokeState.lines.length) return UI.alert('Ошибка', 'Сначала начните синхронизацию.');
+        const missing = karaokeState.times.findIndex(x=>x==null);
+        if(missing >= 0) return UI.alert('Ошибка', `Не указан таймкод для строки №${missing+1}.`);
+        const audio = document.getElementById('karaokeAudio');
+        let endTime = audio && isFinite(audio.duration) ? audio.duration : (karaokeState.times[karaokeState.times.length-1] || 0) + 3;
+        if(audio && audio.currentTime > (karaokeState.times[karaokeState.times.length-1] || 0)) endTime = audio.currentTime;
+        const rows = karaokeState.lines.map((line,i)=>`${karaokeFormatTime(karaokeState.times[i])} ${line}`);
+        rows.push(karaokeFormatTime(endTime));
+        const blob = new Blob([rows.join('\n') + '\n'], {type:'text/plain;charset=utf-8'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        const safe = `${karaokeState.artist} - ${karaokeState.title}`.replace(/[\\/:*?"<>|]+/g,' ').trim() || 'karaoke';
+        a.download = safe + '.ttml';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+    }
+
+    function renderKaraokeViewerForm(area){
+        area.innerHTML = `<div class="karaoke-panel"><div class="karaoke-grid">
+            <div class="karaoke-file-box"><label class="karaoke-file-btn" for="kr_view_audio">Добавить WAV</label><input id="kr_view_audio" type="file" accept=".wav,audio/wav,audio/x-wav,audio/wave,audio/vnd.wave" onchange="karaokeViewerReadAudio(this)"><span class="karaoke-file-name" id="kr_view_audio_name">WAV до 50 МБ</span></div>
+            <div class="karaoke-file-box"><label class="karaoke-file-btn" for="kr_view_ttml">Добавить TTML</label><input id="kr_view_ttml" type="file" accept=".ttml" onchange="karaokeViewerReadTTML(this)"><span class="karaoke-file-name" id="kr_view_ttml_name">TTML-файл с таймкодами</span></div>
+        </div><div id="karaokeViewerRoot"></div></div>`;
+    }
+
+    function karaokeViewerReadAudio(input){
+        const file = input.files && input.files[0]; if(!file) return;
+        if(!isAllowedWavFile(file)) return showWrongAudioFormatError(input);
+        if(file.size > 50*1024*1024){ input.value=''; return UI.alert('Ошибка','Аудиофайл должен быть до 50 МБ.'); }
+        const reader = new FileReader();
+        reader.onload = ()=>{ karaokeState.audioData = reader.result; karaokeState.audioName = file.name; const n=document.getElementById('kr_view_audio_name'); if(n)n.textContent=file.name; karaokeRenderViewer(); };
+        reader.readAsDataURL(file);
+    }
+    function karaokeViewerReadTTML(input){
+        const file = input.files && input.files[0]; if(!file) return;
+        const reader = new FileReader();
+        reader.onload = ()=>{ const n=document.getElementById('kr_view_ttml_name'); if(n)n.textContent=file.name; karaokeState.viewerItems = karaokeParseTTML(String(reader.result||'')); karaokeRenderViewer(); };
+        reader.readAsText(file, 'utf-8');
+    }
+    function karaokeParseTTML(text){
+        return text.split(/\r?\n/).map(row=>{
+            const m = row.match(/^\[(\d{2,}):(\d{2}):(\d{3})\]\s*(.*)$/);
+            if(!m) return null;
+            return {time:Number(m[1])*60 + Number(m[2]) + Number(m[3])/1000, text:m[4]||''};
+        }).filter(Boolean);
+    }
+    function karaokeRenderViewer(){
+        const root = document.getElementById('karaokeViewerRoot'); if(!root) return;
+        if(!karaokeState.audioData || !karaokeState.viewerItems.length){ root.innerHTML = `<div class="empty-panel" style="margin-top:16px;">Добавьте аудио и TTML-файл, чтобы запустить просмотр.</div>`; return; }
+        karaokeState.viewerActive = -1;
+        root.innerHTML = `<audio id="karaokeViewAudio" src="${karaokeState.audioData}" controls data-title="Просмотр караоке" style="width:100%;margin:18px 0 0;"></audio><div class="karaoke-viewer"><div class="karaoke-view-countdown" id="karaokeViewCountdown"><span id="karaokeViewCountdownNum"></span></div><div class="karaoke-viewer-inner" id="karaokeViewerInner" style="transform:translateY(0px);">${karaokeState.viewerItems.map((x)=>`<div class="karaoke-view-line">${escapeHTML(x.text)}</div>`).join('')}</div></div>`;
+        const audio = document.getElementById('karaokeViewAudio');
+        audio.currentTime = 0;
+        audio.ontimeupdate = karaokeUpdateViewerLine;
+        audio.onseeked = karaokeUpdateViewerLine;
+        audio.onloadedmetadata = karaokeUpdateViewerLine;
+        karaokeUpdateViewerLine();
+        if(typeof aetherUpgradeAllAudioPlayers === 'function') setTimeout(()=>aetherUpgradeAllAudioPlayers(root), 0);
+    }
+    function karaokeUpdateViewerLine(){
+        const audio = document.getElementById('karaokeViewAudio'); if(!audio) return;
+        const items = karaokeState.viewerItems || [];
+        const lines = document.querySelectorAll('.karaoke-view-line');
+        const inner = document.getElementById('karaokeViewerInner');
+        const countdown = document.getElementById('karaokeViewCountdown');
+        const countdownNum = document.getElementById('karaokeViewCountdownNum');
+        if(!items.length) return;
+        const firstTime = Number(items[0].time) || 0;
+        const cur = audio.currentTime || 0;
+        let idx = -1;
+        for(let i=0;i<items.length;i++){
+            if(cur >= Number(items[i].time || 0)) idx = i;
+            else break;
+        }
+        if(idx < 0){
+            const left = firstTime - cur;
+            const showCount = left > 0 && left <= 3;
+            if(countdown) countdown.classList.toggle('show', showCount);
+            if(countdownNum && showCount) countdownNum.textContent = String(Math.max(1, Math.ceil(left)));
+            if(karaokeState.viewerActive !== -1){
+                karaokeState.viewerActive = -1;
+                lines.forEach(el=>el.classList.remove('active'));
+            }
+            if(inner) inner.style.transform = 'translateY(0px)';
+            return;
+        }
+        if(countdown) countdown.classList.remove('show');
+        if(idx === karaokeState.viewerActive) return;
+        karaokeState.viewerActive = idx;
+        lines.forEach((el,i)=>el.classList.toggle('active', i===idx));
+        if(inner && lines[idx]){
+            const viewer = inner.closest('.karaoke-viewer');
+            const viewerH = viewer ? viewer.clientHeight : 360;
+            const activeTop = lines[idx].offsetTop;
+            const activeH = lines[idx].offsetHeight || 54;
+            const y = Math.round((viewerH / 2) - activeTop - (activeH / 2));
+            inner.style.transform = `translateY(${y}px)`;
+            lines[idx].scrollIntoView({block:'nearest', inline:'nearest'});
+        }
+    }
+    function refreshCustomSelectsSoon(){
+        setTimeout(()=>{ if(typeof setupCustomSelects === 'function') setupCustomSelects(); if(typeof refreshCustomSelectLabels === 'function') refreshCustomSelectLabels(); },0);
+    }
+
+
+    /* ===== Global Kite custom audio players ===== */
+    function aetherAudioIcon(name){
+        if(name === 'play') return '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7-11-7Z" fill="currentColor" stroke="none"/></svg>';
+        if(name === 'back') return '<svg viewBox="0 0 24 24"><path d="M11 8 7 12l4 4"/><path d="M7 12h10"/></svg>';
+        if(name === 'forward') return '<svg viewBox="0 0 24 24"><path d="m13 8 4 4-4 4"/><path d="M7 12h10"/></svg>';
+        return '<span class="pause-bars">Ⅱ</span>';
+    }
+
+    function aetherAudioFormatTime(sec){
+        sec = Math.max(0, Number(sec) || 0);
+        const h = Math.floor(sec / 3600);
+        const m = Math.floor((sec % 3600) / 60);
+        const s = Math.floor(sec % 60);
+        return h ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` : `${m}:${String(s).padStart(2,'0')}`;
+    }
+
+    function aetherMakeCustomAudioPlayer(audio){
+        if(!audio || audio.dataset.aetherPlayerBound === '1' || !audio.hasAttribute('controls')) return;
+        audio.dataset.aetherPlayerBound = '1';
+        audio.classList.add('aether-audio-native-hidden');
+        audio.removeAttribute('controls');
+
+        const player = document.createElement('div');
+        player.className = 'aether-audio-player global-audio-player';
+        const title = audio.getAttribute('data-title') || audio.getAttribute('title') || audio.getAttribute('aria-label') || 'Аудиофайл';
+        player.innerHTML = `
+            <div class="aether-player-main">
+                <button type="button" class="aether-play-btn" title="Воспроизвести">${aetherAudioIcon('play')}</button>
+                <div class="aether-player-time">0:00 / 0:00</div>
+                <div class="aether-progress"><div class="aether-progress-fill"></div></div>
+                <button type="button" class="aether-icon-btn" title="Назад на 5 секунд">−5</button>
+                <button type="button" class="aether-icon-btn" title="Вперёд на 5 секунд">+5</button>
+            </div>
+            <div class="aether-player-bottom">
+                <div class="aether-player-meta"></div>
+                <div class="aether-player-rate">
+                    <label class="text-sm">Скорость</label>
+                    <select class="aether-global-rate">
+                        <option value="0.5">0.5x</option>
+                        <option value="0.75">0.75x</option>
+                        <option value="1" selected>1x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2x</option>
+                    </select>
+                </div>
+            </div>`;
+        const meta = player.querySelector('.aether-player-meta');
+        if(meta) meta.textContent = title;
+        audio.insertAdjacentElement('afterend', player);
+
+        const playBtn = player.querySelector('.aether-play-btn');
+        const timeEl = player.querySelector('.aether-player-time');
+        const progress = player.querySelector('.aether-progress');
+        const fill = player.querySelector('.aether-progress-fill');
+        const backBtn = player.querySelectorAll('.aether-icon-btn')[0];
+        const forwardBtn = player.querySelectorAll('.aether-icon-btn')[1];
+        const rate = player.querySelector('.aether-global-rate');
+
+        const update = () => {
+            const dur = Number.isFinite(audio.duration) ? audio.duration : 0;
+            const cur = audio.currentTime || 0;
+            if(playBtn) playBtn.innerHTML = audio.paused ? aetherAudioIcon('play') : aetherAudioIcon('pause');
+            if(timeEl) timeEl.textContent = `${aetherAudioFormatTime(cur)} / ${aetherAudioFormatTime(dur)}`;
+            if(fill) fill.style.width = dur ? Math.min(100, Math.max(0, cur / dur * 100)) + '%' : '0%';
+        };
+
+        playBtn && playBtn.addEventListener('click', () => {
+            document.querySelectorAll('audio').forEach(a => { if(a !== audio && !a.paused) a.pause(); });
+            if(audio.paused) audio.play(); else audio.pause();
+            update();
+        });
+        progress && progress.addEventListener('click', (e) => {
+            if(!Number.isFinite(audio.duration)) return;
+            const rect = progress.getBoundingClientRect();
+            const pct = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+            audio.currentTime = pct * audio.duration;
+            update();
+        });
+        backBtn && backBtn.addEventListener('click', () => {
+            audio.currentTime = Math.max(0, (audio.currentTime || 0) - 5);
+            update();
+        });
+        forwardBtn && forwardBtn.addEventListener('click', () => {
+            const max = Number.isFinite(audio.duration) ? audio.duration : Infinity;
+            audio.currentTime = Math.min(max, (audio.currentTime || 0) + 5);
+            update();
+        });
+        rate && rate.addEventListener('change', () => { audio.playbackRate = Number(rate.value) || 1; });
+        ['loadedmetadata','durationchange','timeupdate','play','pause','ended','seeking','seeked'].forEach(ev => audio.addEventListener(ev, update));
+        update();
+        if(typeof refreshCustomSelectsSoon === 'function') refreshCustomSelectsSoon();
+    }
+
+    function aetherUpgradeAllAudioPlayers(root=document){
+        try{
+            root.querySelectorAll && root.querySelectorAll('audio[controls]').forEach(aetherMakeCustomAudioPlayer);
+        }catch(e){ console.warn('Aether audio player init skipped:', e); }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => aetherUpgradeAllAudioPlayers());
+    const aetherAudioObserver = new MutationObserver((mutations) => {
+        mutations.forEach(m => {
+            m.addedNodes && m.addedNodes.forEach(node => {
+                if(node.nodeType !== 1) return;
+                if(node.matches && node.matches('audio[controls]')) aetherMakeCustomAudioPlayer(node);
+                aetherUpgradeAllAudioPlayers(node);
+            });
+        });
+    });
+    aetherAudioObserver.observe(document.documentElement, { childList:true, subtree:true });
+
+    document.addEventListener('DOMContentLoaded', restoreKiteSession);
+    window.addEventListener('pageshow', () => { if(!currentUser) restoreKiteSession(); });
+
 </script>
-    <script>
+
+    <div class="seo-keywords-footer" aria-label="Kite Label">
+        Kite Label — музыкальный лейбл и личный кабинет для артистов. Kite, kite label, Кайт, кайт лейбл, Кайт лейбл, кабинет артиста Kite, дистрибуция музыки, релизы артистов.
+    </div>
+
+<script>
 (function () {
     const sectionRoutes = {
         overview: '/dashboard',
@@ -2896,7 +4547,8 @@
         adminReleases: '/admin-releases',
         adminDeleted: '/deleted',
         adminContent: '/content-manager',
-        karaoke: '/lyrics-karaoke'
+        karaoke: '/lyrics-karaoke',
+        promoLinks: '/promo-links'
     };
 
     const catalogRoutes = {
@@ -2922,7 +4574,8 @@
         '/admin-releases': () => nav('adminReleases'),
         '/deleted': () => nav('adminDeleted'),
         '/content-manager': () => nav('adminContent'),
-        '/lyrics-karaoke': () => nav('karaoke')
+        '/lyrics-karaoke': () => nav('karaoke'),
+        '/promo-links': () => nav('promoLinks')
     };
 
     function setKitePath(path) {
